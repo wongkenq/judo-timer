@@ -33,15 +33,33 @@ subTimeBtn.addEventListener('click', adjustTime.subtract)
 
 const getRemainingTime = (endTime) => {
     const currentTime = Date.parse(new Date())
-    const difference = endTime = currentTime
+    const difference = endTime - currentTime
+
+    console.log(difference)
+
+    const minutes = Math.floor(difference / 60 / 1000)
+    const seconds = Math.floor(difference / 1000) % 60
+    
+    return {
+        difference,
+        minutes,
+        seconds,
+    }
 } 
 
 const startTimer = () => {
     let minutes = +displayMin.textContent * 60
     let seconds = +displaySec.textContent
-    let totalTime = minutes + seconds
-
+    let endTime = ((minutes + seconds) * 1000) + Date.parse(new Date())
     
+    getRemainingTime(endTime)
 }
 
 startBtn.addEventListener('click', startTimer)
+
+const fullscreenBtn = document.getElementById('fullscreen')
+fullscreenBtn.addEventListener('click', () => {
+    document.documentElement.requestFullscreen().catch((e) => {
+        console.log(e)
+    })
+})
