@@ -4,7 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Freshman Pomodoro Clock Demo</title>
+    <title>Judo Timer</title>
+    <script src="https://kit.fontawesome.com/3243cc67ef.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -14,31 +15,44 @@
       <div class="timer">
         <div class="button-group mode-buttons" id="js-mode-buttons">
           <button
-            data-mode="pomodoro"
+            data-mode="randori"
             class="button active mode-button"
-            id="js-pomodoro"
+            id="js-randori"
           >
-            Pomodoro
+            Randori
           </button>
           <button
-            data-mode="shortBreak"
+            data-mode="uchikomi"
             class="button mode-button"
-            id="js-short-break"
+            id="js-uchikomi"
           >
-            Short break
+            Uchikomi
           </button>
           <button
-            data-mode="longBreak"
+            data-mode="break"
             class="button mode-button"
-            id="js-long-break"
+            id="js-break"
           >
-            Long break
+            Break
+          </button>
+          <button
+            data-mode="waterBreak"
+            class="button mode-button"
+            id="js-waterBreak"
+          >
+            Water break
           </button>
         </div>
         <div class="clock" id="js-clock">
-          <span id="js-minutes">25</span>
+          <div id="chooseMinutes">
+          </div>
+          <span id="js-minutes">00</span>
           <span class="separator">:</span>
           <span id="js-seconds">00</span>
+        </div>
+        <div id="chooseTime">
+          <i class="fa-sharp fa-solid fa-plus"></i>
+          <i class="fa-sharp fa-solid fa-minus"></i>
         </div>
         <button class="main-button" data-action="start" id="js-btn">
           Start
@@ -50,6 +64,6 @@
       <audio src="break.mp3" data-sound="shortBreak"></audio>
       <audio src="break.mp3" data-sound="longBreak"></audio>
     </div>
-    <script src="main.js"></script>
+    <script src="app.js"></script>
   </body>
 </html>

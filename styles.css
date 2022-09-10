@@ -113,6 +113,16 @@ button:focus, button:active {
   outline: none;
 }
 
+#chooseTime {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+#chooseTime i{
+  cursor: pointer;
+  font-size: xxx-large;
+}
+
 .hidden {
   display: none;
 }
