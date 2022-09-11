@@ -16,8 +16,8 @@ const adjustTime = {
         displayMin.textContent = `${timerName.randori.minutes}`.padStart(2, '0')
     },
     subtract: () => {
-        if (timerName.randori > 0){
-            timerName.randori--
+        if (timerName.randori.minutes > 0){
+            timerName.randori.minutes--
             displayMin.textContent = `${timerName.randori.minutes}`.padStart(2, '0')
         } else {
             return
