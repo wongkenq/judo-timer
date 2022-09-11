@@ -102,6 +102,7 @@ function stopTimer() {
 
 function updateClock() {
   const { remainingTime } = timer;
+  console.log(remainingTime)
   const minutes = `${remainingTime.minutes}`.padStart(2, "0");
   const seconds = `${remainingTime.seconds}`.padStart(2, "0");
 
