@@ -39,9 +39,15 @@ const progress = document.getElementById("js-progress")
 addTimeBtn.addEventListener('click', adjustTime.add)
 subTimeBtn.addEventListener('click', adjustTime.subtract)
 
-fullscreenBtn.addEventListener('click', () => {
-    document.documentElement.requestFullscreen().catch((e) => {})
-})
+fullscreenBtn.addEventListener('click', fullscreenChange)
+
+function fullscreenChange() {
+    if (document.fullscreenElement) {
+        document.exitFullscreen()
+    } else {
+        document.documentElement.requestFullscreen()
+    }
+}
 
 startBtn.addEventListener('click', (e) => {
     // console.log(e.target)
@@ -78,7 +84,7 @@ function startTimer() {
     // buttonSound.play()
 
     startBtn.dataset.action = 'pause'
-    startBtn.textContent = 'pause'
+    startBtn.innerHTML = '<i class="fa-solid fa-pause"></i>'
     startBtn.classList.add('active')
 
     interval = setInterval(() => {
@@ -95,7 +101,7 @@ function pauseTimer() {
     clearInterval(interval)
 
     startBtn.dataset.action = 'start'
-    startBtn.textContent = 'start'
+    startBtn.innerHTML = '<i class="fa-solid fa-play"></i>'
     startBtn.classList.remove('active')
 }
 
