@@ -34,6 +34,7 @@ const startBtn = document.getElementById('js-btn')
 const resetBtn = document.getElementById('js-reset-btn')
 const fullscreenBtn = document.getElementById('fullscreen')
 const buttonSound = new Audio("button-sound.mp3");
+const progress = document.getElementById("js-progress")
 
 addTimeBtn.addEventListener('click', adjustTime.add)
 subTimeBtn.addEventListener('click', adjustTime.subtract)
@@ -43,7 +44,7 @@ fullscreenBtn.addEventListener('click', () => {
 })
 
 startBtn.addEventListener('click', (e) => {
-    console.log(e.target)
+    // console.log(e.target)
     if (e.target.dataset.action === 'start') startTimer()
     else pauseTimer()
 })
@@ -54,7 +55,7 @@ function getRemainingTime(endTime) {
     currentTime = Date.parse(new Date())
     differenceTime = +(endTime - currentTime)
 
-    console.log('times.difference: ' + differenceTime)
+    // console.log('times.difference: ' + differenceTime)
 
     const minutes = Math.floor(differenceTime / 60 / 1000)
     const seconds = Math.floor(differenceTime / 1000) % 60
@@ -70,8 +71,8 @@ function startTimer() {
     let minutes = +timerName.randori.minutes * 60
     let seconds = +timerName.randori.seconds
     let endTime = ((minutes + seconds) * 1000) + Date.parse(new Date())
-    console.log('minutes: ' + minutes, 'seconds: ' + seconds)
-    console.log('endtime: ' + endTime)
+    // console.log('minutes: ' + minutes, 'seconds: ' + seconds)
+    // console.log('endtime: ' + endTime)
     getRemainingTime(endTime)
     
     // buttonSound.play()
@@ -107,6 +108,14 @@ function updateClock() {
 
     displayMin.textContent = `${minutes}`.padStart(2, '0')
     displaySec.textContent = `${seconds}`.padStart(2, '0')
+
+    const total = timerName.randori.minutes * 60
+    const remaining = remainingTime.minutes * 60 + remainingTime.seconds
+    progress.max = total
+    progress.value = total - remaining
+    // console.log(total)
+    // console.log(`remaining: ${remaining}`)
+    // console.log(`progress value: ${progress.value}`)
 }
 
 function resetTimer() {
@@ -114,6 +123,7 @@ function resetTimer() {
     getRemainingTime(Date.parse(new Date()))
     // updateClock()
 
+    progress.value = 0
     displayMin.textContent = `${timerName.randori.minutes}`.padStart(2, '0')
     displaySec.textContent = `${timerName.randori.seconds}`.padStart(2, '0')
 }
