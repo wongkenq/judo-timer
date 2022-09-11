@@ -1,5 +1,8 @@
 let timerName = {
-    randori: 0,
+    randori: {
+        minutes: 0,
+        seconds: 0,
+    },
     uchikomi: 0,
     break: 0,
     waterBreak: 0,
@@ -9,13 +12,13 @@ let currentTime, endTime, differenceTime, remainingTime
 
 const adjustTime = {
     add: () => {
-        timerName.randori++
-        displayMin.textContent = `${timerName.randori}`.padStart(2, '0')
+        timerName.randori.minutes++
+        displayMin.textContent = `${timerName.randori.minutes}`.padStart(2, '0')
     },
     subtract: () => {
         if (timerName.randori > 0){
             timerName.randori--
-            displayMin.textContent = `${timerName.randori}`.padStart(2, '0')
+            displayMin.textContent = `${timerName.randori.minutes}`.padStart(2, '0')
         } else {
             return
         }        
@@ -28,6 +31,7 @@ const subTimeBtn = document.querySelector('.fa-minus')
 const displayMin = document.getElementById('js-minutes')
 const displaySec = document.getElementById('js-seconds')
 const startBtn = document.getElementById('js-btn')
+const resetBtn = document.getElementById('js-reset-btn')
 const fullscreenBtn = document.getElementById('fullscreen')
 const buttonSound = new Audio("button-sound.mp3");
 
@@ -44,7 +48,7 @@ startBtn.addEventListener('click', (e) => {
     else pauseTimer()
 })
 
-// startBtn.addEventListener('click', startTimer)
+resetBtn.addEventListener('click', resetTimer)
 
 function getRemainingTime(endTime) {
     currentTime = Date.parse(new Date())
@@ -63,8 +67,8 @@ function getRemainingTime(endTime) {
 } 
 
 function startTimer() {
-    let minutes = +displayMin.textContent * 60
-    let seconds = +displaySec.textContent
+    let minutes = +timerName.randori.minutes * 60
+    let seconds = +timerName.randori.seconds
     let endTime = ((minutes + seconds) * 1000) + Date.parse(new Date())
     console.log('minutes: ' + minutes, 'seconds: ' + seconds)
     console.log('endtime: ' + endTime)
@@ -92,14 +96,6 @@ function pauseTimer() {
     startBtn.dataset.action = 'start'
     startBtn.textContent = 'start'
     startBtn.classList.remove('active')
-
-    // currentTime = 0
-    // endTime = 0
-    // differenceTime = 0
-    // remainingTime = 0
-
-    // displayMin.textContent = 00
-    // displaySec.textContent = 00
 }
 
 function updateClock() {
@@ -111,4 +107,13 @@ function updateClock() {
 
     displayMin.textContent = `${minutes}`.padStart(2, '0')
     displaySec.textContent = `${seconds}`.padStart(2, '0')
+}
+
+function resetTimer() {
+    pauseTimer()
+    getRemainingTime(Date.parse(new Date()))
+    // updateClock()
+
+    displayMin.textContent = `${timerName.randori.minutes}`.padStart(2, '0')
+    displaySec.textContent = `${timerName.randori.seconds}`.padStart(2, '0')
 }
