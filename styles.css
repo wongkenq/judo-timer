@@ -123,6 +123,13 @@ button:focus, button:active {
   font-size: xxx-large;
 }
 
+#fullscreen {
+  font-size: xx-large;
+  float: right;
+  position: relative;
+  top: 1rem;
+}
+
 .hidden {
   display: none;
 }

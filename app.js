@@ -25,19 +25,26 @@ const adjustTime = {
 let interval
 const addTimeBtn = document.querySelector('.fa-plus')
 const subTimeBtn = document.querySelector('.fa-minus')
-addTimeBtn.addEventListener('click', adjustTime.add)
-subTimeBtn.addEventListener('click', adjustTime.subtract)
 const displayMin = document.getElementById('js-minutes')
 const displaySec = document.getElementById('js-seconds')
 const startBtn = document.getElementById('js-btn')
-startBtn.addEventListener('click', startTimer)
 const fullscreenBtn = document.getElementById('fullscreen')
+const buttonSound = new Audio("button-sound.mp3");
+
+addTimeBtn.addEventListener('click', adjustTime.add)
+subTimeBtn.addEventListener('click', adjustTime.subtract)
 
 fullscreenBtn.addEventListener('click', () => {
-    document.documentElement.requestFullscreen().catch((e) => {
-        console.log(e)
-    })
+    document.documentElement.requestFullscreen().catch((e) => {})
 })
+
+startBtn.addEventListener('click', (e) => {
+    console.log(e.target)
+    if (e.target.dataset.action === 'start') startTimer()
+    else pauseTimer()
+})
+
+// startBtn.addEventListener('click', startTimer)
 
 function getRemainingTime(endTime) {
     currentTime = Date.parse(new Date())
@@ -63,14 +70,36 @@ function startTimer() {
     console.log('endtime: ' + endTime)
     getRemainingTime(endTime)
     
+    // buttonSound.play()
+
+    startBtn.dataset.action = 'pause'
+    startBtn.textContent = 'pause'
+    startBtn.classList.add('active')
+
     interval = setInterval(() => {
         remainingTime = getRemainingTime(endTime)
         updateClock()
 
         if(differenceTime <= 0){
-            clearInterval(interval)
+            pauseTimer()
         }
     }, 1000);
+}
+
+function pauseTimer() {
+    clearInterval(interval)
+
+    startBtn.dataset.action = 'start'
+    startBtn.textContent = 'start'
+    startBtn.classList.remove('active')
+
+    // currentTime = 0
+    // endTime = 0
+    // differenceTime = 0
+    // remainingTime = 0
+
+    // displayMin.textContent = 00
+    // displaySec.textContent = 00
 }
 
 function updateClock() {
