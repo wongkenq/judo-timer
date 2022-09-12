@@ -49,6 +49,7 @@ const resetBtn = document.getElementById('js-reset-btn')
 const fullscreenBtn = document.getElementById('fullscreen')
 const progress = document.getElementById("js-progress")
 const buttonSound = new Audio("button-sound.mp3");
+const roundSelect = document.getElementById('round-select')
 
 addTimeBtn.addEventListener('click', adjustTime.add)
 subTimeBtn.addEventListener('click', adjustTime.subtract)
@@ -80,6 +81,11 @@ startBtn.addEventListener('click', (e) => {
     else pauseTimer()
 })
 
+roundSelect.addEventListener('click', (e) => {
+    timerName.randori.rounds = roundSelect.value
+    document.getElementById('round-select-output').textContent = timerName.randori.rounds
+})
+
 function getRemainingTime(endTime) {
     currentTime = Date.parse(new Date())
     differenceTime = +(endTime - currentTime)
@@ -97,6 +103,9 @@ function getRemainingTime(endTime) {
 function startTimer() {
     let minutes = +timerName[currentMode]['minutes'] * 60
     let seconds = +timerName[currentMode]['seconds']
+
+    // let rounds = document.getElementById('round-select').value
+    // timerName.randori.rounds = rounds
 
     if (timerName[currentMode].minutes === 0 && timerName[currentMode]['seconds'] === 0) return
 
@@ -124,10 +133,11 @@ function startTimer() {
 
         if (differenceTime <= 0) {
             clearInterval(interval)
-
+            
             switch (currentMode) {
                 case 'randori':
                     --timerName.randori.rounds
+                    document.getElementById('round-select-output').textContent = timerName.randori.rounds
                     if (timerName.randori.rounds > 0) {
                         clearInterval(interval)
                         switchMode('break')
