@@ -45,11 +45,6 @@ resetBtn.addEventListener('mousedown', buttonDown)
 resetBtn.addEventListener('touchstart', buttonDown)
 resetBtn.addEventListener('mouseup', buttonUp)
 resetBtn.addEventListener('touchend', buttonUp)
-resetBtn.childNodes[1].addEventListener('click', resetTimer)
-resetBtn.childNodes[1].addEventListener('mousedown', buttonDown)
-resetBtn.childNodes[1].addEventListener('touchstart', buttonDown)
-resetBtn.childNodes[1].addEventListener('mouseup', buttonUp)
-resetBtn.childNodes[1].addEventListener('touchend', buttonUp)
 fullscreenBtn.addEventListener('click', fullscreenChange)
 
 function buttonDown(e) {
@@ -72,13 +67,6 @@ startBtn.addEventListener('click', (e) => {
     if (e.target.dataset.action === 'start') startTimer()
     else pauseTimer()
 })
-
-startBtn.childNodes[1].addEventListener('click', (e) => {
-    console.log(e.target)
-    if (e.target.parentNode.dataset.action === 'start') startTimer()
-    else pauseTimer()
-})
-
 
 function getRemainingTime(endTime) {
     currentTime = Date.parse(new Date())
