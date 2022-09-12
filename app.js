@@ -94,15 +94,15 @@ function getRemainingTime(endTime) {
     }
 } 
 
-function startTimer(currentMode) {
+function startTimer() {
     // timerState = 'start'
-    const mode = currentMode
-    let minutes = +timerName.mode.minutes * 60
-    let seconds = +timerName.mode.seconds
+
+    let minutes = +timerName[currentMode]['minutes'] * 60
+    let seconds = +timerName[currentMode]['seconds']
     
     // let endTime = ((minutes + seconds) * 1000) + Date.parse(new Date())
 
-    if (timerName.randori.minutes === 0 && timerName.randori.seconds === 0) return
+    if (timerName[currentMode].minutes === 0 && timerName[currentMode]['seconds'] === 0) return
 
     if (differenceTime > 0) endTime = differenceTime + Date.parse(new Date())
     else endTime = ((minutes + seconds) * 1000) + Date.parse(new Date())
@@ -141,7 +141,7 @@ function updateClock() {
     displayMin.textContent = `${minutes}`.padStart(2, '0')
     displaySec.textContent = `${seconds}`.padStart(2, '0')
 
-    const total = timerName.randori.minutes * 60
+    const total = (timerName[currentMode]['minutes'] * 60) + timerName[currentMode]['seconds']
     const remaining = remainingTime.minutes * 60 + remainingTime.seconds
     progress.max = total
     progress.value = total - remaining
