@@ -3,10 +3,10 @@ let timerName = {
         minutes: 0,
         seconds: 0,
         rounds: 0,
-        break: 0,
     },
     uchikomi: 0,
     waterBreak: 0,
+    break: 30,
 }
 
 let currentTime, endTime, differenceTime, remainingTime
@@ -165,3 +165,10 @@ function switchMode(mode){
     document.querySelector(`[data-mode='${currentMode}']`).classList.add('active')
     document.body.style.backgroundColor = `var(--${currentMode})`
 }
+
+const modeButtons = document.querySelectorAll('.mode-button')
+modeButtons.forEach(e => {
+    // console.log(e)
+    // console.log(e.classList.contains('active'))
+    if(e.classList.contains('active')) console.log(`${e.dataset.mode} is active`)
+})
