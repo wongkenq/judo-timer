@@ -20,9 +20,9 @@ html {
 }
 
 :root {
-  --randori: hsl(223, 25%, 40%);
+  --waterBreak: hsl(223, 25%, 40%);
   --break: hsl(48, 23%, 40%);
-  --waterBreak: hsl(105, 16%, 40%);
+  --randori: hsl(105, 16%, 40%);
   --uchikomi: hsl(15, 16%, 40%); 
 }
 

@@ -1,25 +1,37 @@
 let timerName = {
     randori: {
         minutes: 0,
-        seconds: 0,
-        rounds: 0,
+        seconds: 2,
+        rounds: 2,
     },
-    uchikomi: 0,
-    waterBreak: 0,
-    break: 30,
+    uchikomi: {
+        minutes: 0,
+        seconds: 0,
+    },
+    waterBreak: {
+        minutes: 2,
+        seconds: 0,
+    },
+    break: {
+        minutes: 0,
+        seconds: 3,
+    },
 }
 
 let currentTime, endTime, differenceTime, remainingTime
+let currentMode = 'randori'
 
 const adjustTime = {
     add: () => {
-        timerName.randori.minutes++
-        displayMin.textContent = `${timerName.randori.minutes}`.padStart(2, '0')
+        timerName[currentMode]['minutes']++
+        displayMin.textContent = `${timerName[currentMode]['minutes']}`.padStart(2, '0')
+        displaySec.textContent = `${timerName[currentMode]['seconds']}`.padStart(2, '0')
     },
     subtract: () => {
-        if (timerName.randori.minutes > 0){
-            timerName.randori.minutes--
-            displayMin.textContent = `${timerName.randori.minutes}`.padStart(2, '0')
+        if (timerName[currentMode]['minutes'] > 0){
+            timerName[currentMode]['minutes']--
+            displayMin.textContent = `${timerName[currentMode]['minutes']}`.padStart(2, '0')
+            displaySec.textContent = `${timerName[currentMode]['seconds']}`.padStart(2, '0')
         } else {
             return
         }        
@@ -35,8 +47,9 @@ const displaySec = document.getElementById('js-seconds')
 const startBtn = document.getElementById('js-btn')
 const resetBtn = document.getElementById('js-reset-btn')
 const fullscreenBtn = document.getElementById('fullscreen')
-const buttonSound = new Audio("button-sound.mp3");
 const progress = document.getElementById("js-progress")
+const buttonSound = new Audio("button-sound.mp3");
+const roundSelect = document.getElementById('round-select')
 
 addTimeBtn.addEventListener('click', adjustTime.add)
 subTimeBtn.addEventListener('click', adjustTime.subtract)
@@ -68,6 +81,10 @@ startBtn.addEventListener('click', (e) => {
     else pauseTimer()
 })
 
+roundSelect.addEventListener('click', (e) => {
+    timerName.randori.rounds = roundSelect.value
+    document.getElementById('round-select-output').textContent = timerName.randori.rounds
+})
 
 function getRemainingTime(endTime) {
     currentTime = Date.parse(new Date())
@@ -84,11 +101,13 @@ function getRemainingTime(endTime) {
 } 
 
 function startTimer() {
-    // timerState = 'start'
-    let minutes = +timerName.randori.minutes * 60
-    let seconds = +timerName.randori.seconds
-    
-    // let endTime = ((minutes + seconds) * 1000) + Date.parse(new Date())
+    let minutes = +timerName[currentMode]['minutes'] * 60
+    let seconds = +timerName[currentMode]['seconds']
+
+    // let rounds = document.getElementById('round-select').value
+    // timerName.randori.rounds = rounds
+
+    if (timerName[currentMode].minutes === 0 && timerName[currentMode]['seconds'] === 0) return
 
     if (differenceTime > 0) endTime = differenceTime + Date.parse(new Date())
     else endTime = ((minutes + seconds) * 1000) + Date.parse(new Date())
@@ -105,8 +124,33 @@ function startTimer() {
         remainingTime = getRemainingTime(endTime)
         updateClock()
         
-        if(differenceTime <= 0){
-            pauseTimer()
+        // if(differenceTime <= 0 && timerName.randori.rounds >= 0){
+        //     // pauseTimer()
+        //     timerName.randori.rounds--
+        //     switchMode('break')
+        //     startTimer()
+        // } 
+
+        if (differenceTime <= 0) {
+            clearInterval(interval)
+            
+            switch (currentMode) {
+                case 'randori':
+                    --timerName.randori.rounds
+                    document.getElementById('round-select-output').textContent = timerName.randori.rounds
+                    if (timerName.randori.rounds > 0) {
+                        clearInterval(interval)
+                        switchMode('break')
+                        startTimer()
+                    } else clearInterval(interval)
+                    break
+                case 'break':
+                    clearInterval(interval)
+                    switchMode('randori')
+                    startTimer()
+                break
+            }
+
         }
     }, 1000);
 }
@@ -127,7 +171,7 @@ function updateClock() {
     displayMin.textContent = `${minutes}`.padStart(2, '0')
     displaySec.textContent = `${seconds}`.padStart(2, '0')
 
-    const total = timerName.randori.minutes * 60
+    const total = (timerName[currentMode]['minutes'] * 60) + timerName[currentMode]['seconds']
     const remaining = remainingTime.minutes * 60 + remainingTime.seconds
     progress.max = total
     progress.value = total - remaining
@@ -139,8 +183,11 @@ function resetTimer() {
     getRemainingTime(Date.parse(new Date()))
 
     progress.value = 0
-    displayMin.textContent = `${timerName.randori.minutes}`.padStart(2, '0')
-    displaySec.textContent = `${timerName.randori.seconds}`.padStart(2, '0')
+    // displayMin.textContent = `${timerName.randori.minutes}`.padStart(2, '0')
+    // displaySec.textContent = `${timerName.randori.seconds}`.padStart(2, '0')
+    
+    displayMin.textContent = `${timerName[currentMode]['minutes']}`.padStart(2, '0')
+    displaySec.textContent = `${timerName[currentMode]['seconds']}`.padStart(2, '0')
 }
 
 const modeBtn = document.getElementById('js-mode-buttons')
@@ -156,8 +203,11 @@ function handleMode(event) {
 }
 
 function switchMode(mode){
-    const currentMode = mode
+    currentMode = mode
     console.log(currentMode)
+
+    displayMin.textContent = `${timerName[currentMode]['minutes']}`.padStart(2, '0')
+    displaySec.textContent = `${timerName[currentMode]['seconds']}`.padStart(2, '0')
 
     document
         .querySelectorAll('button[data-mode]')
@@ -167,8 +217,7 @@ function switchMode(mode){
 }
 
 const modeButtons = document.querySelectorAll('.mode-button')
+
 modeButtons.forEach(e => {
-    // console.log(e)
-    // console.log(e.classList.contains('active'))
     if(e.classList.contains('active')) console.log(`${e.dataset.mode} is active`)
 })
