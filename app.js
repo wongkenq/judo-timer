@@ -35,8 +35,8 @@ const displaySec = document.getElementById('js-seconds')
 const startBtn = document.getElementById('js-btn')
 const resetBtn = document.getElementById('js-reset-btn')
 const fullscreenBtn = document.getElementById('fullscreen')
-const buttonSound = new Audio("button-sound.mp3");
 const progress = document.getElementById("js-progress")
+const buttonSound = new Audio("button-sound.mp3");
 
 addTimeBtn.addEventListener('click', adjustTime.add)
 subTimeBtn.addEventListener('click', adjustTime.subtract)
@@ -45,6 +45,11 @@ resetBtn.addEventListener('mousedown', buttonDown)
 resetBtn.addEventListener('touchstart', buttonDown)
 resetBtn.addEventListener('mouseup', buttonUp)
 resetBtn.addEventListener('touchend', buttonUp)
+resetBtn.childNodes[1].addEventListener('click', resetTimer)
+resetBtn.childNodes[1].addEventListener('mousedown', buttonDown)
+resetBtn.childNodes[1].addEventListener('touchstart', buttonDown)
+resetBtn.childNodes[1].addEventListener('mouseup', buttonUp)
+resetBtn.childNodes[1].addEventListener('touchend', buttonUp)
 fullscreenBtn.addEventListener('click', fullscreenChange)
 
 function buttonDown(e) {
@@ -65,6 +70,12 @@ function fullscreenChange() {
 
 startBtn.addEventListener('click', (e) => {
     if (e.target.dataset.action === 'start') startTimer()
+    else pauseTimer()
+})
+
+startBtn.childNodes[1].addEventListener('click', (e) => {
+    console.log(e.target)
+    if (e.target.parentNode.dataset.action === 'start') startTimer()
     else pauseTimer()
 })
 
@@ -89,6 +100,8 @@ function startTimer() {
     let seconds = +timerName.randori.seconds
     
     // let endTime = ((minutes + seconds) * 1000) + Date.parse(new Date())
+
+    if (timerName.randori.minutes === 0 && timerName.randori.seconds === 0) return
 
     if (differenceTime > 0) endTime = differenceTime + Date.parse(new Date())
     else endTime = ((minutes + seconds) * 1000) + Date.parse(new Date())
