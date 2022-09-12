@@ -1,8 +1,8 @@
 let timerName = {
     randori: {
         minutes: 0,
-        seconds: 0,
-        rounds: 0,
+        seconds: 2,
+        rounds: 2,
     },
     uchikomi: {
         minutes: 0,
@@ -14,7 +14,7 @@ let timerName = {
     },
     break: {
         minutes: 0,
-        seconds: 30,
+        seconds: 3,
     },
 }
 
@@ -95,12 +95,8 @@ function getRemainingTime(endTime) {
 } 
 
 function startTimer() {
-    // timerState = 'start'
-
     let minutes = +timerName[currentMode]['minutes'] * 60
     let seconds = +timerName[currentMode]['seconds']
-    
-    // let endTime = ((minutes + seconds) * 1000) + Date.parse(new Date())
 
     if (timerName[currentMode].minutes === 0 && timerName[currentMode]['seconds'] === 0) return
 
@@ -119,8 +115,32 @@ function startTimer() {
         remainingTime = getRemainingTime(endTime)
         updateClock()
         
-        if(differenceTime <= 0){
-            pauseTimer()
+        // if(differenceTime <= 0 && timerName.randori.rounds >= 0){
+        //     // pauseTimer()
+        //     timerName.randori.rounds--
+        //     switchMode('break')
+        //     startTimer()
+        // } 
+
+        if (differenceTime <= 0) {
+            clearInterval(interval)
+
+            switch (currentMode) {
+                case 'randori':
+                    --timerName.randori.rounds
+                    if (timerName.randori.rounds > 0) {
+                        clearInterval(interval)
+                        switchMode('break')
+                        startTimer()
+                    } else clearInterval(interval)
+                    break
+                case 'break':
+                    clearInterval(interval)
+                    switchMode('randori')
+                    startTimer()
+                break
+            }
+
         }
     }, 1000);
 }
@@ -187,8 +207,7 @@ function switchMode(mode){
 }
 
 const modeButtons = document.querySelectorAll('.mode-button')
+
 modeButtons.forEach(e => {
-    // console.log(e)
-    // console.log(e.classList.contains('active'))
     if(e.classList.contains('active')) console.log(`${e.dataset.mode} is active`)
 })
