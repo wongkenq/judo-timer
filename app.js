@@ -2,9 +2,10 @@ let timerName = {
     randori: {
         minutes: 0,
         seconds: 0,
+        rounds: 0,
+        break: 0,
     },
     uchikomi: 0,
-    break: 0,
     waterBreak: 0,
 }
 
@@ -24,10 +25,6 @@ const adjustTime = {
         }        
     }
 }
-
-document.addEventListener('click', (e) => {
-    console.log(e.target)
-})
 
 let interval
 // let timerState
@@ -144,4 +141,27 @@ function resetTimer() {
     progress.value = 0
     displayMin.textContent = `${timerName.randori.minutes}`.padStart(2, '0')
     displaySec.textContent = `${timerName.randori.seconds}`.padStart(2, '0')
+}
+
+const modeBtn = document.getElementById('js-mode-buttons')
+modeBtn.addEventListener('click', handleMode)
+
+function handleMode(event) {
+    const modes = event.target.dataset.mode
+
+    if (!modes) return
+
+    switchMode(modes)
+    resetTimer()
+}
+
+function switchMode(mode){
+    const currentMode = mode
+    console.log(currentMode)
+
+    document
+        .querySelectorAll('button[data-mode]')
+        .forEach((e) => e.classList.remove('active'))
+    document.querySelector(`[data-mode='${currentMode}']`).classList.add('active')
+    document.body.style.backgroundColor = `var(--${currentMode})`
 }
