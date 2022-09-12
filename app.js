@@ -25,8 +25,12 @@ const adjustTime = {
     }
 }
 
+document.addEventListener('click', (e) => {
+    console.log(e.target)
+})
+
 let interval
-let timerState
+// let timerState
 const addTimeBtn = document.querySelector('.fa-plus')
 const subTimeBtn = document.querySelector('.fa-minus')
 const displayMin = document.getElementById('js-minutes')
@@ -42,7 +46,7 @@ subTimeBtn.addEventListener('click', adjustTime.subtract)
 resetBtn.addEventListener('click', resetTimer)
 resetBtn.addEventListener('mousedown', buttonDown)
 resetBtn.addEventListener('touchstart', buttonDown)
-resetBtn.addEventListener('mouseup' || 'touchend', buttonUp)
+resetBtn.addEventListener('mouseup', buttonUp)
 resetBtn.addEventListener('touchend', buttonUp)
 fullscreenBtn.addEventListener('click', fullscreenChange)
 
@@ -83,7 +87,7 @@ function getRemainingTime(endTime) {
 } 
 
 function startTimer() {
-    timerState = 'start'
+    // timerState = 'start'
     let minutes = +timerName.randori.minutes * 60
     let seconds = +timerName.randori.seconds
     
@@ -108,13 +112,10 @@ function startTimer() {
             pauseTimer()
         }
     }, 1000);
-
-    console.log(`total time: ${minutes + seconds}`)
-    console.log(`remaining time: ${remaining}`)
 }
 
 function pauseTimer() {
-    timerState = 'pause'
+    // timerState = 'pause'
     clearInterval(interval)
 
     startBtn.dataset.action = 'start'
@@ -136,7 +137,7 @@ function updateClock() {
 }
 
 function resetTimer() {
-    timerState = 'stop'
+    // timerState = 'stop'
     pauseTimer()
     getRemainingTime(Date.parse(new Date()))
 
