@@ -133,6 +133,7 @@ function startTimer() {
 
         if (differenceTime <= 0) {
             clearInterval(interval)
+            resetTimer()
             
             switch (currentMode) {
                 case 'randori':
