@@ -26,6 +26,7 @@ const adjustTime = {
 }
 
 let interval
+let timerState
 const addTimeBtn = document.querySelector('.fa-plus')
 const subTimeBtn = document.querySelector('.fa-minus')
 const displayMin = document.getElementById('js-minutes')
@@ -38,8 +39,20 @@ const progress = document.getElementById("js-progress")
 
 addTimeBtn.addEventListener('click', adjustTime.add)
 subTimeBtn.addEventListener('click', adjustTime.subtract)
-
+resetBtn.addEventListener('click', resetTimer)
+resetBtn.addEventListener('mousedown', buttonDown)
+resetBtn.addEventListener('touchstart', buttonDown)
+resetBtn.addEventListener('mouseup' || 'touchend', buttonUp)
+resetBtn.addEventListener('touchend', buttonUp)
 fullscreenBtn.addEventListener('click', fullscreenChange)
+
+function buttonDown(e) {
+    e.target.classList.add('active')
+}
+
+function buttonUp(e) {
+    e.target.classList.remove('active')
+}
 
 function fullscreenChange() {
     if (document.fullscreenElement) {
@@ -50,18 +63,14 @@ function fullscreenChange() {
 }
 
 startBtn.addEventListener('click', (e) => {
-    // console.log(e.target)
     if (e.target.dataset.action === 'start') startTimer()
     else pauseTimer()
 })
 
-resetBtn.addEventListener('click', resetTimer)
 
 function getRemainingTime(endTime) {
     currentTime = Date.parse(new Date())
     differenceTime = +(endTime - currentTime)
-
-    // console.log('times.difference: ' + differenceTime)
 
     const minutes = Math.floor(differenceTime / 60 / 1000)
     const seconds = Math.floor(differenceTime / 1000) % 60
@@ -74,30 +83,38 @@ function getRemainingTime(endTime) {
 } 
 
 function startTimer() {
+    timerState = 'start'
     let minutes = +timerName.randori.minutes * 60
     let seconds = +timerName.randori.seconds
-    let endTime = ((minutes + seconds) * 1000) + Date.parse(new Date())
-    // console.log('minutes: ' + minutes, 'seconds: ' + seconds)
-    // console.log('endtime: ' + endTime)
+    
+    // let endTime = ((minutes + seconds) * 1000) + Date.parse(new Date())
+
+    if (differenceTime > 0) endTime = differenceTime + Date.parse(new Date())
+    else endTime = ((minutes + seconds) * 1000) + Date.parse(new Date())
+
     getRemainingTime(endTime)
     
     // buttonSound.play()
-
+    
     startBtn.dataset.action = 'pause'
     startBtn.innerHTML = '<i class="fa-solid fa-pause"></i>'
     startBtn.classList.add('active')
-
+    
     interval = setInterval(() => {
         remainingTime = getRemainingTime(endTime)
         updateClock()
-
+        
         if(differenceTime <= 0){
             pauseTimer()
         }
     }, 1000);
+
+    console.log(`total time: ${minutes + seconds}`)
+    console.log(`remaining time: ${remaining}`)
 }
 
 function pauseTimer() {
+    timerState = 'pause'
     clearInterval(interval)
 
     startBtn.dataset.action = 'start'
@@ -108,9 +125,6 @@ function pauseTimer() {
 function updateClock() {
     const minutes = Math.floor(differenceTime / 60 / 1000)
     const seconds = Math.floor(differenceTime / 1000) % 60
-    // console.log(differenceTime)
-    // console.log(minutes)
-    // console.log(seconds)
 
     displayMin.textContent = `${minutes}`.padStart(2, '0')
     displaySec.textContent = `${seconds}`.padStart(2, '0')
@@ -119,15 +133,12 @@ function updateClock() {
     const remaining = remainingTime.minutes * 60 + remainingTime.seconds
     progress.max = total
     progress.value = total - remaining
-    // console.log(total)
-    // console.log(`remaining: ${remaining}`)
-    // console.log(`progress value: ${progress.value}`)
 }
 
 function resetTimer() {
+    timerState = 'stop'
     pauseTimer()
     getRemainingTime(Date.parse(new Date()))
-    // updateClock()
 
     progress.value = 0
     displayMin.textContent = `${timerName.randori.minutes}`.padStart(2, '0')
