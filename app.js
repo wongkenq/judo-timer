@@ -4,22 +4,34 @@ let timerName = {
         seconds: 0,
         rounds: 0,
     },
-    uchikomi: 0,
-    waterBreak: 0,
-    break: 30,
+    uchikomi: {
+        minutes: 0,
+        seconds: 0,
+    },
+    waterBreak: {
+        minutes: 2,
+        seconds: 0,
+    },
+    break: {
+        minutes: 0,
+        seconds: 30,
+    },
 }
 
 let currentTime, endTime, differenceTime, remainingTime
+let currentMode = 'randori'
 
 const adjustTime = {
     add: () => {
-        timerName.randori.minutes++
-        displayMin.textContent = `${timerName.randori.minutes}`.padStart(2, '0')
+        timerName[currentMode]['minutes']++
+        displayMin.textContent = `${timerName[currentMode]['minutes']}`.padStart(2, '0')
+        displaySec.textContent = `${timerName[currentMode]['seconds']}`.padStart(2, '0')
     },
     subtract: () => {
-        if (timerName.randori.minutes > 0){
-            timerName.randori.minutes--
-            displayMin.textContent = `${timerName.randori.minutes}`.padStart(2, '0')
+        if (timerName[currentMode]['minutes'] > 0){
+            timerName[currentMode]['minutes']--
+            displayMin.textContent = `${timerName[currentMode]['minutes']}`.padStart(2, '0')
+            displaySec.textContent = `${timerName[currentMode]['seconds']}`.padStart(2, '0')
         } else {
             return
         }        
@@ -82,10 +94,11 @@ function getRemainingTime(endTime) {
     }
 } 
 
-function startTimer() {
+function startTimer(currentMode) {
     // timerState = 'start'
-    let minutes = +timerName.randori.minutes * 60
-    let seconds = +timerName.randori.seconds
+    const mode = currentMode
+    let minutes = +timerName.mode.minutes * 60
+    let seconds = +timerName.mode.seconds
     
     // let endTime = ((minutes + seconds) * 1000) + Date.parse(new Date())
 
@@ -140,8 +153,11 @@ function resetTimer() {
     getRemainingTime(Date.parse(new Date()))
 
     progress.value = 0
-    displayMin.textContent = `${timerName.randori.minutes}`.padStart(2, '0')
-    displaySec.textContent = `${timerName.randori.seconds}`.padStart(2, '0')
+    // displayMin.textContent = `${timerName.randori.minutes}`.padStart(2, '0')
+    // displaySec.textContent = `${timerName.randori.seconds}`.padStart(2, '0')
+    
+    displayMin.textContent = `${timerName[currentMode]['minutes']}`.padStart(2, '0')
+    displaySec.textContent = `${timerName[currentMode]['seconds']}`.padStart(2, '0')
 }
 
 const modeBtn = document.getElementById('js-mode-buttons')
@@ -157,8 +173,11 @@ function handleMode(event) {
 }
 
 function switchMode(mode){
-    const currentMode = mode
+    currentMode = mode
     console.log(currentMode)
+
+    displayMin.textContent = `${timerName[currentMode]['minutes']}`.padStart(2, '0')
+    displaySec.textContent = `${timerName[currentMode]['seconds']}`.padStart(2, '0')
 
     document
         .querySelectorAll('button[data-mode]')
