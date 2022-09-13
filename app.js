@@ -2,7 +2,7 @@ let timerName = {
     randori: {
         minutes: 0,
         seconds: 2,
-        rounds: 2,
+        rounds: 0,
     },
     uchikomi: {
         minutes: 0,
@@ -20,6 +20,7 @@ let timerName = {
 
 let currentTime, endTime, differenceTime, remainingTime
 let currentMode = 'randori'
+let roundCount
 
 const adjustTime = {
     add: () => {
@@ -39,7 +40,7 @@ const adjustTime = {
 }
 
 let interval
-// let timerState
+
 const addTimeBtn = document.querySelector('.fa-plus')
 const subTimeBtn = document.querySelector('.fa-minus')
 const displayMin = document.getElementById('js-minutes')
@@ -82,7 +83,8 @@ startBtn.addEventListener('click', (e) => {
 })
 
 roundSelect.addEventListener('click', (e) => {
-    timerName.randori.rounds = roundSelect.value
+    timerName.randori.rounds = +roundSelect.value
+    roundCount = timerName.randori.rounds
     document.getElementById('round-select-output').textContent = timerName.randori.rounds
 })
 
@@ -104,9 +106,6 @@ function startTimer() {
     let minutes = +timerName[currentMode]['minutes'] * 60
     let seconds = +timerName[currentMode]['seconds']
 
-    // let rounds = document.getElementById('round-select').value
-    // timerName.randori.rounds = rounds
-
     if (timerName[currentMode].minutes === 0 && timerName[currentMode]['seconds'] === 0) return
 
     if (differenceTime > 0) endTime = differenceTime + Date.parse(new Date())
@@ -120,16 +119,11 @@ function startTimer() {
     startBtn.textContent = 'pause'
     startBtn.classList.add('active')
     
+    document.getElementById('round-select-output').textContent = roundCount
+
     interval = setInterval(() => {
         remainingTime = getRemainingTime(endTime)
         updateClock()
-        
-        // if(differenceTime <= 0 && timerName.randori.rounds >= 0){
-        //     // pauseTimer()
-        //     timerName.randori.rounds--
-        //     switchMode('break')
-        //     startTimer()
-        // } 
 
         if (differenceTime <= 0) {
             clearInterval(interval)
@@ -137,9 +131,9 @@ function startTimer() {
             
             switch (currentMode) {
                 case 'randori':
-                    --timerName.randori.rounds
-                    document.getElementById('round-select-output').textContent = timerName.randori.rounds
-                    if (timerName.randori.rounds > 0) {
+                    --roundCount
+                    document.getElementById('round-select-output').textContent = roundCount
+                    if (roundCount > 0) {
                         clearInterval(interval)
                         switchMode('break')
                         startTimer()
@@ -151,13 +145,15 @@ function startTimer() {
                     startTimer()
                 break
             }
+        }
 
+        if (roundCount <= 0) {
+            roundCount = timerName.randori.rounds
         }
     }, 1000);
 }
 
 function pauseTimer() {
-    // timerState = 'pause'
     clearInterval(interval)
 
     startBtn.dataset.action = 'start'
@@ -179,13 +175,10 @@ function updateClock() {
 }
 
 function resetTimer() {
-    // timerState = 'stop'
     pauseTimer()
     getRemainingTime(Date.parse(new Date()))
 
     progress.value = 0
-    // displayMin.textContent = `${timerName.randori.minutes}`.padStart(2, '0')
-    // displaySec.textContent = `${timerName.randori.seconds}`.padStart(2, '0')
     
     displayMin.textContent = `${timerName[currentMode]['minutes']}`.padStart(2, '0')
     displaySec.textContent = `${timerName[currentMode]['seconds']}`.padStart(2, '0')
