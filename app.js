@@ -117,7 +117,7 @@ function startTimer() {
     // buttonSound.play()
     
     startBtn.dataset.action = 'pause'
-    startBtn.innerHTML = '<i class="fa-solid fa-pause"></i>'
+    startBtn.textContent = 'pause'
     startBtn.classList.add('active')
     
     interval = setInterval(() => {
@@ -133,6 +133,7 @@ function startTimer() {
 
         if (differenceTime <= 0) {
             clearInterval(interval)
+            resetTimer()
             
             switch (currentMode) {
                 case 'randori':
@@ -160,7 +161,7 @@ function pauseTimer() {
     clearInterval(interval)
 
     startBtn.dataset.action = 'start'
-    startBtn.innerHTML = '<i class="fa-solid fa-play"></i>'
+    startBtn.textContent = 'start'
     startBtn.classList.remove('active')
 }
 
