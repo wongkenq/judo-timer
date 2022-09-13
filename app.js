@@ -20,6 +20,7 @@ let timerName = {
 
 let currentTime, endTime, differenceTime, remainingTime
 let currentMode = 'randori'
+let masterMode
 let roundCount
 
 const adjustTime = {
@@ -141,8 +142,11 @@ function startTimer() {
                     break
                 case 'break':
                     clearInterval(interval)
-                    switchMode('randori')
-                    startTimer()
+                    if (masterMode === 'break') return
+                    else {
+                        switchMode('randori')
+                        startTimer()
+                    }
                 break
             }
         }
@@ -191,6 +195,8 @@ function handleMode(event) {
     const modes = event.target.dataset.mode
 
     if (!modes) return
+
+    masterMode = modes
 
     switchMode(modes)
     resetTimer()
