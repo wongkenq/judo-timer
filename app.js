@@ -21,7 +21,7 @@ let timerName = {
 let currentTime, endTime, differenceTime, remainingTime
 let currentMode = 'randori'
 let masterMode
-let roundCount
+let currentRound = 1
 
 const adjustTime = {
     add: () => {
@@ -85,8 +85,7 @@ startBtn.addEventListener('click', (e) => {
 
 roundSelect.addEventListener('click', (e) => {
     timerName.randori.rounds = +roundSelect.value
-    roundCount = timerName.randori.rounds
-    document.getElementById('round-select-output').textContent = timerName.randori.rounds
+    
 })
 
 function getRemainingTime(endTime) {
@@ -120,7 +119,7 @@ function startTimer() {
     startBtn.textContent = 'pause'
     startBtn.classList.add('active')
     
-    document.getElementById('round-select-output').textContent = roundCount
+    document.getElementById('round-select-output').textContent = currentRound
 
     interval = setInterval(() => {
         remainingTime = getRemainingTime(endTime)
@@ -132,27 +131,29 @@ function startTimer() {
             
             switch (currentMode) {
                 case 'randori':
-                    --roundCount
-                    document.getElementById('round-select-output').textContent = roundCount
-                    if (roundCount > 0) {
+                    if (currentRound < timerName.randori.rounds) {
+                        console.log(`current round: ${currentRound}`)
                         clearInterval(interval)
                         switchMode('break')
                         startTimer()
-                    } else clearInterval(interval)
+                    } else {
+                        clearInterval(interval)
+                        currentRound = 1
+                        document.getElementById('round-select-output').textContent = currentRound
+                    }
                     break
                 case 'break':
                     clearInterval(interval)
                     if (masterMode === 'break') return
                     else {
+                        currentRound++
+                        document.getElementById('round-select-output').textContent = currentRound
+
                         switchMode('randori')
                         startTimer()
                     }
                 break
             }
-        }
-
-        if (roundCount <= 0) {
-            roundCount = timerName.randori.rounds
         }
     }, 1000);
 }
@@ -181,6 +182,10 @@ function updateClock() {
 function resetTimer() {
     pauseTimer()
     getRemainingTime(Date.parse(new Date()))
+
+    // if (currentRound === timerName.randori.rounds) currentRound = 1
+
+    // document.getElementById('round-select-output').textContent = currentRound
 
     progress.value = 0
     
