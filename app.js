@@ -14,7 +14,7 @@ let timerName = {
     },
     break: {
         minutes: 0,
-        seconds: 3,
+        seconds: 2,
     },
 }
 
@@ -125,7 +125,7 @@ function startTimer() {
         remainingTime = getRemainingTime(endTime)
         updateClock()
 
-        if (differenceTime <= 0) {
+        if (differenceTime < 0) {
             clearInterval(interval)
             resetTimer()
             
