@@ -5,22 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Judo Timer</title>
-    <script src="https://kit.fontawesome.com/3243cc67ef.js" crossorigin="anonymous"></script>
-    <link rel="shortcut icon" href="images/vecteezy_judo-styles-art_.jpg" type="image/x-icon">
+    <script
+      src="https://kit.fontawesome.com/3243cc67ef.js"
+      crossorigin="anonymous"
+    ></script>
+    <link
+      rel="shortcut icon"
+      href="images/vecteezy_judo-styles-art_.jpg"
+      type="image/x-icon"
+    />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <!-- <main class="splashScreen">
-      柔道
-    </main> -->
+    <main class="splashScreen">
+      <h1>柔道</h1>
+    </main>
     <main class="app">
       <progress id="js-progress" value="0"></progress>
       <div class="progress-bar"></div>
       <div class="timer">
-        <div>
-          <input id="round-select" type="number">
-          <!-- <span id="round-select-output"></span> -->
-        </div>
         <div class="button-group mode-buttons" id="js-mode-buttons">
           <button
             data-mode="randori"
@@ -36,11 +39,7 @@
           >
             Uchikomi
           </button>
-          <button
-            data-mode="break"
-            class="button mode-button"
-            id="js-break"
-          >
+          <button data-mode="break" class="button mode-button" id="js-break">
             Break
           </button>
           <button
@@ -64,26 +63,27 @@
               <span class="separator">:</span>
               <span id="js-seconds">00</span>
             </div>
-            <div id="chooseTime">
+            <!-- <div id="chooseTime">
               <i class="fa-sharp fa-solid fa-plus"></i>
               <i class="fa-sharp fa-solid fa-minus"></i>
-            </div>
+            </div> -->
             <button class="main-button" data-action="start" id="js-btn">
               Start
             </button>
-            <button class="main-button" id="js-reset-btn">
-              Stop
-            </button>
+            <button class="main-button" id="js-reset-btn">Stop</button>
           </section>
         </section>
       </div>
     </main>
-    <i id="fullscreen" class="fa-solid fa-up-right-and-down-left-from-center"></i>
-    <div class="hidden">
+    <!-- <i
+      id="fullscreen"
+      class="fa-solid fa-up-right-and-down-left-from-center"
+    ></i> -->
+    <!-- <div class="hidden">
       <audio src="backtowork.mp3" data-sound="pomodoro"></audio>
       <audio src="break.mp3" data-sound="shortBreak"></audio>
       <audio src="break.mp3" data-sound="longBreak"></audio>
-    </div>
+    </div> -->
     <script src="app.js"></script>
     <!-- <script src="main.js"></script>/ -->
   </body>
