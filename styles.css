@@ -158,6 +158,26 @@ button:active {
 .hidden {
   display: none;
 }
+
+#settings-button {
+  position: fixed;
+  right: 10px;
+  height: 10rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  top: 50%;
+  font-size: large;
+  transform: translate(0, -50%);
+}
+
+#settings-button i {
+  transition: 0.25s ease-in-out;
+}
+
+#settings-button i:hover {
+  color: white;
+}
 /* 
 @media screen and (max-width: 550px) {
   .clock {
@@ -165,11 +185,11 @@ button:active {
   }
 } */
 
-@media screen and (max-width: 900px) {
+/* @media screen and (max-width: 900px) {
   .button-group button {
     font-size: 10rem;
   }
   .clock {
     font-size: 30rem;
   }
-}
+} */
