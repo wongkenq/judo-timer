@@ -87,6 +87,9 @@ const fullscreenBtn = document.getElementById('fullscreen')
 const progress = document.getElementById('js-progress')
 // const buttonSound = new Audio('button-sound.mp3')
 const roundSelect = document.getElementById('round-select')
+const modeBtn = document.getElementById('js-mode-buttons')
+const settingsBtn = document.querySelector('.fa-gear')
+const timerBtn = document.querySelector('.fa-clock')
 
 // addTimeBtn.addEventListener('click', adjustTime.add)
 // subTimeBtn.addEventListener('click', adjustTime.subtract)
@@ -95,6 +98,9 @@ resetBtn.addEventListener('mousedown', buttonDown)
 resetBtn.addEventListener('touchstart', buttonDown)
 resetBtn.addEventListener('mouseup', buttonUp)
 resetBtn.addEventListener('touchend', buttonUp)
+modeBtn.addEventListener('click', handleMode)
+settingsBtn.addEventListener('click', scrollToSetting)
+timerBtn.addEventListener('click', scrollToTimer)
 // fullscreenBtn.addEventListener('click', fullscreenChange)
 
 function buttonDown(e) {
@@ -240,9 +246,6 @@ function resetTimer() {
   )
 }
 
-const modeBtn = document.getElementById('js-mode-buttons')
-modeBtn.addEventListener('click', handleMode)
-
 function handleMode(event) {
   const modes = event.target.dataset.mode
 
@@ -283,4 +286,19 @@ modeButtons.forEach((e) => {
 function scrollToTimer() {
   let timer = document.querySelector('.app')
   timer.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'start' })
+  document.querySelector('.fa-clock').style.color = 'white'
+  document.querySelector('.fa-gear').style.color = 'black'
 }
+
+function scrollToSetting() {
+  let setting = document.getElementById('settings')
+  setting.scrollIntoView({
+    behavior: 'smooth',
+    block: 'start',
+    inline: 'start',
+  })
+  document.querySelector('.fa-clock').style.color = 'black'
+  document.querySelector('.fa-gear').style.color = 'white'
+}
+
+setTimeout(scrollToTimer, 1500)
