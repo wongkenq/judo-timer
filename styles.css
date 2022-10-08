@@ -13,6 +13,7 @@ html {
   box-sizing: border-box;
   scrollbar-width: none;
   font-size: 62.5%;
+  overflow: hidden;
 }
 
 *,
