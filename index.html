@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <main class="splashScreen">
+    <main class="splashScreen" style="display: none">
       <h1>柔道</h1>
     </main>
     <main class="app">
@@ -32,15 +32,15 @@
           >
             Randori
           </button>
+          <button data-mode="break" class="button mode-button" id="js-break">
+            Break
+          </button>
           <button
             data-mode="uchikomi"
             class="button mode-button"
             id="js-uchikomi"
           >
             Uchikomi
-          </button>
-          <button data-mode="break" class="button mode-button" id="js-break">
-            Break
           </button>
           <button
             data-mode="waterBreak"
@@ -51,26 +51,30 @@
           </button>
         </div>
         <section class="middle">
-          <section id="rounds">
-            <span>Round</span>
-            <span id="round-select-output">1</span>
-          </section>
           <section>
-            <div class="clock" id="js-clock">
-              <!-- <div id="chooseMinutes">
-              </div> -->
-              <span id="js-minutes">00</span>
-              <span class="separator">:</span>
-              <span id="js-seconds">00</span>
+            <div>
+              <section id="rounds">
+                <span>Round</span>
+                <span id="round-select-output">1</span>
+              </section>
+              <div class="clock" id="js-clock">
+                <!-- <div id="chooseMinutes">
+                </div> -->
+                <span id="js-minutes">00</span>
+                <span class="separator">:</span>
+                <span id="js-seconds">00</span>
+              </div>
             </div>
             <!-- <div id="chooseTime">
               <i class="fa-sharp fa-solid fa-plus"></i>
               <i class="fa-sharp fa-solid fa-minus"></i>
             </div> -->
-            <button class="main-button" data-action="start" id="js-btn">
-              Start
-            </button>
-            <button class="main-button" id="js-reset-btn">Stop</button>
+            <div id="btn-container">
+              <button class="main-button" data-action="start" id="js-btn">
+                Start
+              </button>
+              <button class="main-button" id="js-reset-btn">Stop</button>
+            </div>
           </section>
         </section>
       </div>
@@ -80,9 +84,55 @@
       </div>
     </main>
     <main id="settings">
-      <section id="randori-timer">Randori</section>
-      <section id="uchikomi-timer">Uchikomi</section>
-      <section id="waterbreak-timer">Water break</section>
+      <section id="settings-randori">
+        Randori
+        <div class="time">
+          Time
+          <span class="main-button change-time">+</span>
+          <span class="timer-minutes">00</span>
+          <span>:</span>
+          <span class="timer-seconds">00</span>
+          <span class="main-button change-time">-</span>
+        </div>
+        <div class="break">
+          Break
+          <span class="main-button change-time">+</span>
+          <span class="timer-minutes">00</span>
+          <span>:</span>
+          <span class="timer-seconds">00</span>
+          <span class="main-button change-time">-</span>
+        </div>
+        <div class="round">
+          Round
+          <span class="main-button change-time">+</span>
+          <span class="timer-minutes">0</span>
+          <span class="timer-seconds" style="display: none">00</span>
+          <span class="main-button change-time">-</span>
+        </div>
+      </section>
+      <section id="settings-uchikomi">
+        <div class="uchikomi">
+          Uchikomi
+          <span class="main-button change-time">+</span>
+          <span class="timer-minutes">00</span>
+          <span>:</span>
+          <span class="timer-seconds">00</span>
+          <span class="main-button change-time">-</span>
+        </div>
+      </section>
+      <section id="settings-waterbreak">
+        <div class="waterbreak">
+          Water break
+          <span class="main-button change-time">+</span>
+          <span class="timer-minutes">00</span>
+          <span>:</span>
+          <span class="timer-seconds">00</span>
+          <span class="main-button change-time">-</span>
+        </div>
+      </section>
+      <section id="settings-save">
+        <span class="main-button">Save</span>
+      </section>
     </main>
     <!-- <i
       id="fullscreen"

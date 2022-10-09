@@ -1,20 +1,20 @@
 let timerName = {
   randori: {
     minutes: 0,
-    seconds: 2,
-    rounds: 2,
+    seconds: 0,
+    rounds: 1,
   },
   uchikomi: {
     minutes: 0,
     seconds: 0,
   },
   waterBreak: {
-    minutes: 2,
+    minutes: 0,
     seconds: 0,
   },
   break: {
     minutes: 0,
-    seconds: 3,
+    seconds: 0,
   },
 }
 
@@ -90,6 +90,7 @@ const roundSelect = document.getElementById('round-select')
 const modeBtn = document.getElementById('js-mode-buttons')
 const settingsBtn = document.querySelector('.fa-gear')
 const timerBtn = document.querySelector('.fa-clock')
+const saveBtn = document.getElementById('settings-save').querySelector('span')
 
 // addTimeBtn.addEventListener('click', adjustTime.add)
 // subTimeBtn.addEventListener('click', adjustTime.subtract)
@@ -101,6 +102,7 @@ resetBtn.addEventListener('touchend', buttonUp)
 modeBtn.addEventListener('click', handleMode)
 settingsBtn.addEventListener('click', scrollToSetting)
 timerBtn.addEventListener('click', scrollToTimer)
+saveBtn.addEventListener('click', saveSettings)
 // fullscreenBtn.addEventListener('click', fullscreenChange)
 
 function buttonDown(e) {
@@ -301,4 +303,126 @@ function scrollToSetting() {
   document.querySelector('.fa-gear').style.color = 'white'
 }
 
-setTimeout(scrollToTimer, 1500)
+// setTimeout(scrollToTimer, 1500)
+
+const changeTimeBtns = document.querySelectorAll('.change-time')
+
+changeTimeBtns.forEach((x) => x.addEventListener('click', changeTime))
+
+function changeTime(e) {
+  let minutes = e.target.parentNode.querySelector('.timer-minutes')
+  let seconds = e.target.parentNode.querySelector('.timer-seconds')
+  let secondsNum = +seconds.textContent
+
+  switch (e.target.parentNode.className) {
+    case 'time':
+      if (e.target.textContent === '+') {
+        minutes.textContent++
+        minutes.textContent = minutes.textContent.padStart(2, '0')
+      } else {
+        if (minutes.textContent > 0) {
+          minutes.textContent--
+          minutes.textContent = minutes.textContent.padStart(2, '0')
+        } else {
+          console.log('no negative time')
+        }
+      }
+      break
+
+    case 'break':
+      if (e.target.textContent === '+') {
+        secondsNum += 30
+        seconds.textContent = secondsNum
+
+        if (secondsNum === 60) {
+          minutes.textContent++
+          minutes.textContent = minutes.textContent.padStart(2, '0')
+          secondsNum = 0
+          seconds.textContent = '00'
+        }
+      } else {
+        if (minutes.textContent > 0 || seconds.textContent > 0) {
+          if (seconds.textContent == 30) {
+            secondsNum = 0
+            seconds.textContent = '00'
+          } else {
+            secondsNum = 30
+            seconds.textContent = '30'
+            minutes.textContent--
+            minutes.textContent = minutes.textContent.padStart(2, '0')
+          }
+        } else {
+          console.log('no negative time')
+        }
+      }
+      break
+
+    case 'round':
+      console.log('round')
+      if (e.target.textContent === '+') {
+        minutes.textContent++
+      } else {
+        if (minutes.textContent > 0) {
+          minutes.textContent--
+        } else {
+          console.log('no negative time')
+        }
+      }
+      break
+
+    case 'uchikomi':
+      console.log('uchikomi')
+      if (e.target.textContent === '+') {
+        minutes.textContent++
+        minutes.textContent = minutes.textContent.padStart(2, '0')
+      } else {
+        if (minutes.textContent > 0) {
+          minutes.textContent--
+          minutes.textContent = minutes.textContent.padStart(2, '0')
+        } else {
+          console.log('no negative time')
+        }
+      }
+      break
+
+    case 'waterbreak':
+      console.log('waterbreak')
+      if (e.target.textContent === '+') {
+        minutes.textContent++
+        minutes.textContent = minutes.textContent.padStart(2, '0')
+      } else {
+        if (minutes.textContent > 0) {
+          minutes.textContent--
+          minutes.textContent = minutes.textContent.padStart(2, '0')
+        } else {
+          console.log('no negative time')
+        }
+      }
+      break
+
+    default:
+      console.log('nothing')
+  }
+}
+
+function saveSettings() {
+  console.log('settings saved')
+  timerName.randori.minutes = +document
+    .querySelector('.time')
+    .querySelector('.timer-minutes').textContent
+  timerName.randori.rounds = +document
+    .querySelector('.round')
+    .querySelector('.timer-minutes').textContent
+  timerName.break.minutes = +document
+    .querySelector('.break')
+    .querySelector('.timer-minutes').textContent
+  timerName.break.seconds = +document
+    .querySelector('.break')
+    .querySelector('.timer-seconds').textContent
+  timerName.uchikomi.minutes = +document
+    .querySelector('.uchikomi')
+    .querySelector('.timer-minutes').textContent
+  timerName.waterBreak.minutes = +document
+    .querySelector('.waterbreak')
+    .querySelector('.timer-minutes').textContent
+}
