@@ -91,6 +91,12 @@ progress::-webkit-progress-value {
   flex-direction: column;
 }
 
+.app,
+#settings {
+  height: 100vh;
+  width: 100vw;
+}
+
 .timer {
   /* position: absolute;
   top: 50%;
@@ -116,10 +122,10 @@ progress::-webkit-progress-value {
   font-family: arial, sans-serif;
 }
 
-.mode-buttons {
+/* .mode-buttons {
   position: fixed;
   top: 10rem;
-}
+} */
 
 .mode-button {
   font-size: 16px;
@@ -141,7 +147,7 @@ progress::-webkit-progress-value {
 
 .main-button {
   cursor: pointer;
-  box-shadow: rgb(235, 235, 235) 0px 6px 0px;
+  box-shadow: rgb(235, 235, 235) 0px 3px 0px;
   font-size: 22px;
   height: 55px;
   text-transform: uppercase;
@@ -163,7 +169,7 @@ button:active {
 }
 
 .main-button.active {
-  transform: translateY(6px);
+  transform: translateY(3px);
   box-shadow: none;
   outline: none;
 }
@@ -192,13 +198,17 @@ button:active {
 #settings-button {
   position: fixed;
   right: 10px;
-  height: 10rem;
+  height: 20rem;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
   top: 50%;
-  font-size: large;
+  font-size: xx-large;
   transform: translate(0, -50%);
+}
+
+#settings-button > i:first {
+  color: white;
 }
 
 #settings-button i {
@@ -215,7 +225,6 @@ button:active {
 }
 
 #settings {
-  margin: 0 5rem;
   display: flex;
   align-items: flex-start;
   flex-direction: column;
@@ -223,18 +232,8 @@ button:active {
   font-size: x-large;
   gap: 5rem;
 }
-/* 
-@media screen and (max-width: 550px) {
-  .clock {
-    font-size: 8rem;
-  }
-} */
 
-/* @media screen and (max-width: 900px) {
-  .button-group button {
-    font-size: 10rem;
-  }
-  .clock {
-    font-size: 30rem;
-  }
-} */
+button.main-button.change-time {
+  height: auto;
+  width: auto;
+}
