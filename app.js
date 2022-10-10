@@ -1,45 +1,45 @@
 let timerName = {
   randori: {
-    minutes: 0,
+    minutes: 2,
     seconds: 0,
-    rounds: 1,
+    rounds: 6,
   },
   uchikomi: {
-    minutes: 0,
+    minutes: 5,
     seconds: 0,
   },
   waterBreak: {
-    minutes: 0,
+    minutes: 2,
     seconds: 0,
   },
   break: {
     minutes: 0,
-    seconds: 0,
+    seconds: 30,
   },
 }
 
-let screenResolution = {
-  width: 0,
-  height: 0,
-}
+// let screenResolution = {
+//   width: 0,
+//   height: 0,
+// }
 
-function getScreenResolution() {
-  screenResolution.width = window.innerWidth
-  screenResolution.height = window.innerHeight
+// function getScreenResolution() {
+//   screenResolution.width = window.innerWidth
+//   screenResolution.height = window.innerHeight
 
-  document.querySelector('body').style.height = `${screenResolution.height}px`
+//   document.querySelector('body').style.height = `${screenResolution.height}px`
 
-  console.log(screenResolution)
+//   console.log(screenResolution)
 
-  const main = document.querySelectorAll('main')
-  main.forEach((x) => (x.style.height = `${screenResolution.height}px`))
-  main.forEach((x) => (x.style.width = `${screenResolution.width}px`))
+//   const main = document.querySelectorAll('main')
+//   main.forEach((x) => (x.style.height = `${screenResolution.height}px`))
+//   main.forEach((x) => (x.style.width = `${screenResolution.width}px`))
 
-  console.log(main[0].style.height)
-}
+//   console.log(main[0].style.height)
+// }
 
-window.onload = getScreenResolution
-window.addEventListener('resize', getScreenResolution)
+// window.onload = getScreenResolution
+// window.addEventListener('resize', getScreenResolution)
 
 let currentTime, endTime, differenceTime, remainingTime
 let currentMode = 'randori'
@@ -90,15 +90,21 @@ const roundSelect = document.getElementById('round-select')
 const modeBtn = document.getElementById('js-mode-buttons')
 const settingsBtn = document.querySelector('.fa-gear')
 const timerBtn = document.querySelector('.fa-clock')
-const saveBtn = document.getElementById('settings-save').querySelector('span')
+const saveBtn = document.getElementById('settings-save').querySelector('button')
+
+const mainBtn = document.querySelectorAll('.main-button')
+mainBtn.forEach((btn) => btn.addEventListener('mousedown', buttonDown))
+mainBtn.forEach((btn) => btn.addEventListener('touchstart', buttonDown))
+mainBtn.forEach((btn) => btn.addEventListener('mouseup', buttonUp))
+mainBtn.forEach((btn) => btn.addEventListener('touchend', buttonUp))
 
 // addTimeBtn.addEventListener('click', adjustTime.add)
 // subTimeBtn.addEventListener('click', adjustTime.subtract)
 resetBtn.addEventListener('click', resetTimer)
-resetBtn.addEventListener('mousedown', buttonDown)
-resetBtn.addEventListener('touchstart', buttonDown)
-resetBtn.addEventListener('mouseup', buttonUp)
-resetBtn.addEventListener('touchend', buttonUp)
+// resetBtn.addEventListener('mousedown', buttonDown)
+// resetBtn.addEventListener('touchstart', buttonDown)
+// resetBtn.addEventListener('mouseup', buttonUp)
+// resetBtn.addEventListener('touchend', buttonUp)
 modeBtn.addEventListener('click', handleMode)
 settingsBtn.addEventListener('click', scrollToSetting)
 timerBtn.addEventListener('click', scrollToTimer)
@@ -237,6 +243,9 @@ function resetTimer() {
   // document.getElementById('round-select-output').textContent = currentRound
 
   progress.value = 0
+  currentRound = 1
+
+  document.getElementById('round-select-output').textContent = currentRound
 
   displayMin.textContent = `${timerName[currentMode]['minutes']}`.padStart(
     2,
@@ -272,6 +281,9 @@ function switchMode(mode) {
     '0'
   )
 
+  document.getElementById('round-select-total').textContent =
+    timerName.randori.rounds
+
   document
     .querySelectorAll('button[data-mode]')
     .forEach((e) => e.classList.remove('active'))
@@ -303,7 +315,7 @@ function scrollToSetting() {
   document.querySelector('.fa-gear').style.color = 'white'
 }
 
-// setTimeout(scrollToTimer, 1500)
+setTimeout(scrollToTimer, 500)
 
 const changeTimeBtns = document.querySelectorAll('.change-time')
 
@@ -362,7 +374,7 @@ function changeTime(e) {
       if (e.target.textContent === '+') {
         minutes.textContent++
       } else {
-        if (minutes.textContent > 0) {
+        if (minutes.textContent > 1) {
           minutes.textContent--
         } else {
           console.log('no negative time')
@@ -371,7 +383,6 @@ function changeTime(e) {
       break
 
     case 'uchikomi':
-      console.log('uchikomi')
       if (e.target.textContent === '+') {
         minutes.textContent++
         minutes.textContent = minutes.textContent.padStart(2, '0')
@@ -386,7 +397,6 @@ function changeTime(e) {
       break
 
     case 'waterbreak':
-      console.log('waterbreak')
       if (e.target.textContent === '+') {
         minutes.textContent++
         minutes.textContent = minutes.textContent.padStart(2, '0')
@@ -425,4 +435,8 @@ function saveSettings() {
   timerName.waterBreak.minutes = +document
     .querySelector('.waterbreak')
     .querySelector('.timer-minutes').textContent
+
+  switchMode(currentMode)
 }
+
+switchMode(currentMode)
