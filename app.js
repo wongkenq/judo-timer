@@ -45,6 +45,9 @@ let currentTime, endTime, differenceTime, remainingTime
 let currentMode = 'randori'
 let masterMode
 let currentRound = 1
+let totalRounds = timerName.randori.rounds
+document.querySelector('.round').querySelector('.timer-minutes').textContent =
+  totalRounds
 
 const adjustTime = {
   add: () => {
