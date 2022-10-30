@@ -86,7 +86,7 @@ progress::-webkit-progress-value {
 }
 
 #rounds {
-  font-size: 5rem;
+  font-size: 10rem;
   display: flex;
   flex-direction: column;
 }
@@ -114,7 +114,7 @@ progress::-webkit-progress-value {
 .clock {
   /* margin-top: 50px;
   margin-bottom: 30px; */
-  font-size: 15rem;
+  font-size: 40rem;
   line-height: 1;
   display: flex;
   align-items: center;
@@ -128,7 +128,7 @@ progress::-webkit-progress-value {
 } */
 
 .mode-button {
-  font-size: 16px;
+  font-size: 25px;
   /* height: 28px; */
   cursor: pointer;
   box-shadow: none;
