@@ -14,32 +14,9 @@ let timerName = {
   },
   break: {
     minutes: 0,
-    seconds: 30,
+    seconds: 5,
   },
 }
-
-// let screenResolution = {
-//   width: 0,
-//   height: 0,
-// }
-
-// function getScreenResolution() {
-//   screenResolution.width = window.innerWidth
-//   screenResolution.height = window.innerHeight
-
-//   document.querySelector('body').style.height = `${screenResolution.height}px`
-
-//   console.log(screenResolution)
-
-//   const main = document.querySelectorAll('main')
-//   main.forEach((x) => (x.style.height = `${screenResolution.height}px`))
-//   main.forEach((x) => (x.style.width = `${screenResolution.width}px`))
-
-//   console.log(main[0].style.height)
-// }
-
-// window.onload = getScreenResolution
-// window.addEventListener('resize', getScreenResolution)
 
 let currentTime, endTime, differenceTime, remainingTime
 let currentMode = 'randori'
@@ -88,7 +65,6 @@ const startBtn = document.getElementById('js-btn')
 const resetBtn = document.getElementById('js-reset-btn')
 const fullscreenBtn = document.getElementById('fullscreen')
 const progress = document.getElementById('js-progress')
-// const buttonSound = new Audio('button-sound.mp3')
 const roundSelect = document.getElementById('round-select')
 const modeBtn = document.getElementById('js-mode-buttons')
 const settingsBtn = document.querySelector('.fa-gear')
@@ -101,18 +77,11 @@ mainBtn.forEach((btn) => btn.addEventListener('touchstart', buttonDown))
 mainBtn.forEach((btn) => btn.addEventListener('mouseup', buttonUp))
 mainBtn.forEach((btn) => btn.addEventListener('touchend', buttonUp))
 
-// addTimeBtn.addEventListener('click', adjustTime.add)
-// subTimeBtn.addEventListener('click', adjustTime.subtract)
 resetBtn.addEventListener('click', resetTimer)
-// resetBtn.addEventListener('mousedown', buttonDown)
-// resetBtn.addEventListener('touchstart', buttonDown)
-// resetBtn.addEventListener('mouseup', buttonUp)
-// resetBtn.addEventListener('touchend', buttonUp)
 modeBtn.addEventListener('click', handleMode)
 settingsBtn.addEventListener('click', scrollToSetting)
 timerBtn.addEventListener('click', scrollToTimer)
 saveBtn.addEventListener('click', saveSettings)
-// fullscreenBtn.addEventListener('click', fullscreenChange)
 
 function buttonDown(e) {
   e.target.classList.add('active')
@@ -122,22 +91,10 @@ function buttonUp(e) {
   e.target.classList.remove('active')
 }
 
-function fullscreenChange() {
-  if (document.fullscreenElement) {
-    document.exitFullscreen()
-  } else {
-    document.documentElement.requestFullscreen()
-  }
-}
-
 startBtn.addEventListener('click', (e) => {
   if (e.target.dataset.action === 'start') startTimer()
   else pauseTimer()
 })
-
-// roundSelect.addEventListener('click', (e) => {
-//   timerName.randori.rounds = +roundSelect.value
-// })
 
 function getRemainingTime(endTime) {
   currentTime = Date.parse(new Date())
@@ -147,7 +104,6 @@ function getRemainingTime(endTime) {
   const seconds = Math.floor(differenceTime / 1000) % 60
 
   return {
-    // difference,
     minutes,
     seconds,
   }
@@ -168,7 +124,7 @@ function startTimer() {
 
   getRemainingTime(endTime)
 
-  // buttonSound.play()
+  playSound()
 
   startBtn.dataset.action = 'pause'
   startBtn.textContent = 'pause'
@@ -181,6 +137,8 @@ function startTimer() {
     updateClock()
 
     if (differenceTime < 0) {
+      if (currentMode !== 'break') endSound()
+
       clearInterval(interval)
       resetTimer()
 
@@ -240,10 +198,6 @@ function updateClock() {
 function resetTimer() {
   pauseTimer()
   getRemainingTime(Date.parse(new Date()))
-
-  // if (currentRound === timerName.randori.rounds) currentRound = 1
-
-  // document.getElementById('round-select-output').textContent = currentRound
 
   progress.value = 0
   currentRound = 1
@@ -443,3 +397,13 @@ function saveSettings() {
 }
 
 switchMode(currentMode)
+
+function playSound() {
+  let audio = new Audio('./sounds/1bell (2).mp3')
+  audio.play()
+}
+
+function endSound() {
+  let audio = new Audio('./sounds/3bell (2).mp3')
+  audio.play()
+}
