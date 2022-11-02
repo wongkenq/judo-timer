@@ -1,7 +1,7 @@
 let timerName = {
   randori: {
     minutes: 0,
-    seconds: 2,
+    seconds: 5,
     rounds: 6,
   },
   uchikomi: {
@@ -113,8 +113,6 @@ function startTimer() {
   let minutes = +timerName[currentMode]['minutes'] * 60
   let seconds = +timerName[currentMode]['seconds']
 
-  if (currentMode !== 'break') playSound()
-
   if (
     timerName[currentMode].minutes === 0 &&
     timerName[currentMode]['seconds'] === 0
@@ -132,6 +130,9 @@ function startTimer() {
 
   document.getElementById('round-select-output').textContent = currentRound
 
+  if (currentMode !== 'break') playSound()
+
+  console.log(displaySec.textContent)
   interval = setInterval(() => {
     remainingTime = getRemainingTime(endTime)
     updateClock()
@@ -187,6 +188,8 @@ function updateClock() {
 
   displayMin.textContent = `${minutes}`.padStart(2, '0')
   displaySec.textContent = `${seconds}`.padStart(2, '0')
+
+  if (displaySec.textContent == 3) clapSound()
 
   const total =
     timerName[currentMode]['minutes'] * 60 + timerName[currentMode]['seconds']
@@ -409,5 +412,10 @@ function playSound() {
 
 function endSound() {
   let audio = new Audio('./sounds/3bell (2).mp3')
+  audio.play()
+}
+
+function clapSound() {
+  let audio = new Audio('./sounds/clapper.mp3')
   audio.play()
 }
