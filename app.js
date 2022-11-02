@@ -1,7 +1,7 @@
 let timerName = {
   randori: {
-    minutes: 2,
-    seconds: 0,
+    minutes: 0,
+    seconds: 2,
     rounds: 6,
   },
   uchikomi: {
@@ -9,8 +9,8 @@ let timerName = {
     seconds: 0,
   },
   waterBreak: {
-    minutes: 2,
-    seconds: 0,
+    minutes: 0,
+    seconds: 2,
   },
   break: {
     minutes: 0,
@@ -77,7 +77,7 @@ mainBtn.forEach((btn) => btn.addEventListener('touchstart', buttonDown))
 mainBtn.forEach((btn) => btn.addEventListener('mouseup', buttonUp))
 mainBtn.forEach((btn) => btn.addEventListener('touchend', buttonUp))
 
-resetBtn.addEventListener('click', resetTimer)
+resetBtn.addEventListener('click', resetTimerCompletely)
 modeBtn.addEventListener('click', handleMode)
 settingsBtn.addEventListener('click', scrollToSetting)
 timerBtn.addEventListener('click', scrollToTimer)
@@ -136,9 +136,9 @@ function startTimer() {
     remainingTime = getRemainingTime(endTime)
     updateClock()
 
-    if (differenceTime < 0) {
-      if (currentMode !== 'break') endSound()
+    if (currentMode !== 'break' && differenceTime === 0) endSound()
 
+    if (differenceTime < 0) {
       clearInterval(interval)
       resetTimer()
 
@@ -200,7 +200,6 @@ function resetTimer() {
   getRemainingTime(Date.parse(new Date()))
 
   progress.value = 0
-  currentRound = 1
 
   document.getElementById('round-select-output').textContent = currentRound
 
@@ -212,6 +211,11 @@ function resetTimer() {
     2,
     '0'
   )
+}
+
+function resetTimerCompletely() {
+  currentRound = 1
+  resetTimer()
 }
 
 function handleMode(event) {
