@@ -1,7 +1,7 @@
 let timerName = {
   randori: {
-    minutes: 0,
-    seconds: 5,
+    minutes: 2,
+    seconds: 0,
     rounds: 6,
   },
   uchikomi: {
@@ -9,12 +9,12 @@ let timerName = {
     seconds: 0,
   },
   waterBreak: {
-    minutes: 0,
+    minutes: 2,
     seconds: 2,
   },
   break: {
     minutes: 0,
-    seconds: 5,
+    seconds: 30,
   },
 }
 
