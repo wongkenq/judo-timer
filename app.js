@@ -113,6 +113,8 @@ function startTimer() {
   let minutes = +timerName[currentMode]['minutes'] * 60
   let seconds = +timerName[currentMode]['seconds']
 
+  if (currentMode !== 'break') playSound()
+
   if (
     timerName[currentMode].minutes === 0 &&
     timerName[currentMode]['seconds'] === 0
@@ -123,8 +125,6 @@ function startTimer() {
   else endTime = (minutes + seconds) * 1000 + Date.parse(new Date())
 
   getRemainingTime(endTime)
-
-  playSound()
 
   startBtn.dataset.action = 'pause'
   startBtn.textContent = 'pause'
