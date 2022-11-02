@@ -1,7 +1,7 @@
 let timerName = {
   randori: {
-    minutes: 2,
-    seconds: 0,
+    minutes: 0,
+    seconds: 5,
     rounds: 6,
   },
   uchikomi: {
@@ -9,42 +9,22 @@ let timerName = {
     seconds: 0,
   },
   waterBreak: {
-    minutes: 2,
-    seconds: 0,
+    minutes: 0,
+    seconds: 2,
   },
   break: {
     minutes: 0,
-    seconds: 30,
+    seconds: 5,
   },
 }
-
-// let screenResolution = {
-//   width: 0,
-//   height: 0,
-// }
-
-// function getScreenResolution() {
-//   screenResolution.width = window.innerWidth
-//   screenResolution.height = window.innerHeight
-
-//   document.querySelector('body').style.height = `${screenResolution.height}px`
-
-//   console.log(screenResolution)
-
-//   const main = document.querySelectorAll('main')
-//   main.forEach((x) => (x.style.height = `${screenResolution.height}px`))
-//   main.forEach((x) => (x.style.width = `${screenResolution.width}px`))
-
-//   console.log(main[0].style.height)
-// }
-
-// window.onload = getScreenResolution
-// window.addEventListener('resize', getScreenResolution)
 
 let currentTime, endTime, differenceTime, remainingTime
 let currentMode = 'randori'
 let masterMode
 let currentRound = 1
+let totalRounds = timerName.randori.rounds
+document.querySelector('.round').querySelector('.timer-minutes').textContent =
+  totalRounds
 
 const adjustTime = {
   add: () => {
@@ -85,7 +65,6 @@ const startBtn = document.getElementById('js-btn')
 const resetBtn = document.getElementById('js-reset-btn')
 const fullscreenBtn = document.getElementById('fullscreen')
 const progress = document.getElementById('js-progress')
-// const buttonSound = new Audio('button-sound.mp3')
 const roundSelect = document.getElementById('round-select')
 const modeBtn = document.getElementById('js-mode-buttons')
 const settingsBtn = document.querySelector('.fa-gear')
@@ -98,18 +77,11 @@ mainBtn.forEach((btn) => btn.addEventListener('touchstart', buttonDown))
 mainBtn.forEach((btn) => btn.addEventListener('mouseup', buttonUp))
 mainBtn.forEach((btn) => btn.addEventListener('touchend', buttonUp))
 
-// addTimeBtn.addEventListener('click', adjustTime.add)
-// subTimeBtn.addEventListener('click', adjustTime.subtract)
-resetBtn.addEventListener('click', resetTimer)
-// resetBtn.addEventListener('mousedown', buttonDown)
-// resetBtn.addEventListener('touchstart', buttonDown)
-// resetBtn.addEventListener('mouseup', buttonUp)
-// resetBtn.addEventListener('touchend', buttonUp)
+resetBtn.addEventListener('click', resetTimerCompletely)
 modeBtn.addEventListener('click', handleMode)
 settingsBtn.addEventListener('click', scrollToSetting)
 timerBtn.addEventListener('click', scrollToTimer)
 saveBtn.addEventListener('click', saveSettings)
-// fullscreenBtn.addEventListener('click', fullscreenChange)
 
 function buttonDown(e) {
   e.target.classList.add('active')
@@ -119,22 +91,10 @@ function buttonUp(e) {
   e.target.classList.remove('active')
 }
 
-function fullscreenChange() {
-  if (document.fullscreenElement) {
-    document.exitFullscreen()
-  } else {
-    document.documentElement.requestFullscreen()
-  }
-}
-
 startBtn.addEventListener('click', (e) => {
   if (e.target.dataset.action === 'start') startTimer()
   else pauseTimer()
 })
-
-// roundSelect.addEventListener('click', (e) => {
-//   timerName.randori.rounds = +roundSelect.value
-// })
 
 function getRemainingTime(endTime) {
   currentTime = Date.parse(new Date())
@@ -144,7 +104,6 @@ function getRemainingTime(endTime) {
   const seconds = Math.floor(differenceTime / 1000) % 60
 
   return {
-    // difference,
     minutes,
     seconds,
   }
@@ -165,17 +124,20 @@ function startTimer() {
 
   getRemainingTime(endTime)
 
-  // buttonSound.play()
-
   startBtn.dataset.action = 'pause'
   startBtn.textContent = 'pause'
   startBtn.classList.add('active')
 
   document.getElementById('round-select-output').textContent = currentRound
 
+  if (currentMode !== 'break') playSound()
+
+  console.log(displaySec.textContent)
   interval = setInterval(() => {
     remainingTime = getRemainingTime(endTime)
     updateClock()
+
+    if (currentMode !== 'break' && differenceTime === 0) endSound()
 
     if (differenceTime < 0) {
       clearInterval(interval)
@@ -227,6 +189,8 @@ function updateClock() {
   displayMin.textContent = `${minutes}`.padStart(2, '0')
   displaySec.textContent = `${seconds}`.padStart(2, '0')
 
+  if (displaySec.textContent == 3) clapSound()
+
   const total =
     timerName[currentMode]['minutes'] * 60 + timerName[currentMode]['seconds']
   const remaining = remainingTime.minutes * 60 + remainingTime.seconds
@@ -238,12 +202,7 @@ function resetTimer() {
   pauseTimer()
   getRemainingTime(Date.parse(new Date()))
 
-  // if (currentRound === timerName.randori.rounds) currentRound = 1
-
-  // document.getElementById('round-select-output').textContent = currentRound
-
   progress.value = 0
-  currentRound = 1
 
   document.getElementById('round-select-output').textContent = currentRound
 
@@ -255,6 +214,11 @@ function resetTimer() {
     2,
     '0'
   )
+}
+
+function resetTimerCompletely() {
+  currentRound = 1
+  resetTimer()
 }
 
 function handleMode(event) {
@@ -440,3 +404,18 @@ function saveSettings() {
 }
 
 switchMode(currentMode)
+
+function playSound() {
+  let audio = new Audio('./sounds/1bell (2).mp3')
+  audio.play()
+}
+
+function endSound() {
+  let audio = new Audio('./sounds/3bell (2).mp3')
+  audio.play()
+}
+
+function clapSound() {
+  let audio = new Audio('./sounds/clapper.mp3')
+  audio.play()
+}
