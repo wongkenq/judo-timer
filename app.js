@@ -56,7 +56,6 @@ const adjustTime = {
 }
 
 let interval
-
 const addTimeBtn = document.querySelector('.fa-plus')
 const subTimeBtn = document.querySelector('.fa-minus')
 const displayMin = document.getElementById('js-minutes')
@@ -189,7 +188,7 @@ function updateClock() {
   displayMin.textContent = `${minutes}`.padStart(2, '0')
   displaySec.textContent = `${seconds}`.padStart(2, '0')
 
-  if (displaySec.textContent == 3) clapSound()
+  if (displayMin.textContent == 0 && displaySec.textContent == 3) clapSound()
 
   const total =
     timerName[currentMode]['minutes'] * 60 + timerName[currentMode]['seconds']
