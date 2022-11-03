@@ -10,7 +10,7 @@ let timerName = {
   },
   waterBreak: {
     minutes: 2,
-    seconds: 2,
+    seconds: 0,
   },
   break: {
     minutes: 0,
@@ -306,7 +306,7 @@ function changeTime(e) {
 
     case 'break':
       if (e.target.textContent === '+') {
-        secondsNum += 30
+        secondsNum += 15
         seconds.textContent = secondsNum
 
         if (secondsNum === 60) {
