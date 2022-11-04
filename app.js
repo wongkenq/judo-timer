@@ -10,7 +10,7 @@ let timerName = {
   },
   waterBreak: {
     minutes: 2,
-    seconds: 2,
+    seconds: 0,
   },
   break: {
     minutes: 0,
@@ -188,7 +188,7 @@ function updateClock() {
   displayMin.textContent = `${minutes}`.padStart(2, '0')
   displaySec.textContent = `${seconds}`.padStart(2, '0')
 
-  if (displayMin.textContent == 0 && displaySec.textContent == 3) clapSound()
+  if (displayMin.textContent == 0 && displaySec.textContent == 15) clapSound()
 
   const total =
     timerName[currentMode]['minutes'] * 60 + timerName[currentMode]['seconds']
@@ -306,7 +306,7 @@ function changeTime(e) {
 
     case 'break':
       if (e.target.textContent === '+') {
-        secondsNum += 30
+        secondsNum += 15
         seconds.textContent = secondsNum
 
         if (secondsNum === 60) {
@@ -417,4 +417,10 @@ function endSound() {
 function clapSound() {
   let audio = new Audio('./sounds/clapper.mp3')
   audio.play()
+}
+
+window.onload = (event) => {
+  setTimeout(() => {
+    document.querySelector('body').style.cursor = 'none'
+  }, 3000)
 }
