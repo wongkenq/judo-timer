@@ -237,3 +237,7 @@ button.main-button.change-time {
   height: auto;
   width: auto;
 }
+
+.hide-cursor {
+  cursor: none;
+}

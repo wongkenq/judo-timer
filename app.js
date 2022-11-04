@@ -419,8 +419,45 @@ function clapSound() {
   audio.play()
 }
 
-window.onload = (event) => {
-  setTimeout(() => {
-    document.querySelector('body').style.cursor = 'none'
+// window.onload = (event) => {
+//   // setTimeout(() => {
+//   //   document.querySelector('body').style.cursor = 'none'
+//   // }, 3000)
+// }
+
+const html = document.querySelector('body')
+
+html.addEventListener('mousemove', (e) => {
+  const timer = html.getAttribute('timer')
+  if (timer) {
+    clearTimeout(timer)
+    html.setAttribute('timer', '')
+  }
+
+  const t = setTimeout(() => {
+    html.setAttribute('timer', '')
+    html.classList.add('hide-cursor')
   }, 3000)
-}
+  html.setAttribute('timer', t)
+
+  html.classList.remove('hide-cursor')
+})
+
+const buttons = document.querySelectorAll('button')
+buttons.forEach((button) => {
+  button.addEventListener('mousemove', (e) => {
+    const timer = button.getAttribute('timer')
+    if (timer) {
+      clearTimeout(timer)
+      button.setAttribute('timer', '')
+    }
+
+    const t = setTimeout(() => {
+      button.setAttribute('timer', '')
+      button.classList.add('hide-cursor')
+    }, 3000)
+    button.setAttribute('timer', t)
+
+    button.classList.remove('hide-cursor')
+  })
+})
