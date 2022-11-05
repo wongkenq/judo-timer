@@ -14,6 +14,7 @@ html {
   scrollbar-width: none;
   font-size: 62.5%;
   overflow: hidden;
+  position: relative;
 }
 
 *,
@@ -37,6 +38,7 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
     Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
   user-select: none;
+  display: flex;
 }
 
 body::-webkit-scrollbar {
@@ -49,6 +51,7 @@ progress {
   height: 12px;
   position: fixed;
   top: 0;
+  z-index: 9;
 }
 
 progress::-webkit-progress-bar {
@@ -205,6 +208,7 @@ button:active {
   top: 50%;
   font-size: xx-large;
   transform: translate(0, -50%);
+  /* cursor: pointer; */
 }
 
 #settings-button > i:first {
@@ -215,9 +219,9 @@ button:active {
   transition: 0.25s ease-in-out;
 }
 
-#settings-button i:hover {
+/* #settings-button i:hover {
   color: white;
-}
+} */
 
 #btn-container {
   display: flex;
@@ -231,9 +235,26 @@ button:active {
   justify-content: center;
   font-size: x-large;
   gap: 5rem;
+  position: absolute;
+  background: rgb(90, 90, 90);
+  width: 25%;
+  transition: all 300ms;
+  cursor: auto !important;
+}
+
+#settings button {
+  cursor: pointer !important;
+}
+
+#settings.closed {
+  transform: translateX(-100%);
 }
 
 button.main-button.change-time {
   height: auto;
   width: auto;
+}
+
+.hide-cursor {
+  cursor: none;
 }

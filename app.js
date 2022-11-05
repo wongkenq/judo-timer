@@ -62,7 +62,6 @@ const displayMin = document.getElementById('js-minutes')
 const displaySec = document.getElementById('js-seconds')
 const startBtn = document.getElementById('js-btn')
 const resetBtn = document.getElementById('js-reset-btn')
-const fullscreenBtn = document.getElementById('fullscreen')
 const progress = document.getElementById('js-progress')
 const roundSelect = document.getElementById('round-select')
 const modeBtn = document.getElementById('js-mode-buttons')
@@ -78,8 +77,8 @@ mainBtn.forEach((btn) => btn.addEventListener('touchend', buttonUp))
 
 resetBtn.addEventListener('click', resetTimerCompletely)
 modeBtn.addEventListener('click', handleMode)
-settingsBtn.addEventListener('click', scrollToSetting)
-timerBtn.addEventListener('click', scrollToTimer)
+settingsBtn.addEventListener('click', slideOut)
+// timerBtn.addEventListener('click', scrollToTimer)
 saveBtn.addEventListener('click', saveSettings)
 
 function buttonDown(e) {
@@ -188,7 +187,7 @@ function updateClock() {
   displayMin.textContent = `${minutes}`.padStart(2, '0')
   displaySec.textContent = `${seconds}`.padStart(2, '0')
 
-  if (displayMin.textContent == 0 && displaySec.textContent == 3) clapSound()
+  if (displayMin.textContent == 0 && displaySec.textContent == 15) clapSound()
 
   const total =
     timerName[currentMode]['minutes'] * 60 + timerName[currentMode]['seconds']
@@ -260,25 +259,25 @@ modeButtons.forEach((e) => {
   if (e.classList.contains('active')) console.log(`${e.dataset.mode} is active`)
 })
 
-function scrollToTimer() {
-  let timer = document.querySelector('.app')
-  timer.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'start' })
-  document.querySelector('.fa-clock').style.color = 'white'
-  document.querySelector('.fa-gear').style.color = 'black'
-}
+// function scrollToTimer() {
+//   let timer = document.querySelector('.app')
+//   timer.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'start' })
+//   document.querySelector('.fa-clock').style.color = 'white'
+//   document.querySelector('.fa-gear').style.color = 'black'
+// }
 
-function scrollToSetting() {
-  let setting = document.getElementById('settings')
-  setting.scrollIntoView({
-    behavior: 'smooth',
-    block: 'start',
-    inline: 'start',
-  })
-  document.querySelector('.fa-clock').style.color = 'black'
-  document.querySelector('.fa-gear').style.color = 'white'
-}
+// function scrollToSetting() {
+//   let setting = document.getElementById('settings')
+//   setting.scrollIntoView({
+//     behavior: 'smooth',
+//     block: 'start',
+//     inline: 'start',
+//   })
+//   document.querySelector('.fa-clock').style.color = 'black'
+//   document.querySelector('.fa-gear').style.color = 'white'
+// }
 
-setTimeout(scrollToTimer, 500)
+// setTimeout(scrollToTimer, 500)
 
 const changeTimeBtns = document.querySelectorAll('.change-time')
 
@@ -309,25 +308,20 @@ function changeTime(e) {
         secondsNum += 15
         seconds.textContent = secondsNum
 
-        if (secondsNum === 60) {
+        if (seconds.textContent == 60) {
+          seconds.textContent = '00'
           minutes.textContent++
           minutes.textContent = minutes.textContent.padStart(2, '0')
-          secondsNum = 0
-          seconds.textContent = '00'
         }
       } else {
-        if (minutes.textContent > 0 || seconds.textContent > 0) {
-          if (seconds.textContent == 30) {
-            secondsNum = 0
-            seconds.textContent = '00'
-          } else {
-            secondsNum = 30
-            seconds.textContent = '30'
-            minutes.textContent--
-            minutes.textContent = minutes.textContent.padStart(2, '0')
-          }
-        } else {
-          console.log('no negative time')
+        if (seconds.textContent > 0) {
+          secondsNum -= 15
+          seconds.textContent = secondsNum
+          seconds.textContent = seconds.textContent.padStart(2, '0')
+        } else if (minutes.textContent > 0) {
+          minutes.textContent--
+          minutes.textContent = minutes.textContent.padStart(2, '0')
+          seconds.textContent = 45
         }
       }
       break
@@ -400,6 +394,7 @@ function saveSettings() {
     .querySelector('.timer-minutes').textContent
 
   switchMode(currentMode)
+  slideOut()
 }
 
 switchMode(currentMode)
@@ -417,4 +412,67 @@ function endSound() {
 function clapSound() {
   let audio = new Audio('./sounds/clapper.mp3')
   audio.play()
+}
+
+// window.onload = (event) => {
+//   // setTimeout(() => {
+//   //   document.querySelector('body').style.cursor = 'none'
+//   // }, 3000)
+// }
+
+const html = document.querySelector('body')
+
+html.addEventListener('mousemove', (e) => {
+  const timer = html.getAttribute('timer')
+  if (timer) {
+    clearTimeout(timer)
+    html.setAttribute('timer', '')
+  }
+
+  const t = setTimeout(() => {
+    html.setAttribute('timer', '')
+    html.classList.add('hide-cursor')
+  }, 1500)
+  html.setAttribute('timer', t)
+
+  html.classList.remove('hide-cursor')
+})
+
+const buttons = document.querySelectorAll('button')
+buttons.forEach((button) => {
+  button.addEventListener('mousemove', (e) => {
+    const timer = button.getAttribute('timer')
+    if (timer) {
+      clearTimeout(timer)
+      button.setAttribute('timer', '')
+    }
+
+    const t = setTimeout(() => {
+      button.setAttribute('timer', '')
+      button.classList.add('hide-cursor')
+    }, 1500)
+    button.setAttribute('timer', t)
+
+    button.classList.remove('hide-cursor')
+  })
+})
+
+function slideOut() {
+  document.getElementById('settings').classList.toggle('closed')
+
+  if (document.getElementById('settings').classList.contains('closed')) {
+    document.querySelector('.fa-gear').style.color = 'black'
+  } else {
+    document.querySelector('.fa-gear').style.color = 'white'
+  }
+}
+
+document.addEventListener('click', toggleFullscreen)
+
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen()
+  } else {
+    document.exitFullscreen()
+  }
 }
