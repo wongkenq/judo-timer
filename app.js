@@ -460,11 +460,11 @@ buttons.forEach((button) => {
 function slideOut() {
   document.getElementById('settings').classList.toggle('closed')
 
-  if (document.getElementById('settings').classList.contains('closed')) {
-    document.querySelector('.fa-gear').style.color = 'black'
-  } else {
-    document.querySelector('.fa-gear').style.color = 'white'
-  }
+  // if (document.getElementById('settings').classList.contains('closed')) {
+  //   document.querySelector('.fa-gear').style.color = 'black'
+  // } else {
+  //   document.querySelector('.fa-gear').style.color = 'white'
+  // }
 }
 
 const fullscreenBtn = document.querySelector('.fullscreen')
