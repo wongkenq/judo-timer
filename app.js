@@ -467,7 +467,8 @@ function slideOut() {
   }
 }
 
-document.addEventListener('click', toggleFullscreen)
+const fullscreenBtn = document.querySelector('.fullscreen')
+fullscreenBtn.addEventListener('click', toggleFullscreen)
 
 function toggleFullscreen() {
   if (!document.fullscreenElement) {
