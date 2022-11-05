@@ -437,7 +437,7 @@ html.addEventListener('mousemove', (e) => {
   const t = setTimeout(() => {
     html.setAttribute('timer', '')
     html.classList.add('hide-cursor')
-  }, 3000)
+  }, 1500)
   html.setAttribute('timer', t)
 
   html.classList.remove('hide-cursor')
@@ -455,7 +455,7 @@ buttons.forEach((button) => {
     const t = setTimeout(() => {
       button.setAttribute('timer', '')
       button.classList.add('hide-cursor')
-    }, 3000)
+    }, 1500)
     button.setAttribute('timer', t)
 
     button.classList.remove('hide-cursor')
