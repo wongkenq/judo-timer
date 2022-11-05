@@ -200,8 +200,7 @@ button:active {
 
 #settings-button {
   position: fixed;
-  right: 10px;
-  height: 20rem;
+  left: 2rem;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -211,12 +210,13 @@ button:active {
   /* cursor: pointer; */
 }
 
-#settings-button > i:first {
+#settings-button > i:hover {
   color: white;
+  cursor: pointer;
 }
 
 #settings-button i {
-  transition: 0.25s ease-in-out;
+  transition: 0.1s ease-in-out;
 }
 
 /* #settings-button i:hover {
@@ -240,6 +240,7 @@ button:active {
   width: 25%;
   transition: all 300ms;
   cursor: auto !important;
+  padding-left: 2rem;
 }
 
 #settings button {
