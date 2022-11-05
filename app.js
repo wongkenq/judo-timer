@@ -78,8 +78,8 @@ mainBtn.forEach((btn) => btn.addEventListener('touchend', buttonUp))
 
 resetBtn.addEventListener('click', resetTimerCompletely)
 modeBtn.addEventListener('click', handleMode)
-settingsBtn.addEventListener('click', scrollToSetting)
-timerBtn.addEventListener('click', scrollToTimer)
+settingsBtn.addEventListener('click', slideOut)
+// timerBtn.addEventListener('click', scrollToTimer)
 saveBtn.addEventListener('click', saveSettings)
 
 function buttonDown(e) {
@@ -260,25 +260,25 @@ modeButtons.forEach((e) => {
   if (e.classList.contains('active')) console.log(`${e.dataset.mode} is active`)
 })
 
-function scrollToTimer() {
-  let timer = document.querySelector('.app')
-  timer.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'start' })
-  document.querySelector('.fa-clock').style.color = 'white'
-  document.querySelector('.fa-gear').style.color = 'black'
-}
+// function scrollToTimer() {
+//   let timer = document.querySelector('.app')
+//   timer.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'start' })
+//   document.querySelector('.fa-clock').style.color = 'white'
+//   document.querySelector('.fa-gear').style.color = 'black'
+// }
 
-function scrollToSetting() {
-  let setting = document.getElementById('settings')
-  setting.scrollIntoView({
-    behavior: 'smooth',
-    block: 'start',
-    inline: 'start',
-  })
-  document.querySelector('.fa-clock').style.color = 'black'
-  document.querySelector('.fa-gear').style.color = 'white'
-}
+// function scrollToSetting() {
+//   let setting = document.getElementById('settings')
+//   setting.scrollIntoView({
+//     behavior: 'smooth',
+//     block: 'start',
+//     inline: 'start',
+//   })
+//   document.querySelector('.fa-clock').style.color = 'black'
+//   document.querySelector('.fa-gear').style.color = 'white'
+// }
 
-setTimeout(scrollToTimer, 500)
+// setTimeout(scrollToTimer, 500)
 
 const changeTimeBtns = document.querySelectorAll('.change-time')
 
@@ -309,25 +309,43 @@ function changeTime(e) {
         secondsNum += 15
         seconds.textContent = secondsNum
 
-        if (secondsNum === 60) {
+        if (seconds.textContent == 60) {
+          seconds.textContent = '00'
           minutes.textContent++
           minutes.textContent = minutes.textContent.padStart(2, '0')
-          secondsNum = 0
-          seconds.textContent = '00'
         }
+        //   secondsNum += 15
+        //   seconds.textContent = secondsNum
+
+        //   if (secondsNum === 60) {
+        //     minutes.textContent++
+        //     minutes.textContent = minutes.textContent.padStart(2, '0')
+        //     secondsNum = 0
+        //     seconds.textContent = '00'
+        //   }
+        // } else {
+        // if (minutes.textContent > 0 || seconds.textContent > 0) {
+        //   if (seconds.textContent == 30) {
+        //     secondsNum = 0
+        //     seconds.textContent = '00'
+        //   } else {
+        //     secondsNum = 30
+        //     seconds.textContent = '30'
+        //     minutes.textContent--
+        //     minutes.textContent = minutes.textContent.padStart(2, '0')
+        //   }
+        // } else {
+        //   console.log('no negative time')
+        // }
       } else {
-        if (minutes.textContent > 0 || seconds.textContent > 0) {
-          if (seconds.textContent == 30) {
-            secondsNum = 0
-            seconds.textContent = '00'
-          } else {
-            secondsNum = 30
-            seconds.textContent = '30'
-            minutes.textContent--
-            minutes.textContent = minutes.textContent.padStart(2, '0')
-          }
-        } else {
-          console.log('no negative time')
+        if (seconds.textContent > 0) {
+          secondsNum -= 15
+          seconds.textContent = secondsNum
+          seconds.textContent = seconds.textContent.padStart(2, '0')
+        } else if (minutes.textContent > 0) {
+          minutes.textContent--
+          minutes.textContent = minutes.textContent.padStart(2, '0')
+          seconds.textContent = 45
         }
       }
       break
@@ -461,3 +479,13 @@ buttons.forEach((button) => {
     button.classList.remove('hide-cursor')
   })
 })
+
+function slideOut() {
+  document.getElementById('settings').classList.toggle('closed')
+
+  if (document.getElementById('settings').classList.contains('closed')) {
+    document.querySelector('.fa-gear').style.color = 'black'
+  } else {
+    document.querySelector('.fa-gear').style.color = 'white'
+  }
+}
