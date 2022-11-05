@@ -62,7 +62,6 @@ const displayMin = document.getElementById('js-minutes')
 const displaySec = document.getElementById('js-seconds')
 const startBtn = document.getElementById('js-btn')
 const resetBtn = document.getElementById('js-reset-btn')
-const fullscreenBtn = document.getElementById('fullscreen')
 const progress = document.getElementById('js-progress')
 const roundSelect = document.getElementById('round-select')
 const modeBtn = document.getElementById('js-mode-buttons')
@@ -395,6 +394,7 @@ function saveSettings() {
     .querySelector('.timer-minutes').textContent
 
   switchMode(currentMode)
+  slideOut()
 }
 
 switchMode(currentMode)
@@ -464,5 +464,15 @@ function slideOut() {
     document.querySelector('.fa-gear').style.color = 'black'
   } else {
     document.querySelector('.fa-gear').style.color = 'white'
+  }
+}
+
+document.addEventListener('click', toggleFullscreen)
+
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen()
+  } else {
+    document.exitFullscreen()
   }
 }
