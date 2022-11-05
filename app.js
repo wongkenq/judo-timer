@@ -314,29 +314,6 @@ function changeTime(e) {
           minutes.textContent++
           minutes.textContent = minutes.textContent.padStart(2, '0')
         }
-        //   secondsNum += 15
-        //   seconds.textContent = secondsNum
-
-        //   if (secondsNum === 60) {
-        //     minutes.textContent++
-        //     minutes.textContent = minutes.textContent.padStart(2, '0')
-        //     secondsNum = 0
-        //     seconds.textContent = '00'
-        //   }
-        // } else {
-        // if (minutes.textContent > 0 || seconds.textContent > 0) {
-        //   if (seconds.textContent == 30) {
-        //     secondsNum = 0
-        //     seconds.textContent = '00'
-        //   } else {
-        //     secondsNum = 30
-        //     seconds.textContent = '30'
-        //     minutes.textContent--
-        //     minutes.textContent = minutes.textContent.padStart(2, '0')
-        //   }
-        // } else {
-        //   console.log('no negative time')
-        // }
       } else {
         if (seconds.textContent > 0) {
           secondsNum -= 15
