@@ -75,7 +75,7 @@ mainBtn.forEach((btn) => btn.addEventListener('touchstart', buttonDown))
 mainBtn.forEach((btn) => btn.addEventListener('mouseup', buttonUp))
 mainBtn.forEach((btn) => btn.addEventListener('touchend', buttonUp))
 
-document.querySelector('body').addEventListener('keypress', keyPress)
+document.querySelector('body').addEventListener('keydown', keyPress)
 
 resetBtn.addEventListener('click', resetTimerCompletely)
 modeBtn.addEventListener('click', handleMode)
@@ -487,6 +487,14 @@ function keyPress(e) {
     case ' ':
       if (startBtn.classList.contains('active')) pauseTimer()
       else startTimer()
+      break
+    case 'Enter':
+      if (document.getElementById('settings').classList.contains('closed'))
+        return
+      else saveSettings()
+      break
+    case 'Escape':
+      resetTimerCompletely()
       break
   }
 }
