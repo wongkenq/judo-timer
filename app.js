@@ -75,6 +75,8 @@ mainBtn.forEach((btn) => btn.addEventListener('touchstart', buttonDown))
 mainBtn.forEach((btn) => btn.addEventListener('mouseup', buttonUp))
 mainBtn.forEach((btn) => btn.addEventListener('touchend', buttonUp))
 
+document.querySelector('body').addEventListener('keypress', keyPress)
+
 resetBtn.addEventListener('click', resetTimerCompletely)
 modeBtn.addEventListener('click', handleMode)
 settingsBtn.addEventListener('click', slideOut)
@@ -475,5 +477,16 @@ function toggleFullscreen() {
     document.documentElement.requestFullscreen()
   } else {
     document.exitFullscreen()
+  }
+}
+
+function keyPress(e) {
+  console.log(e.key)
+
+  switch (e.key) {
+    case ' ':
+      if (startBtn.classList.contains('active')) pauseTimer()
+      else startTimer()
+      break
   }
 }
