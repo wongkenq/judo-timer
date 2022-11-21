@@ -1,21 +1,47 @@
-let timerName = {
-  randori: {
-    minutes: 2,
-    seconds: 0,
-    rounds: 6,
-  },
-  uchikomi: {
-    minutes: 5,
-    seconds: 0,
-  },
-  waterBreak: {
-    minutes: 2,
-    seconds: 0,
-  },
-  break: {
-    minutes: 0,
-    seconds: 30,
-  },
+// let timerName = {
+//   randori: {
+//     minutes: 2,
+//     seconds: 0,
+//     rounds: 6,
+//   },
+//   uchikomi: {
+//     minutes: 5,
+//     seconds: 0,
+//   },
+//   waterBreak: {
+//     minutes: 2,
+//     seconds: 0,
+//   },
+//   break: {
+//     minutes: 0,
+//     seconds: 30,
+//   },
+// }
+
+let timerName = {}
+
+if (window.localStorage.getItem('times')) {
+  timerName = JSON.parse(window.localStorage.getItem('times'))
+} else {
+  timerName = {
+    randori: {
+      minutes: 2,
+      seconds: 0,
+      rounds: 6,
+    },
+    uchikomi: {
+      minutes: 5,
+      seconds: 0,
+    },
+    waterBreak: {
+      minutes: 2,
+      seconds: 0,
+    },
+    break: {
+      minutes: 0,
+      seconds: 30,
+    },
+  }
 }
 
 let currentTime, endTime, differenceTime, remainingTime
@@ -394,6 +420,8 @@ function saveSettings() {
   timerName.waterBreak.minutes = +document
     .querySelector('.waterbreak')
     .querySelector('.timer-minutes').textContent
+
+  window.localStorage.setItem('times', JSON.stringify(timerName))
 
   switchMode(currentMode)
   slideOut()
