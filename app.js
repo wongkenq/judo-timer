@@ -1,23 +1,3 @@
-// let timerName = {
-//   randori: {
-//     minutes: 2,
-//     seconds: 0,
-//     rounds: 6,
-//   },
-//   uchikomi: {
-//     minutes: 5,
-//     seconds: 0,
-//   },
-//   waterBreak: {
-//     minutes: 2,
-//     seconds: 0,
-//   },
-//   break: {
-//     minutes: 0,
-//     seconds: 30,
-//   },
-// }
-
 let timerName = {}
 
 if (window.localStorage.getItem('times')) {
@@ -107,7 +87,6 @@ document.querySelector('body').addEventListener('keydown', keyPress)
 resetBtn.addEventListener('click', resetTimerCompletely)
 modeBtn.addEventListener('click', handleMode)
 settingsBtn.addEventListener('click', slideOut)
-// timerBtn.addEventListener('click', scrollToTimer)
 saveBtn.addEventListener('click', saveSettings)
 closeBtn.addEventListener('click', slideOut)
 
@@ -289,26 +268,6 @@ modeButtons.forEach((e) => {
   if (e.classList.contains('active')) console.log(`${e.dataset.mode} is active`)
 })
 
-// function scrollToTimer() {
-//   let timer = document.querySelector('.app')
-//   timer.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'start' })
-//   document.querySelector('.fa-clock').style.color = 'white'
-//   document.querySelector('.fa-gear').style.color = 'black'
-// }
-
-// function scrollToSetting() {
-//   let setting = document.getElementById('settings')
-//   setting.scrollIntoView({
-//     behavior: 'smooth',
-//     block: 'start',
-//     inline: 'start',
-//   })
-//   document.querySelector('.fa-clock').style.color = 'black'
-//   document.querySelector('.fa-gear').style.color = 'white'
-// }
-
-// setTimeout(scrollToTimer, 500)
-
 const changeTimeBtns = document.querySelectorAll('.change-time')
 
 changeTimeBtns.forEach((x) => x.addEventListener('click', changeTime))
@@ -446,12 +405,6 @@ function clapSound() {
   audio.play()
 }
 
-// window.onload = (event) => {
-//   // setTimeout(() => {
-//   //   document.querySelector('body').style.cursor = 'none'
-//   // }, 3000)
-// }
-
 const html = document.querySelector('body')
 
 html.addEventListener('mousemove', (e) => {
@@ -491,13 +444,6 @@ buttons.forEach((button) => {
 
 function slideOut() {
   document.getElementById('settings').classList.toggle('closed')
-
-  // if (document.getElementById('settings').classList.contains('closed')) {
-  //   document.querySelector('.fa-gear').style.color = 'black'
-  // } else {
-  //   document.querySelector('.fa-gear').style.color = 'white'
-  // }
-}
 
 const fullscreenBtn = document.querySelector('.fullscreen')
 fullscreenBtn.addEventListener('click', toggleFullscreen)
