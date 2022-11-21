@@ -259,3 +259,14 @@ button.main-button.change-time {
 .hide-cursor {
   cursor: none;
 }
+
+.close-button {
+  position: relative;
+  top: -20%;
+  left: 95%;
+  font-size: xx-large;
+  color: white;
+  font-weight: bold;
+  user-select: none;
+  cursor: pointer;
+}

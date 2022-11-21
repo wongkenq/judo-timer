@@ -94,6 +94,7 @@ const modeBtn = document.getElementById('js-mode-buttons')
 const settingsBtn = document.querySelector('.fa-gear')
 const timerBtn = document.querySelector('.fa-clock')
 const saveBtn = document.getElementById('settings-save').querySelector('button')
+const closeBtn = document.querySelector('.close-button')
 
 const mainBtn = document.querySelectorAll('.main-button')
 mainBtn.forEach((btn) => btn.addEventListener('mousedown', buttonDown))
@@ -108,6 +109,7 @@ modeBtn.addEventListener('click', handleMode)
 settingsBtn.addEventListener('click', slideOut)
 // timerBtn.addEventListener('click', scrollToTimer)
 saveBtn.addEventListener('click', saveSettings)
+closeBtn.addEventListener('click', slideOut)
 
 function buttonDown(e) {
   e.target.classList.add('active')
