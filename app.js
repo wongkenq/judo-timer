@@ -24,6 +24,12 @@ if (window.localStorage.getItem('times')) {
   }
 }
 
+document.querySelector('.timer').addEventListener('click', () => {
+  if (!document.getElementById('settings').classList.contains('closed')) {
+    slideOut()
+  }
+})
+
 let currentTime, endTime, differenceTime, remainingTime
 let currentMode = 'randori'
 let masterMode
