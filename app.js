@@ -444,6 +444,7 @@ buttons.forEach((button) => {
 
 function slideOut() {
   document.getElementById('settings').classList.toggle('closed')
+}
 
 const fullscreenBtn = document.querySelector('.fullscreen')
 fullscreenBtn.addEventListener('click', toggleFullscreen)
