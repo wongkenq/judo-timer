@@ -471,7 +471,7 @@ function keyPress(e) {
       else saveSettings()
       break
     case 'Escape':
-      resetTimerCompletely()
+      slideOut()
       break
   }
 }
