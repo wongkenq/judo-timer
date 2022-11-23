@@ -1,5 +1,8 @@
+// declare empty obj
 let timerName = {}
 
+// checks to see if user has saved settings previously. if so. loads the settings.
+// if not, loads default settings
 if (window.localStorage.getItem('times')) {
   timerName = JSON.parse(window.localStorage.getItem('times'))
 } else {
@@ -24,12 +27,14 @@ if (window.localStorage.getItem('times')) {
   }
 }
 
+// if user clicks outside of the menu, it will close the menu
 document.querySelector('.timer').addEventListener('click', () => {
   if (!document.getElementById('settings').classList.contains('closed')) {
     slideOut()
   }
 })
 
+// declaring various variables
 let currentTime, endTime, differenceTime, remainingTime
 let currentMode = 'randori'
 let masterMode
@@ -37,9 +42,27 @@ let currentRound = 1
 let totalRounds = timerName.randori.rounds
 document.querySelector('.round').querySelector('.timer-minutes').textContent =
   totalRounds
+let interval
+const addTimeBtn = document.querySelector('.fa-plus')
+const subTimeBtn = document.querySelector('.fa-minus')
+const displayMin = document.getElementById('js-minutes')
+const displaySec = document.getElementById('js-seconds')
+const startBtn = document.getElementById('js-btn')
+const resetBtn = document.getElementById('js-reset-btn')
+const progress = document.getElementById('js-progress')
+const roundSelect = document.getElementById('round-select')
+const modeBtn = document.getElementById('js-mode-buttons')
+const settingsBtn = document.querySelector('.fa-gear')
+const timerBtn = document.querySelector('.fa-clock')
+const saveBtn = document.getElementById('settings-save').querySelector('button')
+const closeBtn = document.querySelector('.close-button')
+const mainBtn = document.querySelectorAll('.main-button')
 
+// declaring obj with methods to add and subtract time
 const adjustTime = {
   add: () => {
+    // adds 1 minute to the current mode each time method is called
+    // immediately displays changes on the screen, adds initial 0 if num < 10
     timerName[currentMode]['minutes']++
     displayMin.textContent = `${timerName[currentMode]['minutes']}`.padStart(
       2,
@@ -51,6 +74,8 @@ const adjustTime = {
     )
   },
   subtract: () => {
+    // subtracts 1 minute to the current mode each time method is called
+    // immediately displays changes on the screen, adds initial 0 if num < 10
     if (timerName[currentMode]['minutes'] > 0) {
       timerName[currentMode]['minutes']--
       displayMin.textContent = `${timerName[currentMode]['minutes']}`.padStart(
@@ -67,35 +92,19 @@ const adjustTime = {
   },
 }
 
-let interval
-const addTimeBtn = document.querySelector('.fa-plus')
-const subTimeBtn = document.querySelector('.fa-minus')
-const displayMin = document.getElementById('js-minutes')
-const displaySec = document.getElementById('js-seconds')
-const startBtn = document.getElementById('js-btn')
-const resetBtn = document.getElementById('js-reset-btn')
-const progress = document.getElementById('js-progress')
-const roundSelect = document.getElementById('round-select')
-const modeBtn = document.getElementById('js-mode-buttons')
-const settingsBtn = document.querySelector('.fa-gear')
-const timerBtn = document.querySelector('.fa-clock')
-const saveBtn = document.getElementById('settings-save').querySelector('button')
-const closeBtn = document.querySelector('.close-button')
-
-const mainBtn = document.querySelectorAll('.main-button')
+// adds event listener to each button for clicking and touch
 mainBtn.forEach((btn) => btn.addEventListener('mousedown', buttonDown))
 mainBtn.forEach((btn) => btn.addEventListener('touchstart', buttonDown))
 mainBtn.forEach((btn) => btn.addEventListener('mouseup', buttonUp))
 mainBtn.forEach((btn) => btn.addEventListener('touchend', buttonUp))
-
-document.querySelector('body').addEventListener('keydown', keyPress)
-
+document.addEventListener('keydown', keyPress)
 resetBtn.addEventListener('click', resetTimerCompletely)
 modeBtn.addEventListener('click', handleMode)
 settingsBtn.addEventListener('click', slideOut)
 saveBtn.addEventListener('click', saveSettings)
 closeBtn.addEventListener('click', slideOut)
 
+// adds class of 'active' to the clicked button
 function buttonDown(e) {
   e.target.classList.add('active')
 }
@@ -104,11 +113,14 @@ function buttonUp(e) {
   e.target.classList.remove('active')
 }
 
+// starts timer if 'start' button is clicked
 startBtn.addEventListener('click', (e) => {
   if (e.target.dataset.action === 'start') startTimer()
   else pauseTimer()
 })
 
+// gets remaining time by using Date method to get current time and compares it
+// to the declared end time
 function getRemainingTime(endTime) {
   currentTime = Date.parse(new Date())
   differenceTime = +(endTime - currentTime)
@@ -123,6 +135,7 @@ function getRemainingTime(endTime) {
 }
 
 function startTimer() {
+  // declares variables from timerName of the current mode
   let minutes = +timerName[currentMode]['minutes'] * 60
   let seconds = +timerName[currentMode]['seconds']
 
@@ -146,6 +159,7 @@ function startTimer() {
   if (currentMode !== 'break') playSound()
 
   console.log(displaySec.textContent)
+
   interval = setInterval(() => {
     remainingTime = getRemainingTime(endTime)
     updateClock()
@@ -242,12 +256,13 @@ function handleMode(event) {
   masterMode = modes
 
   switchMode(modes)
-  resetTimer()
+  // resetTimer()
 }
 
 function switchMode(mode) {
   currentMode = mode
   console.log(currentMode)
+  resetTimer()
 
   displayMin.textContent = `${timerName[currentMode]['minutes']}`.padStart(
     2,
@@ -263,16 +278,16 @@ function switchMode(mode) {
 
   document
     .querySelectorAll('button[data-mode]')
-    .forEach((e) => e.classList.remove('active'))
+    .forEach((selector) => selector.classList.remove('active'))
   document.querySelector(`[data-mode='${currentMode}']`).classList.add('active')
   document.body.style.backgroundColor = `var(--${currentMode})`
 }
 
-const modeButtons = document.querySelectorAll('.mode-button')
+// const modeButtons = document.querySelectorAll('.mode-button')
 
-modeButtons.forEach((e) => {
-  if (e.classList.contains('active')) console.log(`${e.dataset.mode} is active`)
-})
+// modeButtons.forEach((e) => {
+//   if (e.classList.contains('active')) console.log(`${e.dataset.mode} is active`)
+// })
 
 const changeTimeBtns = document.querySelectorAll('.change-time')
 
@@ -464,12 +479,14 @@ function toggleFullscreen() {
 }
 
 function keyPress(e) {
-  console.log(e.key)
+  // set active element back to 'body' because when active element is a button,
+  // functions that use key presses don't work
+  document.activeElement.blur()
 
-  switch (e.key) {
-    case ' ':
-      if (startBtn.classList.contains('active')) pauseTimer()
-      else startTimer()
+  switch (e.code) {
+    case 'Space':
+      if (startBtn.dataset.action === 'start') startTimer()
+      else pauseTimer()
       break
     case 'Enter':
       if (document.getElementById('settings').classList.contains('closed'))
@@ -477,7 +494,21 @@ function keyPress(e) {
       else saveSettings()
       break
     case 'Escape':
-      slideOut()
+      if (document.getElementById('settings').classList.contains('closed'))
+        return
+      else slideOut()
+      break
+    case 'KeyR':
+      switchMode('randori')
+      break
+    case 'KeyU':
+      switchMode('uchikomi')
+      break
+    case 'KeyW':
+      switchMode('waterBreak')
+      break
+    case 'KeyB':
+      switchMode('break')
       break
   }
 }
