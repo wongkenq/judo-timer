@@ -12,6 +12,13 @@ if (window.localStorage.getItem('times')) {
       seconds: 0,
       rounds: 6,
     },
+    threePerson: {
+      minutes: 2,
+      seconds: 0,
+      rounds: 2,
+      group: ['A', 'B', 'C'],
+      // currentGroup = [group[0], group[1]],
+    },
     uchikomi: {
       minutes: 5,
       seconds: 0,
@@ -156,8 +163,6 @@ function startTimer() {
   startBtn.textContent = 'pause'
   startBtn.classList.add('active')
 
-  document.getElementById('round-select-output').textContent = currentRound
-
   // plays starting bell sound when starting timer that's not 'break'
   if (currentMode !== 'break') playSound()
 
@@ -180,6 +185,8 @@ function startTimer() {
       // checks which is the current mode
       switch (currentMode) {
         case 'randori':
+          document.getElementById('round-select-output').textContent =
+            currentRound
           // checks if there's more rounds. stops function. switches mode to 'break'
           // starts timer
           if (currentRound < timerName.randori.rounds) {
@@ -199,7 +206,7 @@ function startTimer() {
           // stops timer and checks if the manually chosen mode is 'break'
           // if break is chosen automatically by the function, it will move on
           // to the next round, if there are any.
-          // otherwise, it will stop at the end of the break timer
+          // if chosen manually, it will stop at the end of the break timer
           clearInterval(interval)
           if (masterMode === 'break') return
           else {
@@ -211,6 +218,27 @@ function startTimer() {
             startTimer()
           }
           break
+        case 'threePerson':
+          let person
+          const totalThreePersonRounds = timerName.threePerson.rounds
+          if (timerName.threePerson.group[0] === 'C') currentRound++
+          if (currentRound <= totalThreePersonRounds) {
+            person = timerName.threePerson.group.shift()
+            timerName.threePerson.group.push(person)
+            document.getElementById('round-select-output').textContent =
+              timerName.threePerson.group[0]
+            document.getElementById('round-select-total').textContent =
+              timerName.threePerson.group[1]
+            startTimer()
+          } else {
+            timerName.threePerson.group = ['A', 'B', 'C']
+            document.getElementById('round-select-output').textContent =
+              timerName.threePerson.group[0]
+            document.getElementById('round-select-total').textContent =
+              timerName.threePerson.group[1]
+          }
+          console.log(timerName.threePerson.group)
+          console.log(currentRound)
       }
     }
   }, 1000)
@@ -257,7 +285,14 @@ function resetTimer() {
 
   progress.value = 0
 
-  document.getElementById('round-select-output').textContent = currentRound
+  if (masterMode === 'threePerson') {
+    document.getElementById('round-select-output').textContent =
+      timerName.threePerson.group[0]
+    document.getElementById('round-select-total').textContent =
+      timerName.threePerson.group[1]
+  } else {
+    document.getElementById('round-select-output').textContent = currentRound
+  }
 
   displayMin.textContent = `${timerName[currentMode]['minutes']}`.padStart(
     2,
@@ -288,10 +323,10 @@ function handleMode(event) {
   // resetTimer()
 }
 
-// swiches mode
+// switches mode
 function switchMode(mode) {
   currentMode = mode
-  // console.log(currentMode)
+  console.log(currentMode)
   resetTimer()
 
   // updates display to chosen mode
@@ -304,8 +339,20 @@ function switchMode(mode) {
     '0'
   )
 
-  document.getElementById('round-select-total').textContent =
-    timerName.randori.rounds
+  if (currentMode === 'threePerson') {
+    document.getElementById('round-title').textContent = 'Group'
+    document.getElementById('round-select').childNodes[3].textContent = 'vs'
+    document.getElementById('round-select-output').textContent =
+      timerName.threePerson.group[0]
+    document.getElementById('round-select-total').textContent =
+      timerName.threePerson.group[1]
+  } else {
+    document.getElementById('round-title').textContent = 'Round'
+    document.getElementById('round-select').childNodes[3].textContent = 'of'
+
+    document.getElementById('round-select-total').textContent =
+      timerName.randori.rounds
+  }
 
   // updates data-mode selector
   document
@@ -444,7 +491,7 @@ function saveSettings() {
   slideOut()
 }
 
-// switchMode(currentMode)
+switchMode(currentMode)
 
 // plays various sounds
 function playSound() {
@@ -522,6 +569,7 @@ function keyPress(e) {
   // set active element back to 'body' because when active element is a button,
   // functions that use key presses don't work
   document.activeElement.blur()
+  // console.log(e.code)
 
   switch (e.code) {
     case 'Space':
@@ -549,6 +597,12 @@ function keyPress(e) {
       break
     case 'KeyB':
       switchMode('break')
+      break
+    case 'Digit3':
+      switchMode('threePerson')
+      break
+    case 'Numpad3':
+      switchMode('threePerson')
       break
   }
 }
