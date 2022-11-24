@@ -139,6 +139,7 @@ function startTimer() {
   let minutes = +timerName[currentMode]['minutes'] * 60
   let seconds = +timerName[currentMode]['seconds']
 
+  // if time displayed is 0, terminate function
   if (
     timerName[currentMode].minutes === 0 &&
     timerName[currentMode]['seconds'] === 0
@@ -150,34 +151,44 @@ function startTimer() {
 
   getRemainingTime(endTime)
 
+  // changes dataset and text of start button to 'pause'. adds 'active' class
   startBtn.dataset.action = 'pause'
   startBtn.textContent = 'pause'
   startBtn.classList.add('active')
 
   document.getElementById('round-select-output').textContent = currentRound
 
+  // plays starting bell sound when starting timer that's not 'break'
   if (currentMode !== 'break') playSound()
 
-  console.log(displaySec.textContent)
+  // console.log(displaySec.textContent)
 
+  // runs function very 1 second
   interval = setInterval(() => {
+    // gets how much time is remaining, and updates the display
     remainingTime = getRemainingTime(endTime)
     updateClock()
 
+    // plays ending bell sound when time is 0, and not 'break' mode
     if (currentMode !== 'break' && differenceTime === 0) endSound()
 
+    // stops the function from running again if time reaches 0 and resets timer
     if (differenceTime < 0) {
       clearInterval(interval)
       resetTimer()
 
+      // checks which is the current mode
       switch (currentMode) {
         case 'randori':
+          // checks if there's more rounds. stops function. switches mode to 'break'
+          // starts timer
           if (currentRound < timerName.randori.rounds) {
-            console.log(`current round: ${currentRound}`)
+            // console.log(`current round: ${currentRound}`)
             clearInterval(interval)
             switchMode('break')
             startTimer()
           } else {
+            // if there's no more rounds, stops timer, sets current round back to 1 and updates display
             clearInterval(interval)
             currentRound = 1
             document.getElementById('round-select-output').textContent =
@@ -185,6 +196,10 @@ function startTimer() {
           }
           break
         case 'break':
+          // stops timer and checks if the manually chosen mode is 'break'
+          // if break is chosen automatically by the function, it will move on
+          // to the next round, if there are any.
+          // otherwise, it will stop at the end of the break timer
           clearInterval(interval)
           if (masterMode === 'break') return
           else {
@@ -201,23 +216,32 @@ function startTimer() {
   }, 1000)
 }
 
+// pauses timer, and resumes with the current amount of time left.
 function pauseTimer() {
   clearInterval(interval)
 
+  // sets 'pause' button to 'start'
   startBtn.dataset.action = 'start'
   startBtn.textContent = 'start'
   startBtn.classList.remove('active')
 }
 
+// updates display
 function updateClock() {
+  // takes the current time left and calculates it into minutes and seconds
   const minutes = Math.floor(differenceTime / 60 / 1000)
   const seconds = Math.floor(differenceTime / 1000) % 60
 
+  // updates display with the calculated values
+  // also pads the beginning of the number with a leading 0, if it's < 10
   displayMin.textContent = `${minutes}`.padStart(2, '0')
   displaySec.textContent = `${seconds}`.padStart(2, '0')
 
+  // plays 15 second warning sound
   if (displayMin.textContent == 0 && displaySec.textContent == 15) clapSound()
 
+  // calculates total and remaining times. then sets progress bar max value to total
+  // and updates it's progress with remaining time left.
   const total =
     timerName[currentMode]['minutes'] * 60 + timerName[currentMode]['seconds']
   const remaining = remainingTime.minutes * 60 + remainingTime.seconds
@@ -225,6 +249,8 @@ function updateClock() {
   progress.value = total - remaining
 }
 
+// stops timer. resets remaining time. resets progress bar. sets display to 00:00
+// used when auto switching between rounds.
 function resetTimer() {
   pauseTimer()
   getRemainingTime(Date.parse(new Date()))
@@ -243,11 +269,14 @@ function resetTimer() {
   )
 }
 
+// function to completely reset timer.
+// used when manually stopping.
 function resetTimerCompletely() {
   currentRound = 1
   resetTimer()
 }
 
+// function figures out which mode is manually chosen and which is automatically switched to
 function handleMode(event) {
   const modes = event.target.dataset.mode
 
@@ -259,11 +288,13 @@ function handleMode(event) {
   // resetTimer()
 }
 
+// swiches mode
 function switchMode(mode) {
   currentMode = mode
-  console.log(currentMode)
+  // console.log(currentMode)
   resetTimer()
 
+  // updates display to chosen mode
   displayMin.textContent = `${timerName[currentMode]['minutes']}`.padStart(
     2,
     '0'
@@ -276,6 +307,7 @@ function switchMode(mode) {
   document.getElementById('round-select-total').textContent =
     timerName.randori.rounds
 
+  // updates data-mode selector
   document
     .querySelectorAll('button[data-mode]')
     .forEach((selector) => selector.classList.remove('active'))
@@ -289,15 +321,17 @@ function switchMode(mode) {
 //   if (e.classList.contains('active')) console.log(`${e.dataset.mode} is active`)
 // })
 
+// function for adjusting times in the menu
 const changeTimeBtns = document.querySelectorAll('.change-time')
-
 changeTimeBtns.forEach((x) => x.addEventListener('click', changeTime))
 
+// updates the dom to reflect changes live
 function changeTime(e) {
   let minutes = e.target.parentNode.querySelector('.timer-minutes')
   let seconds = e.target.parentNode.querySelector('.timer-seconds')
   let secondsNum = +seconds.textContent
 
+  // adds and subtracts times from targeted buttons
   switch (e.target.parentNode.className) {
     case 'time':
       if (e.target.textContent === '+') {
@@ -382,6 +416,7 @@ function changeTime(e) {
   }
 }
 
+// saves the user selected times to memory and localstorage. then closes menu.
 function saveSettings() {
   console.log('settings saved')
   timerName.randori.minutes = +document
@@ -409,8 +444,9 @@ function saveSettings() {
   slideOut()
 }
 
-switchMode(currentMode)
+// switchMode(currentMode)
 
+// plays various sounds
 function playSound() {
   let audio = new Audio('./sounds/1bell (2).mp3')
   audio.play()
@@ -428,6 +464,7 @@ function clapSound() {
 
 const html = document.querySelector('body')
 
+// hides cursor when idle
 html.addEventListener('mousemove', (e) => {
   const timer = html.getAttribute('timer')
   if (timer) {
@@ -463,6 +500,7 @@ buttons.forEach((button) => {
   })
 })
 
+// open menu
 function slideOut() {
   document.getElementById('settings').classList.toggle('closed')
 }
@@ -470,6 +508,7 @@ function slideOut() {
 const fullscreenBtn = document.querySelector('.fullscreen')
 fullscreenBtn.addEventListener('click', toggleFullscreen)
 
+// toggle fullscreen
 function toggleFullscreen() {
   if (!document.fullscreenElement) {
     document.documentElement.requestFullscreen()
@@ -478,6 +517,7 @@ function toggleFullscreen() {
   }
 }
 
+// listens to key presses to start timer or change timer mode
 function keyPress(e) {
   // set active element back to 'body' because when active element is a button,
   // functions that use key presses don't work
