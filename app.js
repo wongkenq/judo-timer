@@ -47,12 +47,6 @@ let currentMode = 'randori'
 let masterMode
 let currentRound = 1
 let totalRounds = timerName.randori.rounds
-
-document.querySelector('.round').querySelector('.timer-minutes').textContent =
-  totalRounds
-document
-  .querySelector('.threePerson')
-  .querySelector('.timer-minutes').textContent = timerName.threePerson.rounds
 let interval
 const addTimeBtn = document.querySelector('.fa-plus')
 const subTimeBtn = document.querySelector('.fa-minus')
