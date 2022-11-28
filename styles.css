@@ -29,6 +29,7 @@ html {
   --waterBreak: hsl(223, 25%, 40%);
   --break: hsl(48, 23%, 40%);
   --randori: hsl(105, 16%, 40%);
+  --threePerson: hsl(105, 16%, 40%);
   --uchikomi: hsl(15, 16%, 40%);
 }
 
@@ -214,6 +215,7 @@ button:active {
 #settings-button > i:hover {
   color: white;
   cursor: pointer;
+  transform: rotate(180deg);
 }
 
 #settings-button i {
