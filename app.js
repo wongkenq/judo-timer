@@ -47,8 +47,6 @@ let currentMode = 'randori'
 let masterMode
 let currentRound = 1
 let totalRounds = timerName.randori.rounds
-document.querySelector('.round').querySelector('.timer-minutes').textContent =
-  totalRounds
 let interval
 const addTimeBtn = document.querySelector('.fa-plus')
 const subTimeBtn = document.querySelector('.fa-minus')
@@ -64,6 +62,39 @@ const timerBtn = document.querySelector('.fa-clock')
 const saveBtn = document.getElementById('settings-save').querySelector('button')
 const closeBtn = document.querySelector('.close-button')
 const mainBtn = document.querySelectorAll('.main-button')
+const settingsRandori = document.getElementById('settings-randori')
+const settingsThreePerson = document.getElementById('settings-threePerson')
+const settingsUchikomi = document.getElementById('settings-uchikomi')
+const settingsWater = document.getElementById('settings-waterBreak')
+
+// times in the settings menu will display the times that are saved
+function setTimesInSettings() {
+  let minutes = document.querySelectorAll('[data-minutes]')
+  let seconds = document.querySelectorAll('[data-seconds]')
+  let rounds = document.querySelectorAll('[data-rounds]')
+
+  minutes.forEach((minute) => {
+    let className = minute.parentNode.className
+    minute.textContent = `${timerName[className].minutes}`.padStart(2, '0')
+  })
+
+  seconds.forEach((second) => {
+    let className = second.parentNode.className
+    second.textContent = `${timerName[className].seconds}`.padStart(2, '0')
+  })
+
+  rounds.forEach((round) => {
+    let className = round.parentNode.className
+
+    if (className === 'round') {
+      round.textContent = timerName['randori'].rounds
+    } else {
+      round.textContent = timerName[className].rounds
+    }
+  })
+}
+
+setTimesInSettings()
 
 // declaring obj with methods to add and subtract time
 const adjustTime = {
@@ -378,9 +409,10 @@ function changeTime(e) {
   let seconds = e.target.parentNode.querySelector('.timer-seconds')
   let secondsNum = +seconds.textContent
 
+  // console.log(e.target.parentNode.className)
   // adds and subtracts times from targeted buttons
   switch (e.target.parentNode.className) {
-    case 'time':
+    case 'randori':
       if (e.target.textContent === '+') {
         minutes.textContent++
         minutes.textContent = minutes.textContent.padStart(2, '0')
@@ -418,7 +450,19 @@ function changeTime(e) {
       break
 
     case 'round':
-      console.log('round')
+      // console.log('round')
+      if (e.target.textContent === '+') {
+        minutes.textContent++
+      } else {
+        if (minutes.textContent > 1) {
+          minutes.textContent--
+        } else {
+          console.log('no negative time')
+        }
+      }
+      break
+
+    case 'threePerson':
       if (e.target.textContent === '+') {
         minutes.textContent++
       } else {
@@ -444,7 +488,7 @@ function changeTime(e) {
       }
       break
 
-    case 'waterbreak':
+    case 'waterBreak':
       if (e.target.textContent === '+') {
         minutes.textContent++
         minutes.textContent = minutes.textContent.padStart(2, '0')
@@ -467,7 +511,13 @@ function changeTime(e) {
 function saveSettings() {
   console.log('settings saved')
   timerName.randori.minutes = +document
-    .querySelector('.time')
+    .querySelector('.randori')
+    .querySelector('.timer-minutes').textContent
+  timerName.threePerson.minutes = +document
+    .querySelector('.randori')
+    .querySelector('.timer-minutes').textContent
+  timerName.threePerson.rounds = +document
+    .querySelector('.threePerson')
     .querySelector('.timer-minutes').textContent
   timerName.randori.rounds = +document
     .querySelector('.round')
@@ -482,7 +532,7 @@ function saveSettings() {
     .querySelector('.uchikomi')
     .querySelector('.timer-minutes').textContent
   timerName.waterBreak.minutes = +document
-    .querySelector('.waterbreak')
+    .querySelector('.waterBreak')
     .querySelector('.timer-minutes').textContent
 
   window.localStorage.setItem('times', JSON.stringify(timerName))

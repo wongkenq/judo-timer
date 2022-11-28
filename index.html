@@ -95,26 +95,35 @@
       <div class="close-button">X</div>
       <section id="settings-randori">
         Randori
-        <div class="time">
+        <div class="randori">
           Time
           <button class="main-button change-time">+</button>
-          <span class="timer-minutes">02</span>
+          <span class="timer-minutes" data-minutes>02</span>
           <span>:</span>
-          <span class="timer-seconds">00</span>
+          <span class="timer-seconds" data-seconds>00</span>
           <button class="main-button change-time">-</button>
         </div>
         <div class="break">
           Break
           <button class="main-button change-time">+</button>
-          <span class="timer-minutes">00</span>
+          <span class="timer-minutes" data-minutes>00</span>
           <span>:</span>
-          <span class="timer-seconds">30</span>
+          <span class="timer-seconds" data-seconds>30</span>
           <button class="main-button change-time">-</button>
         </div>
         <div class="round">
           Round
           <button class="main-button change-time">+</button>
-          <span class="timer-minutes">1</span>
+          <span class="timer-minutes" data-rounds>1</span>
+          <span class="timer-seconds" style="display: none">00</span>
+          <button class="main-button change-time">-</button>
+        </div>
+      </section>
+      <section id="settings-threePerson">
+        <div class="threePerson">
+          3-Person Rounds
+          <button class="main-button change-time">+</button>
+          <span class="timer-minutes" data-rounds>1</span>
           <span class="timer-seconds" style="display: none">00</span>
           <button class="main-button change-time">-</button>
         </div>
@@ -123,19 +132,19 @@
         <div class="uchikomi">
           Uchikomi
           <button class="main-button change-time">+</button>
-          <span class="timer-minutes">05</span>
+          <span class="timer-minutes" data-minutes>05</span>
           <span>:</span>
-          <span class="timer-seconds">00</span>
+          <span class="timer-seconds" data-seconds>00</span>
           <button class="main-button change-time">-</button>
         </div>
       </section>
-      <section id="settings-waterbreak">
-        <div class="waterbreak">
+      <section id="settings-waterBreak">
+        <div class="waterBreak">
           Water break
           <button class="main-button change-time">+</button>
-          <span class="timer-minutes">02</span>
+          <span class="timer-minutes" data-minutes>02</span>
           <span>:</span>
-          <span class="timer-seconds">00</span>
+          <span class="timer-seconds" data-seconds>00</span>
           <button class="main-button change-time">-</button>
         </div>
       </section>
