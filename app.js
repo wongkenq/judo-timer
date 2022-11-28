@@ -49,6 +49,9 @@ let currentRound = 1
 let totalRounds = timerName.randori.rounds
 document.querySelector('.round').querySelector('.timer-minutes').textContent =
   totalRounds
+document
+  .querySelector('.threePerson')
+  .querySelector('.timer-minutes').textContent = timerName.threePerson.rounds
 let interval
 const addTimeBtn = document.querySelector('.fa-plus')
 const subTimeBtn = document.querySelector('.fa-minus')
@@ -64,6 +67,10 @@ const timerBtn = document.querySelector('.fa-clock')
 const saveBtn = document.getElementById('settings-save').querySelector('button')
 const closeBtn = document.querySelector('.close-button')
 const mainBtn = document.querySelectorAll('.main-button')
+const settingsRandori = document.getElementById('settings-randori')
+const settingsThreePerson = document.getElementById('settings-threePerson')
+const settingsUchikomi = document.getElementById('settings-uchikomi')
+const settingsWater = document.getElementById('settings-waterbreak')
 
 // declaring obj with methods to add and subtract time
 const adjustTime = {
@@ -378,6 +385,7 @@ function changeTime(e) {
   let seconds = e.target.parentNode.querySelector('.timer-seconds')
   let secondsNum = +seconds.textContent
 
+  // console.log(e.target.parentNode.className)
   // adds and subtracts times from targeted buttons
   switch (e.target.parentNode.className) {
     case 'time':
@@ -418,7 +426,19 @@ function changeTime(e) {
       break
 
     case 'round':
-      console.log('round')
+      // console.log('round')
+      if (e.target.textContent === '+') {
+        minutes.textContent++
+      } else {
+        if (minutes.textContent > 1) {
+          minutes.textContent--
+        } else {
+          console.log('no negative time')
+        }
+      }
+      break
+
+    case 'threePerson':
       if (e.target.textContent === '+') {
         minutes.textContent++
       } else {
@@ -468,6 +488,12 @@ function saveSettings() {
   console.log('settings saved')
   timerName.randori.minutes = +document
     .querySelector('.time')
+    .querySelector('.timer-minutes').textContent
+  timerName.threePerson.minutes = +document
+    .querySelector('.time')
+    .querySelector('.timer-minutes').textContent
+  timerName.threePerson.rounds = +document
+    .querySelector('.threePerson')
     .querySelector('.timer-minutes').textContent
   timerName.randori.rounds = +document
     .querySelector('.round')
