@@ -241,11 +241,11 @@ function startTimer() {
           clearInterval(interval)
           if (masterMode === 'break') return
           else {
-            currentRound++
+            if (masterMode === 'randori') currentRound++
             document.getElementById('round-select-output').textContent =
               currentRound
 
-            switchMode('randori')
+            switchMode(masterMode)
             startTimer()
           }
           break
@@ -266,8 +266,11 @@ function startTimer() {
               timerName.threePerson.group[0]
             document.getElementById('round-select-total').textContent =
               timerName.threePerson.group[1]
+            clearInterval(interval)
+            switchMode('break')
             startTimer()
           } else {
+            clearInterval(interval)
             timerName.threePerson.group = ['A', 'B', 'C']
             document.getElementById('round-select-output').textContent =
               timerName.threePerson.group[0]
@@ -344,6 +347,7 @@ function resetTimer() {
 // function to completely reset timer.
 // used when manually stopping.
 function resetTimerCompletely() {
+  timerName.threePerson.group = ['A', 'B', 'C']
   currentRound = 1
   resetTimer()
 }
@@ -363,7 +367,7 @@ function handleMode(event) {
 // switches mode
 function switchMode(mode) {
   currentMode = mode
-  console.log(currentMode)
+  console.log('swithcmode: ' + currentMode)
   resetTimer()
 
   // updates display to chosen mode
@@ -377,7 +381,7 @@ function switchMode(mode) {
   )
 
   // changes display depending on whether or not '3-person' mode is chosen
-  if (currentMode === 'threePerson') {
+  if (masterMode === 'threePerson') {
     document.getElementById('round-title').textContent = 'Group'
     document.getElementById('round-select').childNodes[3].textContent = 'vs'
     document.getElementById('round-select-output').textContent =
@@ -541,6 +545,9 @@ function saveSettings() {
   timerName.threePerson.minutes = +document
     .querySelector('.randori')
     .querySelector('.timer-minutes').textContent
+  timerName.threePerson.seconds = +document
+    .querySelector('.randori')
+    .querySelector('.timer-seconds').textContent
   timerName.threePerson.rounds = +document
     .querySelector('.threePerson')
     .querySelector('.timer-minutes').textContent
