@@ -420,14 +420,30 @@ function changeTime(e) {
   switch (e.target.parentNode.className) {
     case 'randori':
       if (e.target.textContent === '+') {
-        minutes.textContent++
-        minutes.textContent = minutes.textContent.padStart(2, '0')
+        // minutes.textContent++
+        // minutes.textContent = minutes.textContent.padStart(2, '0')
+        secondsNum += 30
+        seconds.textContent = secondsNum
+        seconds.textContent = seconds.textContent.padStart(2, '0')
+        if (seconds.textContent == 60) {
+          minutes.textContent++
+          minutes.textContent = minutes.textContent.padStart(2, '0')
+          seconds.textContent = '00'
+        }
       } else {
-        if (minutes.textContent > 0) {
+        // if (minutes.textContent > 0) {
+        //   minutes.textContent--
+        //   minutes.textContent = minutes.textContent.padStart(2, '0')
+        // } else {
+        //   console.log('no negative time')
+        // }
+        if (seconds.textContent == 0 && minutes.textContent > 0) {
+          seconds.textContent = 30
           minutes.textContent--
           minutes.textContent = minutes.textContent.padStart(2, '0')
-        } else {
-          console.log('no negative time')
+        } else if (seconds.textContent == 30) {
+          seconds.textContent = '00'
+          minutes.textContent = minutes.textContent.padStart(2, '0')
         }
       }
       break
@@ -519,6 +535,9 @@ function saveSettings() {
   timerName.randori.minutes = +document
     .querySelector('.randori')
     .querySelector('.timer-minutes').textContent
+  timerName.randori.seconds = +document
+    .querySelector('.randori')
+    .querySelector('.timer-seconds').textContent
   timerName.threePerson.minutes = +document
     .querySelector('.randori')
     .querySelector('.timer-minutes').textContent
