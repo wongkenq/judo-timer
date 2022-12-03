@@ -144,11 +144,12 @@ closeBtn.addEventListener('click', slideOut)
 
 // adds class of 'active' to the clicked button
 function buttonDown(e) {
-  e.target.classList.add('active')
+  // console.log(e.target.nodeName)
+  if (e.target.nodeName === 'BUTTON') e.target.classList.add('active')
 }
 
 function buttonUp(e) {
-  e.target.classList.remove('active')
+  if (e.target.nodeName === 'BUTTON') e.target.classList.remove('active')
 }
 
 // starts timer if 'start' button is clicked
@@ -367,8 +368,7 @@ function handleMode(event) {
 // switches mode
 function switchMode(mode) {
   currentMode = mode
-  console.log('swithcmode: ' + currentMode)
-  resetTimer()
+  resetTimerCompletely()
 
   // updates display to chosen mode
   displayMin.textContent = `${timerName[currentMode]['minutes']}`.padStart(
@@ -648,7 +648,7 @@ function toggleFullscreen() {
 
 // listens to key presses to start timer or change timer mode
 function keyPress(e) {
-  // set active element back to 'body' because when active element is a button,
+  // set active element back to 'body' because when active element is a button
   // functions that use key presses don't work
   document.activeElement.blur()
   // console.log(e.code)
