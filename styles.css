@@ -247,10 +247,6 @@ button:active {
   padding-left: 2rem;
   z-index: 1;
 }
-/* 
-#settings > section {
-  margin-left: 2rem;
-} */
 
 #settings button {
   cursor: pointer !important;
@@ -289,12 +285,15 @@ button.main-button.change-time {
     flex-direction: row;
     gap: 1rem;
     font-size: 10vw;
+    width: auto;
   }
   #settings-button {
-    top: 10%;
+    display: none;
   }
   #settings {
     width: 100%;
+    position: inherit;
+    padding: 0;
   }
   #settings-save {
     display: flex;
@@ -303,5 +302,11 @@ button.main-button.change-time {
   .close-button {
     position: absolute;
     top: 6%;
+  }
+  #settings section {
+    margin-left: 2rem;
+  }
+  .close-button {
+    display: none;
   }
 }

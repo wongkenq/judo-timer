@@ -35,7 +35,10 @@ if (window.localStorage.getItem('times')) {
 
 // if user clicks outside of the menu, it will close the menu
 document.querySelector('.timer').addEventListener('click', () => {
-  if (!document.getElementById('settings').classList.contains('closed')) {
+  if (
+    !document.getElementById('settings').classList.contains('closed') &&
+    window.innerWidth > 480
+  ) {
     slideOut()
   }
 })
@@ -572,7 +575,10 @@ function saveSettings() {
   window.localStorage.setItem('times', JSON.stringify(timerName))
 
   switchMode(currentMode)
-  slideOut()
+  if (window.innerWidth > 480) {
+    slideOut()
+  }
+  swiper.slideNext(500, true)
 }
 
 switchMode(currentMode)
@@ -699,6 +705,7 @@ const swiper = new Swiper('.swiper', {
   loop: false,
   resistance: true,
   resistanceRatio: 0,
+  initialSlide: 2,
 
   // If we need pagination
   // pagination: {
@@ -720,5 +727,9 @@ const swiper = new Swiper('.swiper', {
 window.addEventListener('load', () => {
   if (window.innerWidth > 480) {
     swiper.destroy()
+  }
+  if (window.innerWidth <= 480) {
+    const settings = document.getElementById('settings')
+    settings.classList.remove('closed')
   }
 })
