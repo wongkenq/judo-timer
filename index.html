@@ -14,153 +14,160 @@
       href="images/vecteezy_judo-styles-art_.jpg"
       type="image/x-icon"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css"
+    />
     <link rel="stylesheet" href="styles.css" />
   </head>
-  <body>
-    <main class="app">
-      <progress id="js-progress" value="0"></progress>
-      <div class="progress-bar"></div>
-      <div class="timer">
-        <div class="button-group mode-buttons" id="js-mode-buttons">
-          <button
-            data-mode="randori"
-            class="button active mode-button"
-            id="js-randori"
-          >
-            Randori
-          </button>
-          <button
-            data-mode="threePerson"
-            class="button mode-button"
-            id="js-three-person"
-          >
-            3-Person
-          </button>
-          <button data-mode="break" class="button mode-button" id="js-break">
+  <body class="swiper">
+    <div class="swiper-wrapper">
+      <main id="settings" class="swiper-slide closed">
+        <div class="close-button">
+          <i class="fa-regular fa-circle-xmark"></i>
+        </div>
+        <section id="settings-randori">
+          Randori
+          <div class="randori">
+            Time
+            <button class="main-button change-time">+</button>
+            <span class="timer-minutes" data-minutes>02</span>
+            <span>:</span>
+            <span class="timer-seconds" data-seconds>00</span>
+            <button class="main-button change-time">-</button>
+          </div>
+          <div class="break">
             Break
-          </button>
-          <button
-            data-mode="uchikomi"
-            class="button mode-button"
-            id="js-uchikomi"
-          >
-            Uchikomi
-          </button>
-          <button
-            data-mode="waterBreak"
-            class="button mode-button"
-            id="js-waterBreak"
-          >
-            Water break
-          </button>
-        </div>
-        <section class="middle">
-          <section>
-            <div>
-              <section id="rounds">
-                <span id="round-title">Round</span>
-                <div id="round-select">
-                  <span id="round-select-output">1</span>
-                  <span>of</span>
-                  <span id="round-select-total">1</span>
-                </div>
-              </section>
-              <div class="clock" id="js-clock">
-                <!-- <div id="chooseMinutes">
-                </div> -->
-                <span id="js-minutes">00</span>
-                <span class="separator">:</span>
-                <span id="js-seconds">00</span>
-              </div>
-            </div>
-            <!-- <div id="chooseTime">
-              <i class="fa-sharp fa-solid fa-plus"></i>
-              <i class="fa-sharp fa-solid fa-minus"></i>
-            </div> -->
-            <div id="btn-container">
-              <button class="main-button" data-action="start" id="js-btn">
-                Start
-              </button>
-              <button class="main-button" id="js-reset-btn">Reset</button>
-            </div>
-          </section>
+            <button class="main-button change-time">+</button>
+            <span class="timer-minutes" data-minutes>00</span>
+            <span>:</span>
+            <span class="timer-seconds" data-seconds>30</span>
+            <button class="main-button change-time">-</button>
+          </div>
+          <div class="round">
+            Round
+            <button class="main-button change-time">+</button>
+            <span class="timer-minutes" data-rounds>1</span>
+            <span class="timer-seconds" style="display: none">00</span>
+            <button class="main-button change-time">-</button>
+          </div>
         </section>
-      </div>
-      <div id="settings-button">
-        <!-- <i class="fa-solid fa-clock"></i> -->
-        <i class="fa-solid fa-gear"></i>
-      </div>
-    </main>
-    <main id="settings" class="closed">
-      <div class="close-button">X</div>
-      <section id="settings-randori">
-        Randori
-        <div class="randori">
-          Time
-          <button class="main-button change-time">+</button>
-          <span class="timer-minutes" data-minutes>02</span>
-          <span>:</span>
-          <span class="timer-seconds" data-seconds>00</span>
-          <button class="main-button change-time">-</button>
+        <section id="settings-threePerson">
+          <div class="threePerson">
+            3-Person Rounds
+            <button class="main-button change-time">+</button>
+            <span class="timer-minutes" data-rounds>1</span>
+            <span class="timer-seconds" style="display: none">00</span>
+            <button class="main-button change-time">-</button>
+          </div>
+        </section>
+        <section id="settings-uchikomi">
+          <div class="uchikomi">
+            Uchikomi
+            <button class="main-button change-time">+</button>
+            <span class="timer-minutes" data-minutes>05</span>
+            <span>:</span>
+            <span class="timer-seconds" data-seconds>00</span>
+            <button class="main-button change-time">-</button>
+          </div>
+        </section>
+        <section id="settings-waterBreak">
+          <div class="waterBreak">
+            Water break
+            <button class="main-button change-time">+</button>
+            <span class="timer-minutes" data-minutes>02</span>
+            <span>:</span>
+            <span class="timer-seconds" data-seconds>00</span>
+            <button class="main-button change-time">-</button>
+          </div>
+        </section>
+        <section id="settings-save">
+          <button class="main-button">Save</button>
+          <button class="main-button fullscreen">Fullscreen</button>
+        </section>
+      </main>
+      <main class="app swiper-slide">
+        <progress id="js-progress" value="0"></progress>
+        <div class="progress-bar"></div>
+        <div class="timer">
+          <div class="button-group mode-buttons" id="js-mode-buttons">
+            <button
+              data-mode="randori"
+              class="button active mode-button"
+              id="js-randori"
+            >
+              Randori
+            </button>
+            <button
+              data-mode="threePerson"
+              class="button mode-button"
+              id="js-three-person"
+            >
+              3-Person
+            </button>
+            <button data-mode="break" class="button mode-button" id="js-break">
+              Break
+            </button>
+            <button
+              data-mode="uchikomi"
+              class="button mode-button"
+              id="js-uchikomi"
+            >
+              Uchikomi
+            </button>
+            <button
+              data-mode="waterBreak"
+              class="button mode-button"
+              id="js-waterBreak"
+            >
+              Water break
+            </button>
+          </div>
+          <section class="middle">
+            <section>
+              <div>
+                <section id="rounds">
+                  <span id="round-title">Round</span>
+                  <div id="round-select">
+                    <span id="round-select-output">1</span>
+                    <span>of</span>
+                    <span id="round-select-total">1</span>
+                  </div>
+                </section>
+                <div class="clock" id="js-clock">
+                  <!-- <div id="chooseMinutes">
+                  </div> -->
+                  <span id="js-minutes">00</span>
+                  <span class="separator">:</span>
+                  <span id="js-seconds">00</span>
+                </div>
+              </div>
+              <!-- <div id="chooseTime">
+                <i class="fa-sharp fa-solid fa-plus"></i>
+                <i class="fa-sharp fa-solid fa-minus"></i>
+              </div> -->
+              <div id="btn-container">
+                <button class="main-button" data-action="start" id="js-btn">
+                  <i class="fa-solid fa-play"></i>
+                </button>
+                <button class="main-button" id="js-reset-btn">
+                  <i class="fa-solid fa-rotate-right"></i>
+                </button>
+              </div>
+            </section>
+          </section>
         </div>
-        <div class="break">
-          Break
-          <button class="main-button change-time">+</button>
-          <span class="timer-minutes" data-minutes>00</span>
-          <span>:</span>
-          <span class="timer-seconds" data-seconds>30</span>
-          <button class="main-button change-time">-</button>
+        <div id="settings-button">
+          <!-- <i class="fa-solid fa-clock"></i> -->
+          <i class="fa-solid fa-gear"></i>
         </div>
-        <div class="round">
-          Round
-          <button class="main-button change-time">+</button>
-          <span class="timer-minutes" data-rounds>1</span>
-          <span class="timer-seconds" style="display: none">00</span>
-          <button class="main-button change-time">-</button>
-        </div>
-      </section>
-      <section id="settings-threePerson">
-        <div class="threePerson">
-          3-Person Rounds
-          <button class="main-button change-time">+</button>
-          <span class="timer-minutes" data-rounds>1</span>
-          <span class="timer-seconds" style="display: none">00</span>
-          <button class="main-button change-time">-</button>
-        </div>
-      </section>
-      <section id="settings-uchikomi">
-        <div class="uchikomi">
-          Uchikomi
-          <button class="main-button change-time">+</button>
-          <span class="timer-minutes" data-minutes>05</span>
-          <span>:</span>
-          <span class="timer-seconds" data-seconds>00</span>
-          <button class="main-button change-time">-</button>
-        </div>
-      </section>
-      <section id="settings-waterBreak">
-        <div class="waterBreak">
-          Water break
-          <button class="main-button change-time">+</button>
-          <span class="timer-minutes" data-minutes>02</span>
-          <span>:</span>
-          <span class="timer-seconds" data-seconds>00</span>
-          <button class="main-button change-time">-</button>
-        </div>
-      </section>
-      <section id="settings-save">
-        <button class="main-button">Save</button>
-        <button class="main-button fullscreen">Fullscreen</button>
-      </section>
-    </main>
-    <!-- <i
-      id="fullscreen"
-      class="fa-solid fa-up-right-and-down-left-from-center"
-    ></i> -->
+      </main>
+    </div>
     <!-- <div class="hidden">
       <audio src="/sounds/1bell.mp3" data-sound="1bell"></audio>
       <audio src="/sounds/3bell.mp3" data-sound="3bell"></audio>
     </div> -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
     <script src="app.js"></script>
     <!-- <script src="main.js"></script>/ -->
   </body>
