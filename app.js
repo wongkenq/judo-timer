@@ -192,7 +192,8 @@ function startTimer() {
 
   // changes dataset and text of start button to 'pause'. adds 'active' class
   startBtn.dataset.action = 'pause'
-  startBtn.textContent = 'pause'
+  // startBtn.textContent = 'pause'
+  startBtn.innerHTML = `<i class="fa-solid fa-pause"></i>`
   startBtn.classList.add('active')
 
   // plays starting bell sound when starting timer that's not 'break'
@@ -289,7 +290,8 @@ function pauseTimer() {
 
   // sets 'pause' button to 'start'
   startBtn.dataset.action = 'start'
-  startBtn.textContent = 'start'
+  // startBtn.textContent = 'start'
+  startBtn.innerHTML = `<i class="fa-solid fa-play"></i>`
   startBtn.classList.remove('active')
 }
 
@@ -688,3 +690,35 @@ function keyPress(e) {
       break
   }
 }
+
+const swiper = new Swiper('.swiper', {
+  // Optional parameters
+
+  freeMode: false,
+  direction: 'horizontal',
+  loop: false,
+  resistance: true,
+  resistanceRatio: 0,
+
+  // If we need pagination
+  // pagination: {
+  //   el: '.swiper-pagination',
+  // },
+
+  // Navigation arrows
+  // navigation: {
+  //   nextEl: '.swiper-button-next',
+  //   prevEl: '.swiper-button-prev',
+  // },
+
+  // And if we need scrollbar
+  // scrollbar: {
+  //   el: '.swiper-scrollbar',
+  // },
+})
+
+window.addEventListener('load', () => {
+  if (window.innerWidth > 480) {
+    swiper.destroy()
+  }
+})
