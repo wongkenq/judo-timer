@@ -562,7 +562,7 @@ function changeTime(e) {
   }
 }
 
-// saves the user selected times to memory and localstorage. then closes menu.
+// saves the user selected times to memory and localStorage. then closes menu.
 function saveSettings() {
   console.log('settings saved')
   timerName.randori.minutes = parseInt(rMin.value)
