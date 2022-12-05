@@ -730,21 +730,27 @@ const swiper = new Swiper('.swiper', {
   // },
 })
 
-//disables swiper if screen is wider than 480px
-window.addEventListener('load', () => {
-  if (window.innerWidth > 480) {
+// check mediaQuery to enable or disable swiper
+function checkMediaQuery() {
+  const mediaQuery = window.matchMedia('(min-width: 650px)')
+  const settings = document.getElementById('settings')
+  if (mediaQuery.matches) {
+    settings.classList.add('closed')
     swiper.destroy()
-  }
-  if (window.innerWidth <= 480) {
-    const settings = document.getElementById('settings')
+  } else {
+    swiper.enable()
     settings.classList.remove('closed')
   }
-})
+}
+
+// calls checkMediaQuery on load and resize
+window.addEventListener('load', checkMediaQuery)
+// window.addEventListener('resize', checkMediaQuery)
 
 // dynamically creates drop down selections for the settings menu
 function createOptions(id) {
   if (id.id.split('-')[1] === 'seconds') {
-    for (let i = 0; i <= 60; i += 5) {
+    for (let i = 0; i <= 55; i += 5) {
       const option = document.createElement('option')
       option.value = i
       option.textContent = i
