@@ -50,6 +50,18 @@ let masterMode
 let currentRound = 1
 let totalRounds = timerName.randori.rounds
 let interval
+
+const rMin = document.getElementById('randori-minutes')
+const rSec = document.getElementById('randori-seconds')
+const bSec = document.getElementById('break-seconds')
+const bMin = document.getElementById('break-minutes')
+const rRounds = document.getElementById('randori-rounds')
+const threeRounds = document.getElementById('threePerson-rounds')
+const uMin = document.getElementById('uchikomi-minutes')
+const uSec = document.getElementById('uchikomi-seconds')
+const wMin = document.getElementById('waterBreak-minutes')
+const wSec = document.getElementById('waterBreak-seconds')
+
 const addTimeBtn = document.querySelector('.fa-plus')
 const subTimeBtn = document.querySelector('.fa-minus')
 const displayMin = document.getElementById('js-minutes')
@@ -71,30 +83,42 @@ const settingsWater = document.getElementById('settings-waterBreak')
 
 // times in the settings menu display the actual times saved in the timer object,
 // instead of displaying hardcoded values in the html
-function setTimesInSettings() {
-  let minutes = document.querySelectorAll('[data-minutes]')
-  let seconds = document.querySelectorAll('[data-seconds]')
-  let rounds = document.querySelectorAll('[data-rounds]')
+async function setTimesInSettings() {
+  const times = await timerName
+  // let minutes = document.querySelectorAll('[data-minutes]')
+  // let seconds = document.querySelectorAll('[data-seconds]')
+  // let rounds = document.querySelectorAll('[data-rounds]')
 
-  minutes.forEach((minute) => {
-    let className = minute.parentNode.className
-    minute.textContent = `${timerName[className].minutes}`.padStart(2, '0')
-  })
+  rMin.value = times.randori.minutes
+  rSec.value = times.randori.seconds
+  rRounds.value = times.randori.rounds
+  threeRounds.value = times.threePerson.rounds
+  bMin.value = times.break.minutes
+  bSec.value = times.break.seconds
+  uMin.value = times.uchikomi.minutes
+  uSec.value = times.uchikomi.seconds
+  wMin.value = times.waterBreak.minutes
+  wSec.value = times.waterBreak.seconds
 
-  seconds.forEach((second) => {
-    let className = second.parentNode.className
-    second.textContent = `${timerName[className].seconds}`.padStart(2, '0')
-  })
+  // minutes.forEach((minute) => {
+  //   let className = minute.parentNode.className
+  //   minute.textContent = `${timerName[className].minutes}`.padStart(2, '0')
+  // })
 
-  rounds.forEach((round) => {
-    let className = round.parentNode.className
+  // seconds.forEach((second) => {
+  //   let className = second.parentNode.className
+  //   second.textContent = `${timerName[className].seconds}`.padStart(2, '0')
+  // })
 
-    if (className === 'round') {
-      round.textContent = timerName['randori'].rounds
-    } else {
-      round.textContent = timerName[className].rounds
-    }
-  })
+  // rounds.forEach((round) => {
+  //   let className = round.parentNode.className
+
+  //   if (className === 'round') {
+  //     round.textContent = timerName['randori'].rounds
+  //   } else {
+  //     round.textContent = timerName[className].rounds
+  //   }
+  // })
 }
 
 setTimesInSettings()
@@ -541,36 +565,18 @@ function changeTime(e) {
 // saves the user selected times to memory and localstorage. then closes menu.
 function saveSettings() {
   console.log('settings saved')
-  timerName.randori.minutes = +document
-    .querySelector('.randori')
-    .querySelector('.timer-minutes').textContent
-  timerName.randori.seconds = +document
-    .querySelector('.randori')
-    .querySelector('.timer-seconds').textContent
-  timerName.threePerson.minutes = +document
-    .querySelector('.randori')
-    .querySelector('.timer-minutes').textContent
-  timerName.threePerson.seconds = +document
-    .querySelector('.randori')
-    .querySelector('.timer-seconds').textContent
-  timerName.threePerson.rounds = +document
-    .querySelector('.threePerson')
-    .querySelector('.timer-minutes').textContent
-  timerName.randori.rounds = +document
-    .querySelector('.round')
-    .querySelector('.timer-minutes').textContent
-  timerName.break.minutes = +document
-    .querySelector('.break')
-    .querySelector('.timer-minutes').textContent
-  timerName.break.seconds = +document
-    .querySelector('.break')
-    .querySelector('.timer-seconds').textContent
-  timerName.uchikomi.minutes = +document
-    .querySelector('.uchikomi')
-    .querySelector('.timer-minutes').textContent
-  timerName.waterBreak.minutes = +document
-    .querySelector('.waterBreak')
-    .querySelector('.timer-minutes').textContent
+  timerName.randori.minutes = parseInt(rMin.value)
+  timerName.randori.seconds = parseInt(rSec.value)
+  timerName.randori.rounds = parseInt(rRounds.value)
+  timerName.threePerson.minutes = parseInt(rMin.value)
+  timerName.threePerson.seconds = parseInt(rSec.value)
+  timerName.threePerson.rounds = parseInt(threeRounds.value)
+  timerName.break.minutes = parseInt(bMin.value)
+  timerName.break.seconds = parseInt(bSec.value)
+  timerName.uchikomi.minutes = parseInt(uMin.value)
+  timerName.uchikomi.seconds = parseInt(uSec.value)
+  timerName.waterBreak.seconds = parseInt(wSec.value)
+  timerName.waterBreak.minutes = parseInt(wMin.value)
 
   window.localStorage.setItem('times', JSON.stringify(timerName))
 
@@ -724,6 +730,7 @@ const swiper = new Swiper('.swiper', {
   // },
 })
 
+//disables swiper if screen is wider than 480px
 window.addEventListener('load', () => {
   if (window.innerWidth > 480) {
     swiper.destroy()
@@ -733,3 +740,44 @@ window.addEventListener('load', () => {
     settings.classList.remove('closed')
   }
 })
+
+// dynamically creates drop down selections for the settings menu
+function createOptions(id) {
+  if (id.id.split('-')[1] === 'seconds') {
+    for (let i = 0; i <= 60; i += 5) {
+      const option = document.createElement('option')
+      option.value = i
+      option.textContent = i
+      option.textContent = option.textContent.padStart(2, '0')
+      id.appendChild(option)
+    }
+  } else if (id.id.split('-')[1] === 'minutes') {
+    for (let i = 0; i <= 10; i++) {
+      const option = document.createElement('option')
+      option.value = i
+      option.textContent = i
+      option.textContent = option.textContent.padStart(2, '0')
+      id.appendChild(option)
+    }
+  } else {
+    for (let i = 1; i < 10; i++) {
+      const option = document.createElement('option')
+      option.value = i
+      option.textContent = i
+      option.textContent = option.textContent.padStart(2, '0')
+      id.appendChild(option)
+    }
+  }
+}
+
+// calls the above function to create the drop downs for various settings
+createOptions(rMin)
+createOptions(rSec)
+createOptions(rRounds)
+createOptions(bSec)
+createOptions(bMin)
+createOptions(threeRounds)
+createOptions(uMin)
+createOptions(uSec)
+createOptions(wMin)
+createOptions(wSec)

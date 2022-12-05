@@ -240,7 +240,7 @@ button:active {
   font-size: x-large;
   gap: 5rem;
   position: absolute;
-  background: rgb(90, 90, 90);
+  background: #6c757d;
   width: 25%;
   transition: all 300ms;
   cursor: auto !important;
@@ -276,6 +276,14 @@ button.main-button.change-time {
   cursor: pointer;
 }
 
+.time-settings {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  width: auto;
+}
+
 @media (max-width: 480px) {
   .middle > section > div {
     flex-direction: column;
@@ -309,4 +317,24 @@ button.main-button.change-time {
   .close-button {
     display: none;
   }
+}
+
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  border: 1px solid black;
+  padding: 1rem;
+  background-color: #7e8891;
+  font-size: x-large;
+  scrollbar-width: thin;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
 }
