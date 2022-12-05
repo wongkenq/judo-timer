@@ -33,13 +33,6 @@ if (window.localStorage.getItem('times')) {
   }
 }
 
-// if user clicks outside of the menu, it will close the menu
-document.querySelector('.timer').addEventListener('click', () => {
-  if (!document.getElementById('settings').classList.contains('closed')) {
-    slideOut()
-  }
-})
-
 // declaring various variables
 let currentTime, endTime, differenceTime, remainingTime
 let currentMode = 'randori'
@@ -47,6 +40,19 @@ let masterMode
 let currentRound = 1
 let totalRounds = timerName.randori.rounds
 let interval
+
+const mediaQuery = window.matchMedia('(min-width: 650px)')
+const rMin = document.getElementById('randori-minutes')
+const rSec = document.getElementById('randori-seconds')
+const bSec = document.getElementById('break-seconds')
+const bMin = document.getElementById('break-minutes')
+const rRounds = document.getElementById('randori-rounds')
+const threeRounds = document.getElementById('threePerson-rounds')
+const uMin = document.getElementById('uchikomi-minutes')
+const uSec = document.getElementById('uchikomi-seconds')
+const wMin = document.getElementById('waterBreak-minutes')
+const wSec = document.getElementById('waterBreak-seconds')
+
 const addTimeBtn = document.querySelector('.fa-plus')
 const subTimeBtn = document.querySelector('.fa-minus')
 const displayMin = document.getElementById('js-minutes')
@@ -66,32 +72,69 @@ const settingsThreePerson = document.getElementById('settings-threePerson')
 const settingsUchikomi = document.getElementById('settings-uchikomi')
 const settingsWater = document.getElementById('settings-waterBreak')
 
+// check mediaQuery to enable or disable swiper
+function checkMediaQuery() {
+  const settings = document.getElementById('settings')
+  if (mediaQuery.matches) {
+    settings.classList.add('closed')
+    swiper.destroy()
+  } else {
+    swiper.enable()
+    settings.classList.remove('closed')
+  }
+}
+
+// calls checkMediaQuery on load and resize
+window.addEventListener('load', checkMediaQuery)
+
+// if user clicks outside of the menu, it will close the menu
+document.querySelector('.timer').addEventListener('click', () => {
+  if (
+    !document.getElementById('settings').classList.contains('closed') &&
+    mediaQuery.matches
+  ) {
+    slideOut()
+  }
+})
+
 // times in the settings menu display the actual times saved in the timer object,
 // instead of displaying hardcoded values in the html
-function setTimesInSettings() {
-  let minutes = document.querySelectorAll('[data-minutes]')
-  let seconds = document.querySelectorAll('[data-seconds]')
-  let rounds = document.querySelectorAll('[data-rounds]')
+async function setTimesInSettings() {
+  const times = await timerName
+  // let minutes = document.querySelectorAll('[data-minutes]')
+  // let seconds = document.querySelectorAll('[data-seconds]')
+  // let rounds = document.querySelectorAll('[data-rounds]')
 
-  minutes.forEach((minute) => {
-    let className = minute.parentNode.className
-    minute.textContent = `${timerName[className].minutes}`.padStart(2, '0')
-  })
+  rMin.value = times.randori.minutes
+  rSec.value = times.randori.seconds
+  rRounds.value = times.randori.rounds
+  threeRounds.value = times.threePerson.rounds
+  bMin.value = times.break.minutes
+  bSec.value = times.break.seconds
+  uMin.value = times.uchikomi.minutes
+  uSec.value = times.uchikomi.seconds
+  wMin.value = times.waterBreak.minutes
+  wSec.value = times.waterBreak.seconds
 
-  seconds.forEach((second) => {
-    let className = second.parentNode.className
-    second.textContent = `${timerName[className].seconds}`.padStart(2, '0')
-  })
+  // minutes.forEach((minute) => {
+  //   let className = minute.parentNode.className
+  //   minute.textContent = `${timerName[className].minutes}`.padStart(2, '0')
+  // })
 
-  rounds.forEach((round) => {
-    let className = round.parentNode.className
+  // seconds.forEach((second) => {
+  //   let className = second.parentNode.className
+  //   second.textContent = `${timerName[className].seconds}`.padStart(2, '0')
+  // })
 
-    if (className === 'round') {
-      round.textContent = timerName['randori'].rounds
-    } else {
-      round.textContent = timerName[className].rounds
-    }
-  })
+  // rounds.forEach((round) => {
+  //   let className = round.parentNode.className
+
+  //   if (className === 'round') {
+  //     round.textContent = timerName['randori'].rounds
+  //   } else {
+  //     round.textContent = timerName[className].rounds
+  //   }
+  // })
 }
 
 setTimesInSettings()
@@ -192,7 +235,8 @@ function startTimer() {
 
   // changes dataset and text of start button to 'pause'. adds 'active' class
   startBtn.dataset.action = 'pause'
-  startBtn.textContent = 'pause'
+  // startBtn.textContent = 'pause'
+  startBtn.innerHTML = `<i class="fa-solid fa-pause"></i>`
   startBtn.classList.add('active')
 
   // plays starting bell sound when starting timer that's not 'break'
@@ -289,7 +333,8 @@ function pauseTimer() {
 
   // sets 'pause' button to 'start'
   startBtn.dataset.action = 'start'
-  startBtn.textContent = 'start'
+  // startBtn.textContent = 'start'
+  startBtn.innerHTML = `<i class="fa-solid fa-play"></i>`
   startBtn.classList.remove('active')
 }
 
@@ -533,44 +578,29 @@ function changeTime(e) {
   }
 }
 
-// saves the user selected times to memory and localstorage. then closes menu.
+// saves the user selected times to memory and localStorage. then closes menu.
 function saveSettings() {
   console.log('settings saved')
-  timerName.randori.minutes = +document
-    .querySelector('.randori')
-    .querySelector('.timer-minutes').textContent
-  timerName.randori.seconds = +document
-    .querySelector('.randori')
-    .querySelector('.timer-seconds').textContent
-  timerName.threePerson.minutes = +document
-    .querySelector('.randori')
-    .querySelector('.timer-minutes').textContent
-  timerName.threePerson.seconds = +document
-    .querySelector('.randori')
-    .querySelector('.timer-seconds').textContent
-  timerName.threePerson.rounds = +document
-    .querySelector('.threePerson')
-    .querySelector('.timer-minutes').textContent
-  timerName.randori.rounds = +document
-    .querySelector('.round')
-    .querySelector('.timer-minutes').textContent
-  timerName.break.minutes = +document
-    .querySelector('.break')
-    .querySelector('.timer-minutes').textContent
-  timerName.break.seconds = +document
-    .querySelector('.break')
-    .querySelector('.timer-seconds').textContent
-  timerName.uchikomi.minutes = +document
-    .querySelector('.uchikomi')
-    .querySelector('.timer-minutes').textContent
-  timerName.waterBreak.minutes = +document
-    .querySelector('.waterBreak')
-    .querySelector('.timer-minutes').textContent
+  timerName.randori.minutes = parseInt(rMin.value)
+  timerName.randori.seconds = parseInt(rSec.value)
+  timerName.randori.rounds = parseInt(rRounds.value)
+  timerName.threePerson.minutes = parseInt(rMin.value)
+  timerName.threePerson.seconds = parseInt(rSec.value)
+  timerName.threePerson.rounds = parseInt(threeRounds.value)
+  timerName.break.minutes = parseInt(bMin.value)
+  timerName.break.seconds = parseInt(bSec.value)
+  timerName.uchikomi.minutes = parseInt(uMin.value)
+  timerName.uchikomi.seconds = parseInt(uSec.value)
+  timerName.waterBreak.seconds = parseInt(wSec.value)
+  timerName.waterBreak.minutes = parseInt(wMin.value)
 
   window.localStorage.setItem('times', JSON.stringify(timerName))
 
   switchMode(currentMode)
-  slideOut()
+  if (mediaQuery.matches) {
+    slideOut()
+  }
+  swiper.slideNext(500, true)
 }
 
 switchMode(currentMode)
@@ -688,3 +718,71 @@ function keyPress(e) {
       break
   }
 }
+
+const swiper = new Swiper('.swiper', {
+  // Optional parameters
+
+  freeMode: false,
+  direction: 'horizontal',
+  loop: false,
+  resistance: true,
+  resistanceRatio: 0,
+  initialSlide: 2,
+
+  // If we need pagination
+  // pagination: {
+  //   el: '.swiper-pagination',
+  // },
+
+  // Navigation arrows
+  // navigation: {
+  //   nextEl: '.swiper-button-next',
+  //   prevEl: '.swiper-button-prev',
+  // },
+
+  // And if we need scrollbar
+  // scrollbar: {
+  //   el: '.swiper-scrollbar',
+  // },
+})
+
+// dynamically creates drop down selections for the settings menu
+function createOptions(id) {
+  if (id.id.split('-')[1] === 'seconds') {
+    for (let i = 0; i <= 55; i += 5) {
+      const option = document.createElement('option')
+      option.value = i
+      option.textContent = i
+      option.textContent = option.textContent.padStart(2, '0')
+      id.appendChild(option)
+    }
+  } else if (id.id.split('-')[1] === 'minutes') {
+    for (let i = 0; i <= 10; i++) {
+      const option = document.createElement('option')
+      option.value = i
+      option.textContent = i
+      option.textContent = option.textContent.padStart(2, '0')
+      id.appendChild(option)
+    }
+  } else {
+    for (let i = 1; i < 10; i++) {
+      const option = document.createElement('option')
+      option.value = i
+      option.textContent = i
+      option.textContent = option.textContent.padStart(2, '0')
+      id.appendChild(option)
+    }
+  }
+}
+
+// calls the above function to create the drop downs for various settings
+createOptions(rMin)
+createOptions(rSec)
+createOptions(rRounds)
+createOptions(bSec)
+createOptions(bMin)
+createOptions(threeRounds)
+createOptions(uMin)
+createOptions(uSec)
+createOptions(wMin)
+createOptions(wSec)
