@@ -33,16 +33,6 @@ if (window.localStorage.getItem('times')) {
   }
 }
 
-// if user clicks outside of the menu, it will close the menu
-document.querySelector('.timer').addEventListener('click', () => {
-  if (
-    !document.getElementById('settings').classList.contains('closed') &&
-    window.innerWidth > 480
-  ) {
-    slideOut()
-  }
-})
-
 // declaring various variables
 let currentTime, endTime, differenceTime, remainingTime
 let currentMode = 'randori'
@@ -51,6 +41,7 @@ let currentRound = 1
 let totalRounds = timerName.randori.rounds
 let interval
 
+const mediaQuery = window.matchMedia('(min-width: 650px)')
 const rMin = document.getElementById('randori-minutes')
 const rSec = document.getElementById('randori-seconds')
 const bSec = document.getElementById('break-seconds')
@@ -80,6 +71,31 @@ const settingsRandori = document.getElementById('settings-randori')
 const settingsThreePerson = document.getElementById('settings-threePerson')
 const settingsUchikomi = document.getElementById('settings-uchikomi')
 const settingsWater = document.getElementById('settings-waterBreak')
+
+// check mediaQuery to enable or disable swiper
+function checkMediaQuery() {
+  const settings = document.getElementById('settings')
+  if (mediaQuery.matches) {
+    settings.classList.add('closed')
+    swiper.destroy()
+  } else {
+    swiper.enable()
+    settings.classList.remove('closed')
+  }
+}
+
+// calls checkMediaQuery on load and resize
+window.addEventListener('load', checkMediaQuery)
+
+// if user clicks outside of the menu, it will close the menu
+document.querySelector('.timer').addEventListener('click', () => {
+  if (
+    !document.getElementById('settings').classList.contains('closed') &&
+    mediaQuery.matches
+  ) {
+    slideOut()
+  }
+})
 
 // times in the settings menu display the actual times saved in the timer object,
 // instead of displaying hardcoded values in the html
@@ -581,7 +597,7 @@ function saveSettings() {
   window.localStorage.setItem('times', JSON.stringify(timerName))
 
   switchMode(currentMode)
-  if (window.innerWidth > 480) {
+  if (mediaQuery.matches) {
     slideOut()
   }
   swiper.slideNext(500, true)
@@ -729,23 +745,6 @@ const swiper = new Swiper('.swiper', {
   //   el: '.swiper-scrollbar',
   // },
 })
-
-// check mediaQuery to enable or disable swiper
-function checkMediaQuery() {
-  const mediaQuery = window.matchMedia('(min-width: 650px)')
-  const settings = document.getElementById('settings')
-  if (mediaQuery.matches) {
-    settings.classList.add('closed')
-    swiper.destroy()
-  } else {
-    swiper.enable()
-    settings.classList.remove('closed')
-  }
-}
-
-// calls checkMediaQuery on load and resize
-window.addEventListener('load', checkMediaQuery)
-// window.addEventListener('resize', checkMediaQuery)
 
 // dynamically creates drop down selections for the settings menu
 function createOptions(id) {
