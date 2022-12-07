@@ -1,4 +1,4 @@
-// declare empty obj
+// declare empty timer obj
 let timerName = {}
 
 // checks to see if user has saved settings previously. if so. loads the settings.
@@ -17,7 +17,6 @@ if (window.localStorage.getItem('times')) {
       seconds: 0,
       rounds: 2,
       group: ['A', 'B', 'C'],
-      // currentGroup = [group[0], group[1]],
     },
     uchikomi: {
       minutes: 5,
@@ -37,7 +36,7 @@ if (window.localStorage.getItem('times')) {
 // declaring various variables
 let currentTime, endTime, differenceTime, remainingTime
 let currentMode = 'randori'
-let masterMode
+let masterMode = currentMode
 let currentRound = 1
 let totalRounds = timerName.randori.rounds
 let interval
@@ -73,11 +72,38 @@ const settingsThreePerson = document.getElementById('settings-threePerson')
 const settingsUchikomi = document.getElementById('settings-uchikomi')
 const settingsWater = document.getElementById('settings-waterBreak')
 
-// times in the settings menu will display the times that are saved
-function setTimesInSettings() {
-  let minutes = document.querySelectorAll('[data-minutes]')
-  let seconds = document.querySelectorAll('[data-seconds]')
-  let rounds = document.querySelectorAll('[data-rounds]')
+// check mediaQuery to enable or disable swiper
+function checkMediaQuery() {
+  const settings = document.getElementById('settings')
+  if (mediaQuery.matches) {
+    settings.classList.add('closed')
+    swiper.destroy()
+  } else {
+    swiper.enable()
+    settings.classList.remove('closed')
+  }
+}
+
+// calls checkMediaQuery on load and resize
+window.addEventListener('load', checkMediaQuery)
+
+// if user clicks outside of the menu, it will close the menu
+document.querySelector('.timer').addEventListener('click', () => {
+  if (
+    !document.getElementById('settings').classList.contains('closed') &&
+    mediaQuery.matches
+  ) {
+    slideOut()
+  }
+})
+
+// times in the settings menu display the actual times saved in the timer object,
+// instead of displaying hardcoded values in the html
+async function setTimesInSettings() {
+  const times = await timerName
+  // let minutes = document.querySelectorAll('[data-minutes]')
+  // let seconds = document.querySelectorAll('[data-seconds]')
+  // let rounds = document.querySelectorAll('[data-rounds]')
 
   rMin.value = times.randori.minutes
   rSec.value = times.randori.seconds
@@ -240,7 +266,7 @@ function startTimer() {
           // checks if there's more rounds. stops function. switches mode to 'break'
           // starts timer
           if (currentRound < timerName.randori.rounds) {
-            // console.log(`current round: ${currentRound}`)
+            console.log(`current round: ${currentRound}`)
             clearInterval(interval)
             switchMode('break')
             startTimer()
@@ -260,18 +286,27 @@ function startTimer() {
           clearInterval(interval)
           if (masterMode === 'break') return
           else {
-            currentRound++
+            if (masterMode === 'randori' || masterMode === 'threePerson') {
+              currentRound++
+              console.log('current round: ' + currentRound)
+            }
             document.getElementById('round-select-output').textContent =
               currentRound
 
-            switchMode('randori')
+            switchMode(masterMode)
             startTimer()
           }
           break
         case 'threePerson':
           let person
           const totalThreePersonRounds = timerName.threePerson.rounds
+          // if the timer has completely cycled through the array, add 1 to the number of rounds completed
           if (timerName.threePerson.group[0] === 'C') currentRound++
+
+          // if the number of rounds completed is <= the total number of three person rounds
+          // move the 0th indexed element of the group array to the end
+          // and display index 0 vs index 1. then start the timer again
+          // else reset the group array to A,B,C
           if (currentRound <= totalThreePersonRounds) {
             person = timerName.threePerson.group.shift()
             timerName.threePerson.group.push(person)
@@ -279,16 +314,17 @@ function startTimer() {
               timerName.threePerson.group[0]
             document.getElementById('round-select-total').textContent =
               timerName.threePerson.group[1]
+            clearInterval(interval)
+            switchMode('break')
             startTimer()
           } else {
+            clearInterval(interval)
             timerName.threePerson.group = ['A', 'B', 'C']
             document.getElementById('round-select-output').textContent =
               timerName.threePerson.group[0]
             document.getElementById('round-select-total').textContent =
               timerName.threePerson.group[1]
           }
-          console.log(timerName.threePerson.group)
-          console.log(currentRound)
       }
     }
   }, 1000)
@@ -336,6 +372,8 @@ function resetTimer() {
 
   progress.value = 0
 
+  // if manually chosen mode is '3-person' display 'X vs Y'
+  // else display 'X of Y'
   if (masterMode === 'threePerson') {
     document.getElementById('round-select-output').textContent =
       timerName.threePerson.group[0]
@@ -358,6 +396,7 @@ function resetTimer() {
 // function to completely reset timer.
 // used when manually stopping.
 function resetTimerCompletely() {
+  timerName.threePerson.group = ['A', 'B', 'C']
   currentRound = 1
   resetTimer()
 }
@@ -371,13 +410,13 @@ function handleMode(event) {
   masterMode = modes
 
   switchMode(modes)
-  // resetTimer()
+  resetTimerCompletely()
 }
 
 // switches mode
 function switchMode(mode) {
   currentMode = mode
-  console.log(currentMode)
+  // resetTimerCompletely()
   resetTimer()
 
   // updates display to chosen mode
@@ -390,7 +429,8 @@ function switchMode(mode) {
     '0'
   )
 
-  if (currentMode === 'threePerson') {
+  // changes display depending on whether or not '3-person' mode is chosen
+  if (masterMode === 'threePerson') {
     document.getElementById('round-title').textContent = 'Group'
     document.getElementById('round-select').childNodes[3].textContent = 'vs'
     document.getElementById('round-select-output').textContent =
@@ -429,27 +469,43 @@ function changeTime(e) {
   let seconds = e.target.parentNode.querySelector('.timer-seconds')
   let secondsNum = +seconds.textContent
 
-  // console.log(e.target.parentNode.className)
   // adds and subtracts times from targeted buttons
   switch (e.target.parentNode.className) {
     case 'randori':
       if (e.target.textContent === '+') {
-        minutes.textContent++
-        minutes.textContent = minutes.textContent.padStart(2, '0')
+        // minutes.textContent++
+        // minutes.textContent = minutes.textContent.padStart(2, '0')
+        secondsNum += 30
+        seconds.textContent = secondsNum
+        seconds.textContent = seconds.textContent.padStart(2, '0')
+        if (seconds.textContent == 60) {
+          minutes.textContent++
+          minutes.textContent = minutes.textContent.padStart(2, '0')
+          seconds.textContent = '00'
+        }
       } else {
-        if (minutes.textContent > 0) {
+        // if (minutes.textContent > 0) {
+        //   minutes.textContent--
+        //   minutes.textContent = minutes.textContent.padStart(2, '0')
+        // } else {
+        //   console.log('no negative time')
+        // }
+        if (seconds.textContent == 0 && minutes.textContent > 0) {
+          seconds.textContent = 30
           minutes.textContent--
           minutes.textContent = minutes.textContent.padStart(2, '0')
-        } else {
-          console.log('no negative time')
+        } else if (seconds.textContent == 30) {
+          seconds.textContent = '00'
+          minutes.textContent = minutes.textContent.padStart(2, '0')
         }
       }
       break
 
     case 'break':
       if (e.target.textContent === '+') {
-        secondsNum += 15
+        secondsNum += 5
         seconds.textContent = secondsNum
+        seconds.textContent = seconds.textContent.padStart(2, '0')
 
         if (seconds.textContent == 60) {
           seconds.textContent = '00'
@@ -458,19 +514,18 @@ function changeTime(e) {
         }
       } else {
         if (seconds.textContent > 0) {
-          secondsNum -= 15
+          secondsNum -= 5
           seconds.textContent = secondsNum
           seconds.textContent = seconds.textContent.padStart(2, '0')
         } else if (minutes.textContent > 0) {
           minutes.textContent--
           minutes.textContent = minutes.textContent.padStart(2, '0')
-          seconds.textContent = 45
+          seconds.textContent = 55
         }
       }
       break
 
     case 'round':
-      // console.log('round')
       if (e.target.textContent === '+') {
         minutes.textContent++
       } else {
@@ -530,30 +585,18 @@ function changeTime(e) {
 // saves the user selected times to memory and localStorage. then closes menu.
 function saveSettings() {
   console.log('settings saved')
-  timerName.randori.minutes = +document
-    .querySelector('.randori')
-    .querySelector('.timer-minutes').textContent
-  timerName.threePerson.minutes = +document
-    .querySelector('.randori')
-    .querySelector('.timer-minutes').textContent
-  timerName.threePerson.rounds = +document
-    .querySelector('.threePerson')
-    .querySelector('.timer-minutes').textContent
-  timerName.randori.rounds = +document
-    .querySelector('.round')
-    .querySelector('.timer-minutes').textContent
-  timerName.break.minutes = +document
-    .querySelector('.break')
-    .querySelector('.timer-minutes').textContent
-  timerName.break.seconds = +document
-    .querySelector('.break')
-    .querySelector('.timer-seconds').textContent
-  timerName.uchikomi.minutes = +document
-    .querySelector('.uchikomi')
-    .querySelector('.timer-minutes').textContent
-  timerName.waterBreak.minutes = +document
-    .querySelector('.waterBreak')
-    .querySelector('.timer-minutes').textContent
+  timerName.randori.minutes = parseInt(rMin.value)
+  timerName.randori.seconds = parseInt(rSec.value)
+  timerName.randori.rounds = parseInt(rRounds.value)
+  timerName.threePerson.minutes = parseInt(rMin.value)
+  timerName.threePerson.seconds = parseInt(rSec.value)
+  timerName.threePerson.rounds = parseInt(threeRounds.value)
+  timerName.break.minutes = parseInt(bMin.value)
+  timerName.break.seconds = parseInt(bSec.value)
+  timerName.uchikomi.minutes = parseInt(uMin.value)
+  timerName.uchikomi.seconds = parseInt(uSec.value)
+  timerName.waterBreak.seconds = parseInt(wSec.value)
+  timerName.waterBreak.minutes = parseInt(wMin.value)
 
   window.localStorage.setItem('times', JSON.stringify(timerName))
 
