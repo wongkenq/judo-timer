@@ -109,6 +109,7 @@ progress::-webkit-progress-value {
 .clock {
   /* margin-top: 50px;
   margin-bottom: 30px; */
+  width: 75%;
   font-size: 25vw;
   line-height: 1;
   display: flex;
@@ -361,4 +362,19 @@ select {
   box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
   -webkit-border-radius: 10px;
   border-radius: 10px;
+}
+
+.time-selector {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.time-selector i:hover {
+  color: white;
+}
+
+.time-selector i:active {
+  color: orange;
 }
