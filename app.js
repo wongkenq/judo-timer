@@ -105,16 +105,16 @@ async function setTimesInSettings() {
   // let seconds = document.querySelectorAll('[data-seconds]')
   // let rounds = document.querySelectorAll('[data-rounds]')
 
-  rMin.value = times.randori.minutes
-  rSec.value = times.randori.seconds
-  rRounds.value = times.randori.rounds
-  threeRounds.value = times.threePerson.rounds
-  bMin.value = times.break.minutes
-  bSec.value = times.break.seconds
-  uMin.value = times.uchikomi.minutes
-  uSec.value = times.uchikomi.seconds
-  wMin.value = times.waterBreak.minutes
-  wSec.value = times.waterBreak.seconds
+  // rMin.value = times.randori.minutes
+  // rSec.value = times.randori.seconds
+  // rRounds.value = times.randori.rounds
+  // threeRounds.value = times.threePerson.rounds
+  // bMin.value = times.break.minutes
+  // bSec.value = times.break.seconds
+  // uMin.value = times.uchikomi.minutes
+  // uSec.value = times.uchikomi.seconds
+  // wMin.value = times.waterBreak.minutes
+  // wSec.value = times.waterBreak.seconds
 
   // minutes.forEach((minute) => {
   //   let className = minute.parentNode.className
@@ -704,21 +704,27 @@ function keyPress(e) {
       break
     case 'KeyR':
       switchMode('randori')
+      masterMode = 'randori'
       break
     case 'KeyU':
       switchMode('uchikomi')
+      masterMode = 'uchikomi'
       break
     case 'KeyW':
       switchMode('waterBreak')
+      masterMode = 'waterBreak'
       break
     case 'KeyB':
       switchMode('break')
+      masterMode = 'break'
       break
     case 'Digit3':
       switchMode('threePerson')
+      masterMode = 'threePerson'
       break
     case 'Numpad3':
       switchMode('threePerson')
+      masterMode = 'threePerson'
       break
   }
 }
@@ -780,13 +786,102 @@ function createOptions(id) {
 }
 
 // calls the above function to create the drop downs for various settings
-createOptions(rMin)
-createOptions(rSec)
-createOptions(rRounds)
-createOptions(bSec)
-createOptions(bMin)
-createOptions(threeRounds)
-createOptions(uMin)
-createOptions(uSec)
-createOptions(wMin)
-createOptions(wSec)
+// const settingsItems = [
+//   rMin,
+//   rSec,
+//   rRounds,
+//   bSec,
+//   bMin,
+//   threeRounds,
+//   uMin,
+//   uSec,
+//   wMin,
+//   wSec,
+// ]
+// settingsItems.forEach((item) => createOptions(item))
+
+// const upChevron = document.querySelector('.time-selector i')
+// const downChevron = document.querySelector('.fa-chevron-down')
+// upChevron.addEventListener('click', upTime)
+// downChevron.addEventListener('click', downTime)
+// function upTime() {
+//   let text = document.querySelector('.time-selector span')
+//   text.textContent++
+//   text.textContent = text.textContent.padStart(2, '0')
+// }
+// function downTime() {
+//   let text = document.querySelector('.time-selector span')
+//   text.textContent--
+//   text.textContent = text.textContent.padStart(2, '0')
+// }
+
+const upTime = (e) => {
+  const type = e.target.dataset.type
+  const parent = e.target.dataset.parent
+  const minutesOutput = document
+    .querySelector(`.${parent}`)
+    .querySelector('.minutes span')
+  const secondsOutput = document
+    .querySelector(`.${parent}`)
+    .querySelector('.seconds span')
+
+  switch (type) {
+    case 'minutes':
+      if (minutesOutput.textContent < 99) {
+        minutesOutput.textContent++
+        minutesOutput.textContent = minutesOutput.textContent.padStart(2, '0')
+      }
+      break
+    case 'seconds':
+      if (secondsOutput.textContent < 55) {
+        secondsOutput.textContent = parseInt(secondsOutput.textContent) + 5
+        secondsOutput.textContent = secondsOutput.textContent.padStart(2, '0')
+      } else if (
+        secondsOutput.textContent == 55 &&
+        minutesOutput.textContent < 99
+      ) {
+        secondsOutput.textContent = '00'
+        minutesOutput.textContent++
+        minutesOutput.textContent = minutesOutput.textContent.padStart(2, '0')
+      }
+  }
+}
+
+const downTime = (e) => {
+  const type = e.target.dataset.type
+  const span = e.target.parentNode.querySelector('span')
+  const parent = e.target.dataset.parent
+  const minutesOutput = document
+    .querySelector(`.${parent}`)
+    .querySelector('.minutes span')
+  const secondsOutput = document
+    .querySelector(`.${parent}`)
+    .querySelector('.seconds span')
+
+  switch (type) {
+    case 'minutes':
+      if (minutesOutput.textContent > 0) {
+        minutesOutput.textContent--
+        minutesOutput.textContent = minutesOutput.textContent.padStart(2, '0')
+      }
+      break
+    case 'seconds':
+      if (secondsOutput.textContent > 0) {
+        secondsOutput.textContent = secondsOutput.textContent - 5
+        secondsOutput.textContent = secondsOutput.textContent.padStart(2, '0')
+      } else if (
+        secondsOutput.textContent == 0 &&
+        minutesOutput.textContent > 0
+      ) {
+        secondsOutput.textContent = 55
+        minutesOutput.textContent--
+        minutesOutput.textContent = minutesOutput.textContent.padStart(2, '0')
+      }
+      break
+  }
+}
+
+const upArrow = document.querySelectorAll('.ri-arrow-up-s-fill')
+const downArrow = document.querySelectorAll('.ri-arrow-down-s-fill')
+upArrow.forEach((up) => up.addEventListener('click', upTime))
+downArrow.forEach((down) => down.addEventListener('click', downTime))
