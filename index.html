@@ -18,6 +18,10 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css"
     />
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body class="swiper">
@@ -31,13 +35,34 @@
           <div class="randori">
             Time
             <div class="time-settings">
-              <div>
-                <select name="randori-minutes" id="randori-minutes"></select>
+              <div class="time-selector minutes">
+                <i
+                  data-type="minutes"
+                  data-parent="randori"
+                  class="ri-arrow-up-s-fill"
+                ></i>
+                <span data-type="minutes">00</span>
+                <i
+                  data-type="minutes"
+                  data-parent="randori"
+                  class="ri-arrow-down-s-fill"
+                ></i>
+                <!-- <select name="randori-minutes" id="randori-minutes"></select> -->
               </div>
-              :
-              <div>
-                <select name="randori-seconds" id="randori-seconds"></select>
+              <div class="time-selector seconds">
+                <i
+                  data-type="seconds"
+                  data-parent="randori"
+                  class="ri-arrow-up-s-fill"
+                ></i>
+                <span data-type="seconds">00</span>
+                <i
+                  data-type="seconds"
+                  data-parent="randori"
+                  class="ri-arrow-down-s-fill"
+                ></i>
               </div>
+              <!-- <select name="randori-seconds" id="randori-seconds"></select> -->
             </div>
             <!-- <button class="main-button change-time">+</button>
             <span class="timer-minutes" data-minutes>02</span>
