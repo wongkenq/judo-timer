@@ -824,7 +824,9 @@ const upTime = (e) => {
   const secondsOutput = document
     .querySelector(`.${parent}`)
     .querySelector('.seconds span')
+  const roundsOutput = e.target.parentNode.querySelector('div')
 
+  // console.log(e.target.parentNode.querySelector('div'))
   switch (type) {
     case 'minutes':
       if (minutesOutput.textContent < 99) {
@@ -844,6 +846,9 @@ const upTime = (e) => {
         minutesOutput.textContent++
         minutesOutput.textContent = minutesOutput.textContent.padStart(2, '0')
       }
+    case 'rounds':
+      roundsOutput.textContent++
+      break
   }
 }
 
@@ -857,6 +862,7 @@ const downTime = (e) => {
   const secondsOutput = document
     .querySelector(`.${parent}`)
     .querySelector('.seconds span')
+  const roundsOutput = e.target.parentNode.querySelector('div')
 
   switch (type) {
     case 'minutes':
@@ -877,6 +883,9 @@ const downTime = (e) => {
         minutesOutput.textContent--
         minutesOutput.textContent = minutesOutput.textContent.padStart(2, '0')
       }
+      break
+    case 'rounds':
+      if (roundsOutput.textContent > 0) roundsOutput.textContent--
       break
   }
 }
