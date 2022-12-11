@@ -41,13 +41,12 @@
                   data-parent="randori"
                   class="ri-arrow-up-s-fill"
                 ></i>
-                <span data-type="minutes">00</span>
+                <span data-output="minutes" data-parent="randori">00</span>
                 <i
                   data-type="minutes"
                   data-parent="randori"
                   class="ri-arrow-down-s-fill"
                 ></i>
-                <!-- <select name="randori-minutes" id="randori-minutes"></select> -->
               </div>
               <div class="time-selector seconds">
                 <i
@@ -55,20 +54,14 @@
                   data-parent="randori"
                   class="ri-arrow-up-s-fill"
                 ></i>
-                <span data-type="seconds">00</span>
+                <span data-output="seconds" data-parent="randori">00</span>
                 <i
                   data-type="seconds"
                   data-parent="randori"
                   class="ri-arrow-down-s-fill"
                 ></i>
               </div>
-              <!-- <select name="randori-seconds" id="randori-seconds"></select> -->
             </div>
-            <!-- <button class="main-button change-time">+</button>
-            <span class="timer-minutes" data-minutes>02</span>
-            <span>:</span>
-            <span class="timer-seconds" data-seconds>00</span>
-            <button class="main-button change-time">-</button> -->
           </div>
           <div class="break">
             Break
@@ -79,7 +72,7 @@
                   data-parent="break"
                   class="ri-arrow-up-s-fill"
                 ></i>
-                <span data-type="minutes">00</span>
+                <span data-output="minutes" data-parent="break">00</span>
                 <i
                   data-type="minutes"
                   data-parent="break"
@@ -92,7 +85,7 @@
                   data-parent="break"
                   class="ri-arrow-up-s-fill"
                 ></i>
-                <span data-type="seconds">00</span>
+                <span data-output="seconds" data-parent="break">00</span>
                 <i
                   data-type="seconds"
                   data-parent="break"
@@ -100,11 +93,6 @@
                 ></i>
               </div>
             </div>
-            <!-- <button class="main-button change-time">+</button>
-            <span class="timer-minutes" data-minutes>00</span>
-            <span>:</span>
-            <span class="timer-seconds" data-seconds>30</span>
-            <button class="main-button change-time">-</button> -->
           </div>
           <div class="round">
             Rounds
@@ -114,17 +102,13 @@
                 data-parent="randori"
                 class="ri-arrow-up-s-fill"
               ></i>
-              <div data-parent="randori" data-type="rounds">0</div>
+              <div data-parent="randori" data-output="rounds">0</div>
               <i
                 data-type="rounds"
                 data-parent="randori"
                 class="ri-arrow-down-s-fill"
               ></i>
             </div>
-            <!-- <button class="main-button change-time">+</button>
-            <span class="timer-minutes" data-rounds>1</span>
-            <span class="timer-seconds" style="display: none">00</span>
-            <button class="main-button change-time">-</button> -->
           </div>
         </section>
         <section id="settings-threePerson">
@@ -136,17 +120,13 @@
                 data-parent="threePerson"
                 class="ri-arrow-up-s-fill"
               ></i>
-              <div data-parent="threePerson" data-type="rounds">0</div>
+              <div data-parent="threePerson" data-output="rounds">0</div>
               <i
                 data-type="rounds"
                 data-parent="threePerson"
                 class="ri-arrow-down-s-fill"
               ></i>
             </div>
-            <!-- <button class="main-button change-time">+</button>
-            <span class="timer-minutes" data-rounds>1</span>
-            <span class="timer-seconds" style="display: none">00</span>
-            <button class="main-button change-time">-</button> -->
           </div>
         </section>
         <section id="settings-uchikomi">
@@ -159,7 +139,7 @@
                   data-parent="uchikomi"
                   class="ri-arrow-up-s-fill"
                 ></i>
-                <span data-type="minutes">00</span>
+                <span data-output="minutes" data-parent="uchikomi">00</span>
                 <i
                   data-type="minutes"
                   data-parent="uchikomi"
@@ -172,7 +152,7 @@
                   data-parent="uchikomi"
                   class="ri-arrow-up-s-fill"
                 ></i>
-                <span data-type="seconds">00</span>
+                <span data-output="seconds" data-parent="uchikomi">00</span>
                 <i
                   data-type="seconds"
                   data-parent="uchikomi"
@@ -180,11 +160,6 @@
                 ></i>
               </div>
             </div>
-            <!-- <button class="main-button change-time">+</button>
-            <span class="timer-minutes" data-minutes>05</span>
-            <span>:</span>
-            <span class="timer-seconds" data-seconds>00</span>
-            <button class="main-button change-time">-</button> -->
           </div>
         </section>
         <section id="settings-waterBreak">
@@ -197,7 +172,7 @@
                   data-parent="waterBreak"
                   class="ri-arrow-up-s-fill"
                 ></i>
-                <span data-type="minutes">00</span>
+                <span data-output="minutes" data-parent="waterBreak">00</span>
                 <i
                   data-type="minutes"
                   data-parent="waterBreak"
@@ -210,7 +185,7 @@
                   data-parent="waterBreak"
                   class="ri-arrow-up-s-fill"
                 ></i>
-                <span data-type="seconds">00</span>
+                <span data-output="seconds" data-parent="waterBreak">00</span>
                 <i
                   data-type="seconds"
                   data-parent="waterBreak"
@@ -218,11 +193,6 @@
                 ></i>
               </div>
             </div>
-            <!-- <button class="main-button change-time">+</button>
-            <span class="timer-minutes" data-minutes>02</span>
-            <span>:</span>
-            <span class="timer-seconds" data-seconds>00</span>
-            <button class="main-button change-time">-</button> -->
           </div>
         </section>
         <section id="settings-save">
@@ -279,17 +249,11 @@
                   </div>
                 </section>
                 <div class="clock" id="js-clock">
-                  <!-- <div id="chooseMinutes">
-                  </div> -->
                   <span id="js-minutes">00</span>
                   <span class="separator">:</span>
                   <span id="js-seconds">00</span>
                 </div>
               </div>
-              <!-- <div id="chooseTime">
-                <i class="fa-sharp fa-solid fa-plus"></i>
-                <i class="fa-sharp fa-solid fa-minus"></i>
-              </div> -->
               <div id="btn-container">
                 <button class="main-button" data-action="start" id="js-btn">
                   <i class="fa-solid fa-play"></i>
@@ -302,7 +266,6 @@
           </section>
         </div>
         <div id="settings-button">
-          <!-- <i class="fa-solid fa-clock"></i> -->
           <i class="fa-solid fa-gear"></i>
         </div>
       </main>

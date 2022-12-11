@@ -42,16 +42,18 @@ let totalRounds = timerName.randori.rounds
 let interval
 
 const mediaQuery = window.matchMedia('(min-width: 650px)')
-const rMin = document.getElementById('randori-minutes')
-const rSec = document.getElementById('randori-seconds')
-const bSec = document.getElementById('break-seconds')
-const bMin = document.getElementById('break-minutes')
-const rRounds = document.getElementById('randori-rounds')
-const threeRounds = document.getElementById('threePerson-rounds')
-const uMin = document.getElementById('uchikomi-minutes')
-const uSec = document.getElementById('uchikomi-seconds')
-const wMin = document.getElementById('waterBreak-minutes')
-const wSec = document.getElementById('waterBreak-seconds')
+const rMin = document.querySelector('.randori div div span')
+const rSec = document.querySelector('.randori div div+div span')
+const bMin = document.querySelector('.break div div span')
+const bSec = document.querySelector('.break div div+div span')
+const rRounds = document.querySelector('.round div div')
+const threeMin = document.querySelector('.randori div div span')
+const threeSec = document.querySelector('.randori div div+div span')
+const threeRounds = document.querySelector('.threePerson div div')
+const uMin = document.querySelector('.uchikomi div div span')
+const uSec = document.querySelector('.uchikomi div div+div span')
+const wMin = document.querySelector('.waterBreak div div span')
+const wSec = document.querySelector('.waterBreak div div+div span')
 
 const addTimeBtn = document.querySelector('.fa-plus')
 const subTimeBtn = document.querySelector('.fa-minus')
@@ -101,77 +103,62 @@ document.querySelector('.timer').addEventListener('click', () => {
 // instead of displaying hardcoded values in the html
 async function setTimesInSettings() {
   const times = await timerName
-  // let minutes = document.querySelectorAll('[data-minutes]')
-  // let seconds = document.querySelectorAll('[data-seconds]')
-  // let rounds = document.querySelectorAll('[data-rounds]')
 
-  // rMin.value = times.randori.minutes
-  // rSec.value = times.randori.seconds
-  // rRounds.value = times.randori.rounds
-  // threeRounds.value = times.threePerson.rounds
-  // bMin.value = times.break.minutes
-  // bSec.value = times.break.seconds
-  // uMin.value = times.uchikomi.minutes
-  // uSec.value = times.uchikomi.seconds
-  // wMin.value = times.waterBreak.minutes
-  // wSec.value = times.waterBreak.seconds
+  let minutes = document.querySelectorAll(`[data-output='minutes']`)
+  let seconds = document.querySelectorAll(`[data-output='seconds']`)
+  let rounds = document.querySelectorAll(`[data-output='rounds']`)
 
-  // minutes.forEach((minute) => {
-  //   let className = minute.parentNode.className
-  //   minute.textContent = `${timerName[className].minutes}`.padStart(2, '0')
-  // })
+  minutes.forEach((minute) => {
+    let parent = minute.dataset.parent
+    minute.textContent = `${timerName[parent].minutes}`.padStart(2, '0')
+  })
 
-  // seconds.forEach((second) => {
-  //   let className = second.parentNode.className
-  //   second.textContent = `${timerName[className].seconds}`.padStart(2, '0')
-  // })
+  seconds.forEach((second) => {
+    let parent = second.dataset.parent
+    second.textContent = `${timerName[parent].seconds}`.padStart(2, '0')
+  })
 
-  // rounds.forEach((round) => {
-  //   let className = round.parentNode.className
-
-  //   if (className === 'round') {
-  //     round.textContent = timerName['randori'].rounds
-  //   } else {
-  //     round.textContent = timerName[className].rounds
-  //   }
-  // })
+  rounds.forEach((round) => {
+    let parent = round.dataset.parent
+    round.textContent = timerName[parent].rounds
+  })
 }
 
 setTimesInSettings()
 
 // declaring obj with methods to add and subtract time
-const adjustTime = {
-  add: () => {
-    // adds 1 minute to the current mode each time method is called
-    // immediately displays changes on the screen, adds initial 0 if num < 10
-    timerName[currentMode]['minutes']++
-    displayMin.textContent = `${timerName[currentMode]['minutes']}`.padStart(
-      2,
-      '0'
-    )
-    displaySec.textContent = `${timerName[currentMode]['seconds']}`.padStart(
-      2,
-      '0'
-    )
-  },
-  subtract: () => {
-    // subtracts 1 minute to the current mode each time method is called
-    // immediately displays changes on the screen, adds initial 0 if num < 10
-    if (timerName[currentMode]['minutes'] > 0) {
-      timerName[currentMode]['minutes']--
-      displayMin.textContent = `${timerName[currentMode]['minutes']}`.padStart(
-        2,
-        '0'
-      )
-      displaySec.textContent = `${timerName[currentMode]['seconds']}`.padStart(
-        2,
-        '0'
-      )
-    } else {
-      return
-    }
-  },
-}
+// const adjustTime = {
+//   add: () => {
+//     // adds 1 minute to the current mode each time method is called
+//     // immediately displays changes on the screen, adds initial 0 if num < 10
+//     timerName[currentMode]['minutes']++
+//     displayMin.textContent = `${timerName[currentMode]['minutes']}`.padStart(
+//       2,
+//       '0'
+//     )
+//     displaySec.textContent = `${timerName[currentMode]['seconds']}`.padStart(
+//       2,
+//       '0'
+//     )
+//   },
+//   subtract: () => {
+//     // subtracts 1 minute to the current mode each time method is called
+//     // immediately displays changes on the screen, adds initial 0 if num < 10
+//     if (timerName[currentMode]['minutes'] > 0) {
+//       timerName[currentMode]['minutes']--
+//       displayMin.textContent = `${timerName[currentMode]['minutes']}`.padStart(
+//         2,
+//         '0'
+//       )
+//       displaySec.textContent = `${timerName[currentMode]['seconds']}`.padStart(
+//         2,
+//         '0'
+//       )
+//     } else {
+//       return
+//     }
+//   },
+// }
 
 // adds event listener to each button for clicking and touch
 mainBtn.forEach((btn) => btn.addEventListener('mousedown', buttonDown))
@@ -585,18 +572,18 @@ function changeTime(e) {
 // saves the user selected times to memory and localStorage. then closes menu.
 function saveSettings() {
   console.log('settings saved')
-  timerName.randori.minutes = parseInt(rMin.value)
-  timerName.randori.seconds = parseInt(rSec.value)
-  timerName.randori.rounds = parseInt(rRounds.value)
-  timerName.threePerson.minutes = parseInt(rMin.value)
-  timerName.threePerson.seconds = parseInt(rSec.value)
-  timerName.threePerson.rounds = parseInt(threeRounds.value)
-  timerName.break.minutes = parseInt(bMin.value)
-  timerName.break.seconds = parseInt(bSec.value)
-  timerName.uchikomi.minutes = parseInt(uMin.value)
-  timerName.uchikomi.seconds = parseInt(uSec.value)
-  timerName.waterBreak.seconds = parseInt(wSec.value)
-  timerName.waterBreak.minutes = parseInt(wMin.value)
+  timerName.randori.minutes = parseInt(rMin.textContent)
+  timerName.randori.seconds = parseInt(rSec.textContent)
+  timerName.randori.rounds = parseInt(rRounds.textContent)
+  timerName.threePerson.minutes = parseInt(rMin.textContent)
+  timerName.threePerson.seconds = parseInt(rSec.textContent)
+  timerName.threePerson.rounds = parseInt(threeRounds.textContent)
+  timerName.break.minutes = parseInt(bMin.textContent)
+  timerName.break.seconds = parseInt(bSec.textContent)
+  timerName.uchikomi.minutes = parseInt(uMin.textContent)
+  timerName.uchikomi.seconds = parseInt(uSec.textContent)
+  timerName.waterBreak.minutes = parseInt(wMin.textContent)
+  timerName.waterBreak.seconds = parseInt(wSec.textContent)
 
   window.localStorage.setItem('times', JSON.stringify(timerName))
 
@@ -757,33 +744,33 @@ const swiper = new Swiper('.swiper', {
 })
 
 // dynamically creates drop down selections for the settings menu
-function createOptions(id) {
-  if (id.id.split('-')[1] === 'seconds') {
-    for (let i = 0; i <= 55; i += 5) {
-      const option = document.createElement('option')
-      option.value = i
-      option.textContent = i
-      option.textContent = option.textContent.padStart(2, '0')
-      id.appendChild(option)
-    }
-  } else if (id.id.split('-')[1] === 'minutes') {
-    for (let i = 0; i <= 10; i++) {
-      const option = document.createElement('option')
-      option.value = i
-      option.textContent = i
-      option.textContent = option.textContent.padStart(2, '0')
-      id.appendChild(option)
-    }
-  } else {
-    for (let i = 1; i < 10; i++) {
-      const option = document.createElement('option')
-      option.value = i
-      option.textContent = i
-      option.textContent = option.textContent.padStart(2, '0')
-      id.appendChild(option)
-    }
-  }
-}
+// function createOptions(id) {
+//   if (id.id.split('-')[1] === 'seconds') {
+//     for (let i = 0; i <= 55; i += 5) {
+//       const option = document.createElement('option')
+//       option.value = i
+//       option.textContent = i
+//       option.textContent = option.textContent.padStart(2, '0')
+//       id.appendChild(option)
+//     }
+//   } else if (id.id.split('-')[1] === 'minutes') {
+//     for (let i = 0; i <= 10; i++) {
+//       const option = document.createElement('option')
+//       option.value = i
+//       option.textContent = i
+//       option.textContent = option.textContent.padStart(2, '0')
+//       id.appendChild(option)
+//     }
+//   } else {
+//     for (let i = 1; i < 10; i++) {
+//       const option = document.createElement('option')
+//       option.value = i
+//       option.textContent = i
+//       option.textContent = option.textContent.padStart(2, '0')
+//       id.appendChild(option)
+//     }
+//   }
+// }
 
 // calls the above function to create the drop downs for various settings
 // const settingsItems = [
@@ -826,7 +813,7 @@ const upTime = (e) => {
     .querySelector('.seconds span')
   const roundsOutput = e.target.parentNode.querySelector('div')
 
-  // console.log(e.target.parentNode.querySelector('div'))
+  console.log(e.target.parentNode.querySelector('div'))
   switch (type) {
     case 'minutes':
       if (minutesOutput.textContent < 99) {
