@@ -64,7 +64,7 @@ const resetBtn = document.getElementById('js-reset-btn')
 const progress = document.getElementById('js-progress')
 const roundSelect = document.getElementById('round-select')
 const modeBtn = document.getElementById('js-mode-buttons')
-const settingsBtn = document.querySelector('.fa-gear')
+const settingsBtn = document.querySelector('.ri-menu-2-line')
 const timerBtn = document.querySelector('.fa-clock')
 const saveBtn = document.getElementById('settings-save').querySelector('button')
 const closeBtn = document.querySelector('.close-button')
@@ -81,13 +81,14 @@ function checkMediaQuery() {
     settings.classList.add('closed')
     swiper.destroy()
   } else {
-    swiper.enable()
     settings.classList.remove('closed')
+    swiper.enable()
   }
 }
 
 // calls checkMediaQuery on load and resize
 window.addEventListener('load', checkMediaQuery)
+window.addEventListener('resize', checkMediaQuery)
 
 // if user clicks outside of the menu, it will close the menu
 document.querySelector('.timer').addEventListener('click', () => {
