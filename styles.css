@@ -259,8 +259,8 @@ button.main-button.change-time {
 }
 
 .close-button {
-  position: relative;
-  top: -10%;
+  position: absolute;
+  top: 75px;
   left: 90%;
   font-size: xx-large;
   color: white;
