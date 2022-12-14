@@ -42,16 +42,18 @@ let totalRounds = timerName.randori.rounds
 let interval
 
 const mediaQuery = window.matchMedia('(min-width: 650px)')
-const rMin = document.getElementById('randori-minutes')
-const rSec = document.getElementById('randori-seconds')
-const bSec = document.getElementById('break-seconds')
-const bMin = document.getElementById('break-minutes')
-const rRounds = document.getElementById('randori-rounds')
-const threeRounds = document.getElementById('threePerson-rounds')
-const uMin = document.getElementById('uchikomi-minutes')
-const uSec = document.getElementById('uchikomi-seconds')
-const wMin = document.getElementById('waterBreak-minutes')
-const wSec = document.getElementById('waterBreak-seconds')
+const rMin = document.querySelector('.randori div div span')
+const rSec = document.querySelector('.randori div div+div span')
+const bMin = document.querySelector('.break div div span')
+const bSec = document.querySelector('.break div div+div span')
+const rRounds = document.querySelector('.round div div')
+const threeMin = document.querySelector('.randori div div span')
+const threeSec = document.querySelector('.randori div div+div span')
+const threeRounds = document.querySelector('.threePerson div div')
+const uMin = document.querySelector('.uchikomi div div span')
+const uSec = document.querySelector('.uchikomi div div+div span')
+const wMin = document.querySelector('.waterBreak div div span')
+const wSec = document.querySelector('.waterBreak div div+div span')
 
 const addTimeBtn = document.querySelector('.fa-plus')
 const subTimeBtn = document.querySelector('.fa-minus')
@@ -62,7 +64,7 @@ const resetBtn = document.getElementById('js-reset-btn')
 const progress = document.getElementById('js-progress')
 const roundSelect = document.getElementById('round-select')
 const modeBtn = document.getElementById('js-mode-buttons')
-const settingsBtn = document.querySelector('.fa-gear')
+const settingsBtn = document.querySelector('.ri-menu-2-line')
 const timerBtn = document.querySelector('.fa-clock')
 const saveBtn = document.getElementById('settings-save').querySelector('button')
 const closeBtn = document.querySelector('.close-button')
@@ -79,13 +81,14 @@ function checkMediaQuery() {
     settings.classList.add('closed')
     swiper.destroy()
   } else {
-    swiper.enable()
     settings.classList.remove('closed')
+    swiper.enable()
   }
 }
 
 // calls checkMediaQuery on load and resize
 window.addEventListener('load', checkMediaQuery)
+window.addEventListener('resize', checkMediaQuery)
 
 // if user clicks outside of the menu, it will close the menu
 document.querySelector('.timer').addEventListener('click', () => {
@@ -101,77 +104,62 @@ document.querySelector('.timer').addEventListener('click', () => {
 // instead of displaying hardcoded values in the html
 async function setTimesInSettings() {
   const times = await timerName
-  // let minutes = document.querySelectorAll('[data-minutes]')
-  // let seconds = document.querySelectorAll('[data-seconds]')
-  // let rounds = document.querySelectorAll('[data-rounds]')
 
-  rMin.value = times.randori.minutes
-  rSec.value = times.randori.seconds
-  rRounds.value = times.randori.rounds
-  threeRounds.value = times.threePerson.rounds
-  bMin.value = times.break.minutes
-  bSec.value = times.break.seconds
-  uMin.value = times.uchikomi.minutes
-  uSec.value = times.uchikomi.seconds
-  wMin.value = times.waterBreak.minutes
-  wSec.value = times.waterBreak.seconds
+  let minutes = document.querySelectorAll(`[data-output='minutes']`)
+  let seconds = document.querySelectorAll(`[data-output='seconds']`)
+  let rounds = document.querySelectorAll(`[data-output='rounds']`)
 
-  // minutes.forEach((minute) => {
-  //   let className = minute.parentNode.className
-  //   minute.textContent = `${timerName[className].minutes}`.padStart(2, '0')
-  // })
+  minutes.forEach((minute) => {
+    let parent = minute.dataset.parent
+    minute.textContent = `${timerName[parent].minutes}`.padStart(2, '0')
+  })
 
-  // seconds.forEach((second) => {
-  //   let className = second.parentNode.className
-  //   second.textContent = `${timerName[className].seconds}`.padStart(2, '0')
-  // })
+  seconds.forEach((second) => {
+    let parent = second.dataset.parent
+    second.textContent = `${timerName[parent].seconds}`.padStart(2, '0')
+  })
 
-  // rounds.forEach((round) => {
-  //   let className = round.parentNode.className
-
-  //   if (className === 'round') {
-  //     round.textContent = timerName['randori'].rounds
-  //   } else {
-  //     round.textContent = timerName[className].rounds
-  //   }
-  // })
+  rounds.forEach((round) => {
+    let parent = round.dataset.parent
+    round.textContent = timerName[parent].rounds
+  })
 }
 
 setTimesInSettings()
 
 // declaring obj with methods to add and subtract time
-const adjustTime = {
-  add: () => {
-    // adds 1 minute to the current mode each time method is called
-    // immediately displays changes on the screen, adds initial 0 if num < 10
-    timerName[currentMode]['minutes']++
-    displayMin.textContent = `${timerName[currentMode]['minutes']}`.padStart(
-      2,
-      '0'
-    )
-    displaySec.textContent = `${timerName[currentMode]['seconds']}`.padStart(
-      2,
-      '0'
-    )
-  },
-  subtract: () => {
-    // subtracts 1 minute to the current mode each time method is called
-    // immediately displays changes on the screen, adds initial 0 if num < 10
-    if (timerName[currentMode]['minutes'] > 0) {
-      timerName[currentMode]['minutes']--
-      displayMin.textContent = `${timerName[currentMode]['minutes']}`.padStart(
-        2,
-        '0'
-      )
-      displaySec.textContent = `${timerName[currentMode]['seconds']}`.padStart(
-        2,
-        '0'
-      )
-    } else {
-      return
-    }
-  },
-}
+// const adjustTime = {
+//   add: () => {
+//     // adds 1 minute to the current mode each time method is called
+//     // immediately displays changes on the screen, adds initial 0 if num < 10
+//     timerName[currentMode]['minutes']++
+//     displayMin.textContent = `${timerName[currentMode]['minutes']}`.padStart(
+//       2,
+//       '0'
+//     )
+//     displaySec.textContent = `${timerName[currentMode]['seconds']}`.padStart(
+//       2,
+//       '0'
+//     )
+//   },
+//   subtract: () => {
+//     // subtracts 1 minute to the current mode each time method is called
+//     // immediately displays changes on the screen, adds initial 0 if num < 10
+//     if (timerName[currentMode]['minutes'] > 0) {
+//       timerName[currentMode]['minutes']--
+//       displayMin.textContent = `${timerName[currentMode]['minutes']}`.padStart(
+//         2,
+//         '0'
+//       )
+//       displaySec.textContent = `${timerName[currentMode]['seconds']}`.padStart(
+//         2,
+//         '0'
+//       )
+//     } else {
+//       return
+//     }
+//   },
+// }
 
 // adds event listener to each button for clicking and touch
 mainBtn.forEach((btn) => btn.addEventListener('mousedown', buttonDown))
@@ -585,18 +573,18 @@ function changeTime(e) {
 // saves the user selected times to memory and localStorage. then closes menu.
 function saveSettings() {
   console.log('settings saved')
-  timerName.randori.minutes = parseInt(rMin.value)
-  timerName.randori.seconds = parseInt(rSec.value)
-  timerName.randori.rounds = parseInt(rRounds.value)
-  timerName.threePerson.minutes = parseInt(rMin.value)
-  timerName.threePerson.seconds = parseInt(rSec.value)
-  timerName.threePerson.rounds = parseInt(threeRounds.value)
-  timerName.break.minutes = parseInt(bMin.value)
-  timerName.break.seconds = parseInt(bSec.value)
-  timerName.uchikomi.minutes = parseInt(uMin.value)
-  timerName.uchikomi.seconds = parseInt(uSec.value)
-  timerName.waterBreak.seconds = parseInt(wSec.value)
-  timerName.waterBreak.minutes = parseInt(wMin.value)
+  timerName.randori.minutes = parseInt(rMin.textContent)
+  timerName.randori.seconds = parseInt(rSec.textContent)
+  timerName.randori.rounds = parseInt(rRounds.textContent)
+  timerName.threePerson.minutes = parseInt(rMin.textContent)
+  timerName.threePerson.seconds = parseInt(rSec.textContent)
+  timerName.threePerson.rounds = parseInt(threeRounds.textContent)
+  timerName.break.minutes = parseInt(bMin.textContent)
+  timerName.break.seconds = parseInt(bSec.textContent)
+  timerName.uchikomi.minutes = parseInt(uMin.textContent)
+  timerName.uchikomi.seconds = parseInt(uSec.textContent)
+  timerName.waterBreak.minutes = parseInt(wMin.textContent)
+  timerName.waterBreak.seconds = parseInt(wSec.textContent)
 
   window.localStorage.setItem('times', JSON.stringify(timerName))
 
@@ -704,89 +692,193 @@ function keyPress(e) {
       break
     case 'KeyR':
       switchMode('randori')
+      masterMode = 'randori'
       break
     case 'KeyU':
       switchMode('uchikomi')
+      masterMode = 'uchikomi'
       break
     case 'KeyW':
       switchMode('waterBreak')
+      masterMode = 'waterBreak'
       break
     case 'KeyB':
       switchMode('break')
+      masterMode = 'break'
       break
     case 'Digit3':
       switchMode('threePerson')
+      masterMode = 'threePerson'
       break
     case 'Numpad3':
       switchMode('threePerson')
+      masterMode = 'threePerson'
       break
   }
 }
 
-const swiper = new Swiper('.swiper', {
-  // Optional parameters
+// const swiper = new Swiper('.swiper', {
+//   // Optional parameters
 
-  freeMode: false,
-  direction: 'horizontal',
-  loop: false,
-  resistance: true,
-  resistanceRatio: 0,
-  initialSlide: 2,
+//   freeMode: false,
+//   direction: 'horizontal',
+//   loop: false,
+//   resistance: true,
+//   resistanceRatio: 0,
+//   initialSlide: 2,
 
-  // If we need pagination
-  // pagination: {
-  //   el: '.swiper-pagination',
-  // },
+// If we need pagination
+// pagination: {
+//   el: '.swiper-pagination',
+// },
 
-  // Navigation arrows
-  // navigation: {
-  //   nextEl: '.swiper-button-next',
-  //   prevEl: '.swiper-button-prev',
-  // },
+// Navigation arrows
+// navigation: {
+//   nextEl: '.swiper-button-next',
+//   prevEl: '.swiper-button-prev',
+// },
 
-  // And if we need scrollbar
-  // scrollbar: {
-  //   el: '.swiper-scrollbar',
-  // },
-})
+// And if we need scrollbar
+// scrollbar: {
+//   el: '.swiper-scrollbar',
+// },
+// })
 
 // dynamically creates drop down selections for the settings menu
-function createOptions(id) {
-  if (id.id.split('-')[1] === 'seconds') {
-    for (let i = 0; i <= 55; i += 5) {
-      const option = document.createElement('option')
-      option.value = i
-      option.textContent = i
-      option.textContent = option.textContent.padStart(2, '0')
-      id.appendChild(option)
-    }
-  } else if (id.id.split('-')[1] === 'minutes') {
-    for (let i = 0; i <= 10; i++) {
-      const option = document.createElement('option')
-      option.value = i
-      option.textContent = i
-      option.textContent = option.textContent.padStart(2, '0')
-      id.appendChild(option)
-    }
-  } else {
-    for (let i = 1; i < 10; i++) {
-      const option = document.createElement('option')
-      option.value = i
-      option.textContent = i
-      option.textContent = option.textContent.padStart(2, '0')
-      id.appendChild(option)
-    }
+// function createOptions(id) {
+//   if (id.id.split('-')[1] === 'seconds') {
+//     for (let i = 0; i <= 55; i += 5) {
+//       const option = document.createElement('option')
+//       option.value = i
+//       option.textContent = i
+//       option.textContent = option.textContent.padStart(2, '0')
+//       id.appendChild(option)
+//     }
+//   } else if (id.id.split('-')[1] === 'minutes') {
+//     for (let i = 0; i <= 10; i++) {
+//       const option = document.createElement('option')
+//       option.value = i
+//       option.textContent = i
+//       option.textContent = option.textContent.padStart(2, '0')
+//       id.appendChild(option)
+//     }
+//   } else {
+//     for (let i = 1; i < 10; i++) {
+//       const option = document.createElement('option')
+//       option.value = i
+//       option.textContent = i
+//       option.textContent = option.textContent.padStart(2, '0')
+//       id.appendChild(option)
+//     }
+//   }
+// }
+
+// calls the above function to create the drop downs for various settings
+// const settingsItems = [
+//   rMin,
+//   rSec,
+//   rRounds,
+//   bSec,
+//   bMin,
+//   threeRounds,
+//   uMin,
+//   uSec,
+//   wMin,
+//   wSec,
+// ]
+// settingsItems.forEach((item) => createOptions(item))
+
+// const upChevron = document.querySelector('.time-selector i')
+// const downChevron = document.querySelector('.fa-chevron-down')
+// upChevron.addEventListener('click', upTime)
+// downChevron.addEventListener('click', downTime)
+// function upTime() {
+//   let text = document.querySelector('.time-selector span')
+//   text.textContent++
+//   text.textContent = text.textContent.padStart(2, '0')
+// }
+// function downTime() {
+//   let text = document.querySelector('.time-selector span')
+//   text.textContent--
+//   text.textContent = text.textContent.padStart(2, '0')
+// }
+
+const upTime = (e) => {
+  const type = e.target.dataset.type
+  const parent = e.target.dataset.parent
+  const minutesOutput = document
+    .querySelector(`.${parent}`)
+    .querySelector('.minutes span')
+  const secondsOutput = document
+    .querySelector(`.${parent}`)
+    .querySelector('.seconds span')
+  const roundsOutput = e.target.parentNode.querySelector('div')
+
+  console.log(e.target.parentNode.querySelector('div'))
+  switch (type) {
+    case 'minutes':
+      if (minutesOutput.textContent < 99) {
+        minutesOutput.textContent++
+        minutesOutput.textContent = minutesOutput.textContent.padStart(2, '0')
+      }
+      break
+    case 'seconds':
+      if (secondsOutput.textContent < 55) {
+        secondsOutput.textContent = parseInt(secondsOutput.textContent) + 5
+        secondsOutput.textContent = secondsOutput.textContent.padStart(2, '0')
+      } else if (
+        secondsOutput.textContent == 55 &&
+        minutesOutput.textContent < 99
+      ) {
+        secondsOutput.textContent = '00'
+        minutesOutput.textContent++
+        minutesOutput.textContent = minutesOutput.textContent.padStart(2, '0')
+      }
+    case 'rounds':
+      roundsOutput.textContent++
+      break
   }
 }
 
-// calls the above function to create the drop downs for various settings
-createOptions(rMin)
-createOptions(rSec)
-createOptions(rRounds)
-createOptions(bSec)
-createOptions(bMin)
-createOptions(threeRounds)
-createOptions(uMin)
-createOptions(uSec)
-createOptions(wMin)
-createOptions(wSec)
+const downTime = (e) => {
+  const type = e.target.dataset.type
+  const span = e.target.parentNode.querySelector('span')
+  const parent = e.target.dataset.parent
+  const minutesOutput = document
+    .querySelector(`.${parent}`)
+    .querySelector('.minutes span')
+  const secondsOutput = document
+    .querySelector(`.${parent}`)
+    .querySelector('.seconds span')
+  const roundsOutput = e.target.parentNode.querySelector('div')
+
+  switch (type) {
+    case 'minutes':
+      if (minutesOutput.textContent > 0) {
+        minutesOutput.textContent--
+        minutesOutput.textContent = minutesOutput.textContent.padStart(2, '0')
+      }
+      break
+    case 'seconds':
+      if (secondsOutput.textContent > 0) {
+        secondsOutput.textContent = secondsOutput.textContent - 5
+        secondsOutput.textContent = secondsOutput.textContent.padStart(2, '0')
+      } else if (
+        secondsOutput.textContent == 0 &&
+        minutesOutput.textContent > 0
+      ) {
+        secondsOutput.textContent = 55
+        minutesOutput.textContent--
+        minutesOutput.textContent = minutesOutput.textContent.padStart(2, '0')
+      }
+      break
+    case 'rounds':
+      if (roundsOutput.textContent > 0) roundsOutput.textContent--
+      break
+  }
+}
+
+const upArrow = document.querySelectorAll('.ri-arrow-up-s-fill')
+const downArrow = document.querySelectorAll('.ri-arrow-down-s-fill')
+upArrow.forEach((up) => up.addEventListener('click', upTime))
+downArrow.forEach((down) => down.addEventListener('click', downTime))

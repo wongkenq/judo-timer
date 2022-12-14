@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Judo Timer</title>
     <script
@@ -18,6 +19,10 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css"
     />
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body class="swiper">
@@ -31,105 +36,164 @@
           <div class="randori">
             Time
             <div class="time-settings">
-              <div>
-                <select name="randori-minutes" id="randori-minutes"></select>
+              <div class="time-selector minutes">
+                <i
+                  data-type="minutes"
+                  data-parent="randori"
+                  class="ri-arrow-up-s-fill"
+                ></i>
+                <span data-output="minutes" data-parent="randori">00</span>
+                <i
+                  data-type="minutes"
+                  data-parent="randori"
+                  class="ri-arrow-down-s-fill"
+                ></i>
               </div>
-              :
-              <div>
-                <select name="randori-seconds" id="randori-seconds"></select>
+              <div class="time-selector seconds">
+                <i
+                  data-type="seconds"
+                  data-parent="randori"
+                  class="ri-arrow-up-s-fill"
+                ></i>
+                <span data-output="seconds" data-parent="randori">00</span>
+                <i
+                  data-type="seconds"
+                  data-parent="randori"
+                  class="ri-arrow-down-s-fill"
+                ></i>
               </div>
             </div>
-            <!-- <button class="main-button change-time">+</button>
-            <span class="timer-minutes" data-minutes>02</span>
-            <span>:</span>
-            <span class="timer-seconds" data-seconds>00</span>
-            <button class="main-button change-time">-</button> -->
           </div>
           <div class="break">
             Break
             <div class="time-settings">
-              <div>
-                <select name="break-minutes" id="break-minutes"></select>
+              <div class="time-selector minutes">
+                <i
+                  data-type="minutes"
+                  data-parent="break"
+                  class="ri-arrow-up-s-fill"
+                ></i>
+                <span data-output="minutes" data-parent="break">00</span>
+                <i
+                  data-type="minutes"
+                  data-parent="break"
+                  class="ri-arrow-down-s-fill"
+                ></i>
               </div>
-              :
-              <div>
-                <select name="break-seconds" id="break-seconds"></select>
+              <div class="time-selector seconds">
+                <i
+                  data-type="seconds"
+                  data-parent="break"
+                  class="ri-arrow-up-s-fill"
+                ></i>
+                <span data-output="seconds" data-parent="break">00</span>
+                <i
+                  data-type="seconds"
+                  data-parent="break"
+                  class="ri-arrow-down-s-fill"
+                ></i>
               </div>
             </div>
-            <!-- <button class="main-button change-time">+</button>
-            <span class="timer-minutes" data-minutes>00</span>
-            <span>:</span>
-            <span class="timer-seconds" data-seconds>30</span>
-            <button class="main-button change-time">-</button> -->
           </div>
           <div class="round">
             Rounds
-            <div>
-              <select name="randori-rounds" id="randori-rounds"></select>
+            <div class="time-selector">
+              <i
+                data-type="rounds"
+                data-parent="randori"
+                class="ri-arrow-up-s-fill"
+              ></i>
+              <div data-parent="randori" data-output="rounds">0</div>
+              <i
+                data-type="rounds"
+                data-parent="randori"
+                class="ri-arrow-down-s-fill"
+              ></i>
             </div>
-            <!-- <button class="main-button change-time">+</button>
-            <span class="timer-minutes" data-rounds>1</span>
-            <span class="timer-seconds" style="display: none">00</span>
-            <button class="main-button change-time">-</button> -->
           </div>
         </section>
         <section id="settings-threePerson">
           <div class="threePerson">
             <span>3-Person Rounds</span>
-            <div>
-              <select
-                name="threePerson-rounds"
-                id="threePerson-rounds"
-              ></select>
+            <div class="time-selector">
+              <i
+                data-type="rounds"
+                data-parent="threePerson"
+                class="ri-arrow-up-s-fill"
+              ></i>
+              <div data-parent="threePerson" data-output="rounds">0</div>
+              <i
+                data-type="rounds"
+                data-parent="threePerson"
+                class="ri-arrow-down-s-fill"
+              ></i>
             </div>
-            <!-- <button class="main-button change-time">+</button>
-            <span class="timer-minutes" data-rounds>1</span>
-            <span class="timer-seconds" style="display: none">00</span>
-            <button class="main-button change-time">-</button> -->
           </div>
         </section>
         <section id="settings-uchikomi">
           <div class="uchikomi">
             <span>Uchikomi</span>
             <div class="time-settings">
-              <div>
-                <select name="uchikomi-minutes" id="uchikomi-minutes"></select>
+              <div class="time-selector minutes">
+                <i
+                  data-type="minutes"
+                  data-parent="uchikomi"
+                  class="ri-arrow-up-s-fill"
+                ></i>
+                <span data-output="minutes" data-parent="uchikomi">00</span>
+                <i
+                  data-type="minutes"
+                  data-parent="uchikomi"
+                  class="ri-arrow-down-s-fill"
+                ></i>
               </div>
-              :
-              <div>
-                <select name="uchikomi-seconds" id="uchikomi-seconds"></select>
+              <div class="time-selector seconds">
+                <i
+                  data-type="seconds"
+                  data-parent="uchikomi"
+                  class="ri-arrow-up-s-fill"
+                ></i>
+                <span data-output="seconds" data-parent="uchikomi">00</span>
+                <i
+                  data-type="seconds"
+                  data-parent="uchikomi"
+                  class="ri-arrow-down-s-fill"
+                ></i>
               </div>
             </div>
-            <!-- <button class="main-button change-time">+</button>
-            <span class="timer-minutes" data-minutes>05</span>
-            <span>:</span>
-            <span class="timer-seconds" data-seconds>00</span>
-            <button class="main-button change-time">-</button> -->
           </div>
         </section>
         <section id="settings-waterBreak">
           <div class="waterBreak">
             <span>Water break</span>
             <div class="time-settings">
-              <div>
-                <select
-                  name="waterBreak-minutes"
-                  id="waterBreak-minutes"
-                ></select>
+              <div class="time-selector minutes">
+                <i
+                  data-type="minutes"
+                  data-parent="waterBreak"
+                  class="ri-arrow-up-s-fill"
+                ></i>
+                <span data-output="minutes" data-parent="waterBreak">00</span>
+                <i
+                  data-type="minutes"
+                  data-parent="waterBreak"
+                  class="ri-arrow-down-s-fill"
+                ></i>
               </div>
-              :
-              <div>
-                <select
-                  name="waterBreak-seconds"
-                  id="waterBreak-seconds"
-                ></select>
+              <div class="time-selector seconds">
+                <i
+                  data-type="seconds"
+                  data-parent="waterBreak"
+                  class="ri-arrow-up-s-fill"
+                ></i>
+                <span data-output="seconds" data-parent="waterBreak">00</span>
+                <i
+                  data-type="seconds"
+                  data-parent="waterBreak"
+                  class="ri-arrow-down-s-fill"
+                ></i>
               </div>
             </div>
-            <!-- <button class="main-button change-time">+</button>
-            <span class="timer-minutes" data-minutes>02</span>
-            <span>:</span>
-            <span class="timer-seconds" data-seconds>00</span>
-            <button class="main-button change-time">-</button> -->
           </div>
         </section>
         <section id="settings-save">
@@ -186,17 +250,11 @@
                   </div>
                 </section>
                 <div class="clock" id="js-clock">
-                  <!-- <div id="chooseMinutes">
-                  </div> -->
                   <span id="js-minutes">00</span>
                   <span class="separator">:</span>
                   <span id="js-seconds">00</span>
                 </div>
               </div>
-              <!-- <div id="chooseTime">
-                <i class="fa-sharp fa-solid fa-plus"></i>
-                <i class="fa-sharp fa-solid fa-minus"></i>
-              </div> -->
               <div id="btn-container">
                 <button class="main-button" data-action="start" id="js-btn">
                   <i class="fa-solid fa-play"></i>
@@ -209,8 +267,7 @@
           </section>
         </div>
         <div id="settings-button">
-          <!-- <i class="fa-solid fa-clock"></i> -->
-          <i class="fa-solid fa-gear"></i>
+          <i class="ri-menu-2-line"></i>
         </div>
       </main>
     </div>
@@ -218,7 +275,7 @@
       <audio src="/sounds/1bell.mp3" data-sound="1bell"></audio>
       <audio src="/sounds/3bell.mp3" data-sound="3bell"></audio>
     </div> -->
-    <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script> -->
     <script src="app.js"></script>
     <!-- <script src="main.js"></script>/ -->
   </body>
