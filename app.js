@@ -717,32 +717,32 @@ function keyPress(e) {
   }
 }
 
-const swiper = new Swiper('.swiper', {
-  // Optional parameters
+// const swiper = new Swiper('.swiper', {
+//   // Optional parameters
 
-  freeMode: false,
-  direction: 'horizontal',
-  loop: false,
-  resistance: true,
-  resistanceRatio: 0,
-  initialSlide: 2,
+//   freeMode: false,
+//   direction: 'horizontal',
+//   loop: false,
+//   resistance: true,
+//   resistanceRatio: 0,
+//   initialSlide: 2,
 
-  // If we need pagination
-  // pagination: {
-  //   el: '.swiper-pagination',
-  // },
+// If we need pagination
+// pagination: {
+//   el: '.swiper-pagination',
+// },
 
-  // Navigation arrows
-  // navigation: {
-  //   nextEl: '.swiper-button-next',
-  //   prevEl: '.swiper-button-prev',
-  // },
+// Navigation arrows
+// navigation: {
+//   nextEl: '.swiper-button-next',
+//   prevEl: '.swiper-button-prev',
+// },
 
-  // And if we need scrollbar
-  // scrollbar: {
-  //   el: '.swiper-scrollbar',
-  // },
-})
+// And if we need scrollbar
+// scrollbar: {
+//   el: '.swiper-scrollbar',
+// },
+// })
 
 // dynamically creates drop down selections for the settings menu
 // function createOptions(id) {
